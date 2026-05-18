@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>nota — A family of apps for your daily life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0c0a;--bg2:#101210;--bg3:#151715;
+  --surface:#181a17;--surface2:#1f221e;
+  --border:#262924;--border2:#353830;
+  --text:#e8eae0;--text2:#7a8070;--text3:#3e4238;
+  --radius:16px;--t:.32s cubic-bezier(.4,0,.2,1);--t-spring:.42s cubic-bezier(.34,1.1,.64,1);
+  --font-d:'Syne',sans-serif;--font-b:'DM Sans',sans-serif;
+
+  --c-nota:#a9f78e;   --c-nota-dim:#a9f78e15;--c-nota-t:#6dc855;
+  --c-list:#8eb8f7;   --c-list-dim:#8eb8f715;--c-list-t:#5a9cf0;
+  --c-budget:#c78ef7; --c-budget-dim:#c78ef715;--c-budget-t:#a86de0;
+  --c-debts:#FF7B5F;  --c-debts-dim:#FF7B5F15;--c-debts-t:#d95a3d;
+  --c-learn:#f7d05f;  --c-learn-dim:#f7d05f15;--c-learn-t:#c9a020;
+}
+[data-theme="light"]{
+  --bg:#f4f5f0;--bg2:#eceee8;--bg3:#e4e7de;
+  --surface:#fff;--surface2:#f2f4ee;
+  --border:#d8dcd0;--border2:#c4c9b8;
+  --text:#181a14;--text2:#585e48;--text3:#96a088;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background var(--t),color var(--t)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-20px,18px) scale(1.05)}66%{transform:translate(18px,-20px) scale(.96)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes revealUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes revealFade{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-fade{opacity:0;transition:opacity .7s ease}
+.reveal-fade.visible{opacity:1}
+.reveal-scale{opacity:0;transform:scale(.94);transition:opacity .6s ease,transform .6s cubic-bezier(.34,1.2,.64,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-delay-1{transition-delay:.08s}
+.reveal-delay-2{transition-delay:.16s}
+.reveal-delay-3{transition-delay:.24s}
+.reveal-delay-4{transition-delay:.32s}
+.reveal-delay-5{transition-delay:.40s}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;backdrop-filter:blur(18px);background:color-mix(in srgb,var(--bg) 85%,transparent);border-bottom:1px solid transparent;transition:border-color var(--t)}
+.nav.scrolled{border-bottom-color:var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-family:var(--font-d);font-weight:800;font-size:1.2rem;letter-spacing:-.03em}
+.nav-logo-mark{width:32px;height:32px;border-radius:10px;background:var(--c-nota);display:flex;align-items:center;justify-content:center}
+.nav-logo-mark svg path{stroke:#1a1a1a}
+.nav-right{display:flex;align-items:center;gap:8px}
+.theme-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--t)}
+.theme-btn:hover{border-color:var(--c-nota);color:var(--c-nota)}
+[data-theme="dark"] .ico-sun{display:block}[data-theme="dark"] .ico-moon{display:none}
+[data-theme="light"] .ico-sun{display:none}[data-theme="light"] .ico-moon{display:block}
+.btn-cta-nav{padding:8px 20px;border-radius:10px;background:var(--c-nota);color:#1a1a1a;font-weight:700;font-size:.85rem;text-decoration:none;transition:transform var(--t-spring),background .24s ease,box-shadow .28s ease;font-family:var(--font-b)}
+.btn-cta-nav:hover{background:var(--c-nota-t);transform:translateY(-2px);box-shadow:0 6px 18px rgba(169,247,142,.22)}
+
+.btn-dota-nav{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-size:.78rem;font-weight:600;text-decoration:none;transition:transform var(--t-spring),border-color .26s ease,color .24s ease,background .26s ease;font-family:var(--font-b)}
+.btn-dota-nav:hover{border-color:var(--c-budget);color:var(--c-budget);background:var(--c-budget-dim);transform:translateY(-1px)}
+[dir="rtl"] .btn-dota-nav{flex-direction:row-reverse}
+
+/* Mobile lang as compact select */
+@media(max-width:600px){
+  .lang-switcher{display:flex;gap:2px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:2px}
+  .lang-btn{padding:3px 7px;font-size:.65rem}
+}
+
+/* ── LANG SWITCHER ── */
+.lang-switcher{display:flex;align-items:center;gap:2px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:3px}
+.lang-btn{padding:4px 9px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-size:.72rem;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all var(--t);font-family:var(--font-b)}
+.lang-btn:hover{color:var(--text)}
+.lang-btn.active{background:var(--c-nota);color:#1a1a1a}
+
+/* RTL support */
+[dir="rtl"] .nav-inner{flex-direction:row-reverse}
+[dir="rtl"] .hero-actions{flex-direction:row-reverse}
+[dir="rtl"] .hero-app-strip{flex-direction:row-reverse}
+[dir="rtl"] .app-card-header{flex-direction:row-reverse}
+[dir="rtl"] .app-feat{flex-direction:row-reverse}
+[dir="rtl"] .sp-left{text-align:right}
+[dir="rtl"] .sp-list li{flex-direction:row-reverse}
+[dir="rtl"] .sp-list li::before{margin-right:0}
+[dir="rtl"] .banner-item{border-right:none;border-left:1px solid var(--border)}
+[dir="rtl"] .banner-item:last-child{border-left:none}
+[dir="rtl"] .testi-author{flex-direction:row-reverse}
+[dir="rtl"] .footer-inner{flex-direction:row-reverse}
+[dir="rtl"] .footer-links{flex-direction:row-reverse}
+[dir="rtl"] .ph-header{flex-direction:row-reverse}
+[dir="rtl"] .pn-meta{flex-direction:row-reverse}
+[dir="rtl"] .pbr-right{flex-direction:row-reverse}
+[dir="rtl"] .pdc-right{align-items:flex-start}
+[dir="rtl"] .app-link{flex-direction:row-reverse}
+[dir="rtl"] .why-icon{margin-right:0}
+[dir="rtl"] .eco-hub{text-align:center}
+[dir="rtl"] .showcase-tabs{flex-direction:row-reverse}
+[dir="rtl"] .testi-grid{direction:rtl}
+[dir="rtl"] .compare-table td:first-child{text-align:right}
+[dir="rtl"] .compare-table th:first-child{text-align:right}
+[dir="rtl"] .nav-right{flex-direction:row-reverse}
+[dir="rtl"] .section-title,[dir="rtl"] .section-tag{text-align:right}
+[dir="rtl"] .eco-center{text-align:right}
+[dir="rtl"] .eco-center .section-title{text-align:center}
+
+/* Arabic font override — use system Arabic for body when RTL */
+[lang="ar"] body{font-family:'DM Sans','Segoe UI',Tahoma,Arial,sans-serif;letter-spacing:0}
+[lang="ar"] .hero-title,[lang="ar"] .sp-title,[lang="ar"] .section-title,[lang="ar"] .app-name,[lang="ar"] .testi-name,[lang="ar"] .banner-num{font-family:'Syne','Segoe UI',Tahoma,Arial,sans-serif}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:100px 2rem 80px;text-align:center}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.09;animation:blobFloat 12s ease-in-out infinite}
+.blob1{width:700px;height:700px;background:var(--c-nota);top:-250px;left:-200px}
+.blob2{width:500px;height:500px;background:var(--c-list);top:20%;right:-200px;animation-delay:-4s}
+.blob3{width:400px;height:400px;background:var(--c-budget);bottom:-100px;left:20%;animation-delay:-8s}
+.blob4{width:350px;height:350px;background:var(--c-debts);bottom:10%;right:10%;animation-delay:-6s}
+.grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:64px 64px;opacity:.2}
+.hero-inner{position:relative;max-width:820px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:100px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .7s ease both}
+.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--c-nota);animation:pulse 2s ease-in-out infinite}
+.hero-title{font-family:var(--font-d);font-weight:800;font-size:clamp(3rem,7vw,5.6rem);line-height:1.04;letter-spacing:-.04em;margin-bottom:24px;animation:fadeUp .7s ease .1s both}
+.hero-title .wn{color:var(--c-nota)}
+.hero-title .wl{color:var(--c-list)}
+.hero-title .wb{color:var(--c-budget)}
+.hero-title .wd{color:var(--c-debts)}
+.hero-title .wle{color:var(--c-learn)}
+.hero-sub{font-size:1.1rem;color:var(--text2);max-width:500px;margin:0 auto 40px;font-weight:300;line-height:1.75;animation:fadeUp .7s ease .2s both}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:14px;animation:fadeUp .7s ease .3s both}
+.btn-primary{display:inline-flex;align-items:center;gap:9px;padding:14px 30px;border-radius:14px;background:var(--c-nota);color:#1a1a1a;font-weight:700;font-size:.95rem;text-decoration:none;transition:transform var(--t-spring),box-shadow .32s ease,background .24s ease;border:none;cursor:pointer;font-family:var(--font-b)}
+.btn-primary:hover{background:var(--c-nota-t);transform:translateY(-3px);box-shadow:0 14px 36px rgba(169,247,142,.3)}
+.btn-ghost{color:var(--text2);text-decoration:none;font-size:.9rem;font-weight:500;transition:color var(--t)}
+.btn-ghost:hover{color:var(--text)}
+.hero-app-strip{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:56px;animation:fadeUp .7s ease .5s both;flex-wrap:wrap}
+.app-pill{display:flex;align-items:center;gap:7px;padding:6px 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);font-size:.78rem;font-weight:600;font-family:var(--font-d);transition:transform var(--t-spring),box-shadow .32s ease,background .24s ease;cursor:pointer}
+.app-pill:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.app-pill-dot{width:8px;height:8px;border-radius:50%}
+
+/* ── APPS SECTION ── */
+.apps{padding:120px 0}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+.section-tag{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.section-title{font-family:var(--font-d);font-weight:800;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:60px}
+
+.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.app-card{background:var(--surface);border:1.5px solid var(--border);border-radius:24px;padding:36px;position:relative;overflow:hidden;transition:transform var(--t-spring),box-shadow .38s cubic-bezier(.4,0,.2,1),border-color .3s ease;cursor:pointer}
+.app-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .45s ease}
+.app-card:hover{transform:translateY(-8px);border-color:var(--card-accent)}
+.app-card:hover::before{opacity:1}
+
+/* icon lifts on hover */
+.app-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;transition:transform var(--t-spring)}
+.app-card:hover .app-icon{transform:translateY(-3px) scale(1.08)}
+
+/* app-name color fades in smoothly */
+.app-name{font-family:var(--font-d);font-weight:800;font-size:1.5rem;letter-spacing:-.03em;margin-bottom:8px;position:relative;transition:color .3s ease}
+
+/* app-feat items slide in slightly */
+.app-feat{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--text2);transition:color .28s ease,transform .32s ease}
+.app-card:hover .app-feat{color:var(--text)}
+
+/* app-link arrow bounce */
+.app-link{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;text-decoration:none;font-family:var(--font-d);transition:gap var(--t-spring),opacity .2s ease;position:relative}
+.app-link:hover{gap:16px}
+
+.app-card--nota{--card-accent:var(--c-nota)}
+.app-card--nota::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-nota-dim),transparent)}
+.app-card--list{--card-accent:var(--c-list)}
+.app-card--list::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-list-dim),transparent)}
+.app-card--budget{--card-accent:var(--c-budget)}
+.app-card--budget::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-budget-dim),transparent)}
+.app-card--debts{--card-accent:var(--c-debts)}
+.app-card--debts::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-debts-dim),transparent)}
+.app-card--learn{--card-accent:var(--c-learn)}
+.app-card--learn::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-learn-dim),transparent)}
+
+.app-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;position:relative}
+.app-tag{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;transition:transform var(--t-spring)}
+.app-card:hover .app-tag{transform:translateY(-1px)}
+.app-desc{color:var(--text2);font-size:.9rem;line-height:1.65;max-width:360px;position:relative;margin-bottom:24px}
+.app-features{display:flex;flex-direction:column;gap:8px;position:relative;margin-bottom:28px}
+.app-feat-check{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* mock preview inside cards */
+.card-mock{position:absolute;right:-24px;bottom:-24px;width:200px;opacity:.18;pointer-events:none;transition:opacity .4s ease,transform var(--t-spring)}
+.app-card:hover .card-mock{opacity:.32;transform:translateY(-4px) scale(1.03)}
+
+/* ── FEATURES BANNER ── */
+.banner{padding:80px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.banner-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+.banner-item{padding:32px 28px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:12px}
+.banner-item:last-child{border-right:none}
+.banner-num{font-family:var(--font-d);font-weight:800;font-size:2.8rem;letter-spacing:-.05em;line-height:1}
+.banner-label{font-size:.84rem;color:var(--text2);line-height:1.5}
+
+/* ── WHY NOTA ── */
+.why{padding:120px 0}
+.why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.why-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform var(--t-spring),border-color .28s ease,box-shadow .32s ease}
+.why-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.why-icon{width:44px;height:44px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:background .28s ease,transform var(--t-spring)}
+.why-card:hover .why-icon{background:var(--border);transform:scale(1.1) rotate(-3deg)}
+.why-card h3{font-family:var(--font-d);font-weight:700;font-size:1rem;margin-bottom:8px;letter-spacing:-.02em}
+.why-card p{color:var(--text2);font-size:.85rem;line-height:1.65}
+
+/* ── ECOSYSTEM ── */
+.ecosystem{padding:120px 0;background:var(--bg2);border-top:1px solid var(--border)}
+.eco-center{text-align:center;max-width:600px;margin:0 auto 64px}
+.eco-diagram{position:relative;max-width:680px;margin:0 auto;height:340px}
+.eco-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:96px;height:96px;border-radius:24px;background:var(--surface);border:2px solid var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;z-index:2}
+.eco-hub-label{font-family:var(--font-d);font-weight:800;font-size:.85rem}
+.eco-hub-sub{font-size:.62rem;color:var(--text2);font-weight:500}
+.eco-node{position:absolute;display:flex;flex-direction:column;align-items:center;gap:8px;transform:translate(-50%,-50%)}
+.eco-node-icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);background:var(--surface);transition:transform var(--t-spring),box-shadow .32s ease,border-color .28s ease}
+.eco-node-icon:hover{transform:scale(1.12);box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.eco-node-name{font-family:var(--font-d);font-weight:700;font-size:.72rem;letter-spacing:-.01em}
+.eco-line{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+
+/* ── CTA ── */
+.cta{padding:140px 2rem;text-align:center;position:relative;overflow:hidden}
+.cta-blob{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,color-mix(in srgb,var(--c-nota) 10%,transparent),transparent);pointer-events:none}
+.cta-inner{position:relative}
+.cta-inner h2{font-family:var(--font-d);font-weight:800;font-size:clamp(2rem,5vw,3.6rem);letter-spacing:-.04em;margin-bottom:18px;line-height:1.1}
+.cta-inner p{color:var(--text2);font-size:1rem;margin-bottom:40px;max-width:400px;margin-left:auto;margin-right:auto}
+.cta-apps{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:36px;flex-wrap:wrap}
+.cta-app-chip{display:flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;background:var(--surface);border:1.5px solid var(--border);font-size:.78rem;font-weight:600;font-family:var(--font-d);color:var(--text2)}
+.cta-chip-dot{width:7px;height:7px;border-radius:50%}
+
+/* ── FOOTER ── */
+.footer{border-top:1px solid var(--border);padding:36px 2rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-logo{display:flex;align-items:center;gap:8px;font-family:var(--font-d);font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.footer-links{display:flex;gap:20px}
+.footer-links a{color:var(--text3);font-size:.82rem;text-decoration:none;transition:color var(--t)}
+.footer-links a:hover{color:var(--text2)}
+.footer-copy{color:var(--text3);font-size:.78rem}
+
+/* ── SHOWCASE ── */
+.showcase{padding:120px 0;background:var(--bg2);border-top:1px solid var(--border)}
+.showcase-tabs{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap}
+.stab{padding:9px 22px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-family:var(--font-d);font-weight:700;font-size:.83rem;cursor:pointer;transition:transform var(--t-spring),background .28s ease,border-color .24s ease,color .24s ease,box-shadow .28s ease}
+.stab:hover{border-color:var(--ac);color:var(--ac);transform:translateY(-2px)}
+.stab.active{background:var(--ac);border-color:var(--ac);color:#0b0c0a}
+.showcase-panels{position:relative;min-height:420px}
+.showcase-panel{display:none;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.showcase-panel.active{display:grid;animation:fadeUp .4s ease both}
+.sp-left{display:flex;flex-direction:column;gap:0}
+.sp-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:.06em;margin-bottom:20px;width:fit-content}
+.sp-title{font-family:var(--font-d);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:16px}
+.sp-desc{color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:24px}
+.sp-list{list-style:none;display:flex;flex-direction:column;gap:11px}
+.sp-list li{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text2)}
+.sp-list li::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--dot);flex-shrink:0}
+/* phone mock */
+.mock-phone{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:16px;max-width:300px;margin:0 auto;box-shadow:0 24px 64px rgba(0,0,0,.45)}
+.ph-bar{display:flex;gap:5px;margin-bottom:14px}
+.ph-dot{width:9px;height:9px;border-radius:50%;display:block}
+.ph-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ph-title{font-family:var(--font-d);font-weight:800;font-size:.9rem}
+/* nota note items */
+.ph-note{display:flex;align-items:stretch;gap:0;background:var(--surface2);border-radius:11px;margin-bottom:8px;overflow:hidden;border:1px solid var(--border)}
+.pn-color-bar{width:4px;background:var(--nc);flex-shrink:0}
+.pn-body-wrap{padding:10px 12px;flex:1}
+.pn-title-text{font-family:var(--font-d);font-weight:700;font-size:.8rem;margin-bottom:3px}
+.pn-preview{font-size:.7rem;color:var(--text2);margin-bottom:7px;line-height:1.4}
+.pn-meta{display:flex;align-items:center;justify-content:space-between}
+.pn-cat{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:100px;background:var(--surface);border:1px solid var(--border);color:var(--text3)}
+.pn-date{font-size:.62rem;color:var(--text3)}
+.ph-fab{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-top:8px;margin-left:auto;cursor:pointer}
+/* task items */
+.ph-progress-wrap{height:3px;background:var(--border);border-radius:100px;margin-bottom:14px;overflow:hidden}
+.ph-progress-bar{height:100%;background:var(--pc);border-radius:100px;width:var(--pct);transition:width 1s ease}
+.ph-task{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ph-task:last-of-type{border-bottom:none}
+.done-task{opacity:.55}
+.task-check{width:18px;height:18px;border-radius:6px;border:1.5px solid;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.task-info{display:flex;flex-direction:column;gap:5px}
+.task-text{font-size:.8rem;font-weight:500}
+.done-text{text-decoration:line-through}
+.task-tag{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:100px;width:fit-content}
+/* budget items */
+.ph-budget-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.ph-budget-row:last-child{border-bottom:none}
+.pbr-label{display:flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;min-width:80px}
+.pbr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pbr-right{display:flex;align-items:center;gap:8px;flex:1}
+.pbr-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:100px;overflow:hidden}
+.pbr-bar{height:100%;border-radius:100px;transition:width 1s ease}
+.pbr-val{font-size:.62rem;color:var(--text3);white-space:nowrap}
+/* debt items */
+.ph-debt-card{display:flex;align-items:center;gap:10px;padding:9px;background:var(--surface2);border-radius:11px;margin-bottom:6px;border:1px solid var(--border)}
+.pdc-avatar{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;font-size:.7rem;color:#fff;flex-shrink:0}
+.pdc-info{flex:1;min-width:0}
+.pdc-name{font-family:var(--font-d);font-weight:700;font-size:.78rem}
+.pdc-note{font-size:.65rem;color:var(--text2)}
+.pdc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.pdc-amount{font-family:var(--font-d);font-weight:800;font-size:.82rem}
+.pdc-tag{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:100px}
+
+/* ── TESTIMONIALS / COMMUNITY FEEDBACK ── */
+.testimonials{padding:120px 0}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:48px}
+.testi-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform var(--t-spring),border-color .28s ease,box-shadow .32s ease}
+.testi-card:hover{transform:translateY(-5px);border-color:var(--border2);box-shadow:0 16px 40px rgba(0,0,0,.15)}
+.testi-card--featured{border-color:var(--border2);background:var(--surface2)}
+.testi-stars{font-size:.9rem;margin-bottom:14px;color:var(--c-nota);letter-spacing:2px}
+.testi-text{font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;font-size:.75rem;flex-shrink:0}
+.testi-name{font-family:var(--font-d);font-weight:700;font-size:.84rem}
+.testi-role{font-size:.7rem;color:var(--text3);margin-top:2px}
+
+/* ── FEEDBACK FORM ── */
+.feedback-box{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:36px;max-width:680px;margin:0 auto;transition:border-color .3s ease}
+.feedback-box:focus-within{border-color:var(--border2)}
+.feedback-title{font-family:var(--font-d);font-weight:800;font-size:1.1rem;letter-spacing:-.02em;margin-bottom:6px}
+.feedback-sub{font-size:.82rem;color:var(--text2);margin-bottom:24px;line-height:1.55}
+.feedback-stars-row{display:flex;gap:6px;margin-bottom:20px}
+.fstar{font-size:1.6rem;cursor:pointer;color:var(--text3);transition:color .18s ease,transform .18s ease;line-height:1;user-select:none}
+.fstar:hover,.fstar.lit{color:var(--c-nota);transform:scale(1.18)}
+.feedback-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.feedback-field{display:flex;flex-direction:column;gap:6px}
+.feedback-field label{font-size:.72rem;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase}
+.feedback-field input,.feedback-field select,.feedback-textarea{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font-b);font-size:.86rem;outline:none;width:100%;transition:border-color .24s ease}
+.feedback-field input:focus,.feedback-field select:focus,.feedback-textarea:focus{border-color:var(--c-nota)}
+.feedback-field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8070' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.feedback-textarea{resize:vertical;min-height:100px;line-height:1.6}
+.feedback-actions{display:flex;align-items:center;justify-content:space-between;margin-top:6px;flex-wrap:wrap;gap:12px}
+.feedback-note{font-size:.72rem;color:var(--text3)}
+.feedback-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:12px;background:var(--c-nota);color:#1a1a1a;font-family:var(--font-b);font-weight:700;font-size:.88rem;border:none;cursor:pointer;transition:transform var(--t-spring),background .24s ease,box-shadow .28s ease,opacity .2s ease}
+.feedback-btn:hover:not(:disabled){background:var(--c-nota-t);transform:translateY(-2px);box-shadow:0 8px 24px rgba(169,247,142,.3)}
+.feedback-btn:disabled{opacity:.5;cursor:not-allowed}
+.feedback-success{display:none;align-items:center;gap:10px;padding:14px 20px;border-radius:12px;background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 30%,transparent);font-size:.86rem;font-weight:600;color:var(--c-nota-t);margin-top:16px}
+.feedback-success.show{display:flex;animation:fadeUp .4s ease both}
+.testi-new{animation:scaleIn .4s cubic-bezier(.34,1.1,.64,1) both;border-color:color-mix(in srgb,var(--c-nota) 30%,transparent)}
+
+/* ── COMPARE ── */
+.compare{padding:120px 0;background:var(--bg2);border-top:1px solid var(--border)}
+.compare-table-wrap{overflow-x:auto;border-radius:16px;border:1.5px solid var(--border)}
+.compare-table{width:100%;border-collapse:collapse;font-size:.86rem}
+.compare-table th{font-family:var(--font-d);font-weight:800;font-size:.82rem;padding:16px 20px;text-align:center;background:var(--surface);border-bottom:1.5px solid var(--border);letter-spacing:-.01em}
+.compare-table th:first-child{text-align:left}
+.compare-table td{padding:13px 20px;text-align:center;border-bottom:1px solid var(--border);color:var(--text2)}
+.compare-table td:first-child{text-align:left;font-weight:500;color:var(--text)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr{transition:background .22s ease}
+.compare-table tr:hover td{background:var(--surface2)}
+.compare-table .chk{font-size:1rem;font-weight:700}
+
+/* ── COLORED HOVER SHADOWS ── */
+.app-card--nota:hover{
+  box-shadow:0 12px 48px color-mix(in srgb,var(--c-nota) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
+  border-color:var(--c-nota);
+}
+.app-card--nota:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-nota) 18%,transparent),transparent)}
+.app-card--list:hover{
+  box-shadow:0 12px 48px color-mix(in srgb,var(--c-list) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
+  border-color:var(--c-list);
+}
+.app-card--list:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-list) 18%,transparent),transparent)}
+.app-card--budget:hover{
+  box-shadow:0 12px 48px color-mix(in srgb,var(--c-budget) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
+  border-color:var(--c-budget);
+}
+.app-card--budget:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-budget) 18%,transparent),transparent)}
+.app-card--debts:hover{
+  box-shadow:0 12px 48px color-mix(in srgb,var(--c-debts) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
+  border-color:var(--c-debts);
+}
+.app-card--debts:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-debts) 18%,transparent),transparent)}
+.app-card--learn:hover{
+  box-shadow:0 12px 48px color-mix(in srgb,var(--c-learn) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
+  border-color:var(--c-learn);
+}
+.app-card--learn:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-learn) 18%,transparent),transparent)}
+
+/* also color the app-name on hover per card */
+.app-card--nota:hover .app-name{color:var(--c-nota)}
+.app-card--list:hover .app-name{color:var(--c-list)}
+.app-card--budget:hover .app-name{color:var(--c-budget)}
+.app-card--debts:hover .app-name{color:var(--c-debts)}
+.app-card--learn:hover .app-name{color:var(--c-learn)}
+
+/* ── RESPONSIVE — TABLET 900px ── */
+@media(max-width:900px){
+  /* NAV */
+  .nav-inner{height:56px}
+  .nav-right{gap:6px}
+  .lang-switcher{display:none}
+  .btn-cta-nav{padding:7px 14px;font-size:.8rem}
+
+  /* HERO */
+  .hero{padding:80px 1.5rem 60px}
+  .hero-title{font-size:clamp(2.4rem,8vw,4rem)}
+  .hero-sub{font-size:.95rem}
+
+  /* APPS */
+  .apps-grid{grid-template-columns:1fr}
+  .app-card{padding:28px}
+
+  /* BANNER */
+  .banner-inner{grid-template-columns:1fr 1fr}
+  .banner-item:nth-child(2){border-right:none}
+  .banner-item:nth-child(3){border-top:1px solid var(--border);border-right:1px solid var(--border)}
+
+  /* WHY */
+  .why-grid{grid-template-columns:1fr 1fr}
+
+  /* SHOWCASE */
+  .showcase-panel.active{grid-template-columns:1fr;gap:28px}
+  .sp-right{display:none}
+
+  /* TESTIMONIALS */
+  .testi-grid{grid-template-columns:1fr 1fr}
+  .feedback-inputs{grid-template-columns:1fr}
+
+  /* COMPARE */
+  .compare-table-wrap{font-size:.78rem}
+  .compare-table th,.compare-table td{padding:10px 10px}
+}
+
+/* ── RESPONSIVE — MOBILE 600px ── */
+@media(max-width:600px){
+  /* NAV */
+  .nav{padding:0 1rem}
+  .nav-inner{height:52px}
+  .nav-logo{font-size:1rem}
+  .nav-logo-mark{width:28px;height:28px;border-radius:8px}
+  .theme-btn{width:32px;height:32px}
+  .btn-cta-nav{display:none}
+
+  /* HERO */
+  .hero{padding:72px 1rem 48px;text-align:center}
+  .hero-title{font-size:clamp(2rem,10vw,3rem);letter-spacing:-.03em}
+  .hero-eyebrow{font-size:.68rem}
+  .hero-sub{font-size:.88rem;max-width:100%}
+  .hero-actions{flex-direction:column;gap:10px;align-items:center}
+  .btn-primary{padding:12px 24px;font-size:.9rem;width:100%;justify-content:center;max-width:260px}
+  .hero-app-strip{gap:8px}
+  .app-pill{padding:5px 10px;font-size:.7rem}
+  .app-pill-dot{width:6px;height:6px}
+
+  /* BANNER */
+  .banner-inner{grid-template-columns:1fr 1fr}
+  .banner-item{padding:20px 16px;border-right:none;border-bottom:1px solid var(--border)}
+  .banner-item:nth-child(even){border-right:none}
+  .banner-num{font-size:2.2rem}
+  .banner-label{font-size:.78rem}
+
+  /* APPS */
+  .apps{padding:60px 0}
+  .app-card{padding:22px;border-radius:18px}
+  .app-name{font-size:1.25rem}
+  .app-desc{font-size:.84rem}
+  .container{padding:0 1rem}
+  .section-title{font-size:1.6rem;margin-bottom:32px}
+
+  /* WHY */
+  .why{padding:60px 0}
+  .why-grid{grid-template-columns:1fr}
+  .why-card{padding:20px}
+
+  /* SHOWCASE */
+  .showcase{padding:60px 0}
+  .showcase-tabs{gap:5px;flex-wrap:wrap}
+  .stab{padding:6px 12px;font-size:.72rem}
+  .sp-title{font-size:1.4rem}
+
+  /* TESTIMONIALS */
+  .testimonials{padding:60px 0}
+  .testi-grid{grid-template-columns:1fr}
+  .testi-card{padding:20px}
+
+  /* COMPARE */
+  .compare{padding:60px 0}
+  .compare-table-wrap{border-radius:10px}
+  .compare-table th,.compare-table td{padding:9px 8px;font-size:.72rem}
+
+  /* FOOTER */
+  .footer-inner{flex-direction:column;gap:16px;text-align:center}
+  .footer-links{flex-wrap:wrap;justify-content:center;gap:12px}
+  .footer-logo{justify-content:center}
+
+  /* RTL mobile fixes */
+  [dir="rtl"] .hero-actions{flex-direction:column}
+  [dir="rtl"] .banner-inner{direction:rtl}
+}
+
+/* ── RESPONSIVE — SMALL MOBILE 380px ── */
+@media(max-width:380px){
+  .hero-title{font-size:1.85rem}
+  .app-pill{padding:4px 8px;font-size:.65rem}
+  .hero-app-strip{gap:5px}
+  .stab{padding:5px 9px;font-size:.68rem}
+  .compare-table th,.compare-table td{padding:7px 5px;font-size:.65rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h12M4 18h14" stroke="#1a1a1a" stroke-width="2.3" stroke-linecap="round"/></svg>
+      </div>
+      nota
+    </a>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn">
+        <svg class="ico-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="ico-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="ar">AR</button>
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <button class="lang-btn" data-lang="ru">RU</button>
+      </div>
+      <a href="#apps" class="btn-cta-nav" data-i18n="nav_cta">Explore Apps</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+    <div class="blob blob4"></div>
+    <div class="grid"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div> <span data-i18n="hero_eyebrow">A unified app family</span></div>
+    <h1 class="hero-title" data-i18n-html="hero_title">
+      One name.<br/>
+      <span class="wn">Note</span> it.
+      <span class="wl">List</span> it.<br/>
+      <span class="wb">Budget</span> it.
+      <span class="wd">Track</span> it.
+    </h1>
+    <p class="hero-sub" data-i18n="hero_sub">nota is a family of beautifully minimal apps built for your daily life. Same soul, same design language — each one a master of its craft.</p>
+    <div class="hero-actions">
+      <a href="#apps" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <span data-i18n="hero_cta">Discover the Family</span>
+      </a>
+      <a href="#why" class="btn-ghost" data-i18n="hero_why">Why nota? →</a>
+    </div>
+    <div class="hero-app-strip">
+      <a href="https://notasave.netlify.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-nota);color:var(--c-nota-t);text-decoration:none">
+        <div class="app-pill-dot" style="background:var(--c-nota)"></div>nota
+      </a>
+      <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-list);color:var(--c-list-t);text-decoration:none">
+        <div class="app-pill-dot" style="background:var(--c-list)"></div>nota.list
+      </a>
+      <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-budget);color:var(--c-budget-t);text-decoration:none">
+        <div class="app-pill-dot" style="background:var(--c-budget)"></div>nota.budget
+      </a>
+      <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-debts);color:var(--c-debts-t);text-decoration:none">
+        <div class="app-pill-dot" style="background:var(--c-debts)"></div>nota.debts
+      </a>
+      <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-learn);color:var(--c-learn-t);text-decoration:none">
+        <div class="app-pill-dot" style="background:var(--c-learn)"></div>nota.learn
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="banner">
+  <div class="banner-inner">
+    <div class="banner-item">
+      <div class="banner-num" style="color:var(--c-nota)">5</div>
+      <div class="banner-label" data-i18n="banner1">Powerful apps,<br/>one coherent family</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-num" style="color:var(--c-list)">$0</div>
+      <div class="banner-label" data-i18n="banner2">Free forever,<br/>no hidden fees</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-num" style="color:var(--c-budget)">4</div>
+      <div class="banner-label" data-i18n="banner3">Languages — EN, AR,<br/>FR, and RU</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-num" style="color:var(--c-debts)">∞</div>
+      <div class="banner-label" data-i18n="banner4">Notes, tasks, budgets<br/>and debts tracked</div>
+    </div>
+  </div>
+</div>
+
+<!-- APPS -->
+<section class="apps" id="apps">
+  <div class="container">
+    <div class="section-tag reveal" data-i18n="apps_tag">The Family</div>
+    <div class="section-title reveal reveal-delay-1" data-i18n="apps_title">Four apps. One vision.</div>
+
+    <div class="apps-grid">
+
+      <!-- nota -->
+      <div class="app-card app-card--nota">
+        <div class="app-card-header">
+          <div class="app-icon" style="background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 25%,transparent)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h12M4 18h14" stroke="var(--c-nota)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="app-tag" style="background:var(--c-nota-dim);color:var(--c-nota-t)" data-i18n="tag_notes">Notes</span>
+        </div>
+        <div class="app-name" style="color:var(--text)">nota <span style="color:var(--c-nota)">·</span> notes</div>
+        <p class="app-desc" data-i18n="nota_desc">Your minimal, colorful notes space. Capture ideas instantly, organize by category, and customize with colors. Synced across every device.</p>
+        <div class="app-features">
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f1">Rich text with color themes & categories</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f2">Real-time sync via Supabase</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f3">Light & dark mode, 4 languages</span></div>
+        </div>
+        <a href="https://notasave.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-nota)"><span data-i18n="open_nota">Open nota</span> <span>→</span></a>
+        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
+          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+          <rect x="20" y="26" width="80" height="10" rx="5" fill="var(--c-nota)" opacity=".7"/>
+          <rect x="20" y="44" width="120" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="56" width="100" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="68" width="110" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="90" width="60" height="10" rx="5" fill="var(--c-list)" opacity=".5"/>
+          <rect x="20" y="108" width="120" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="120" width="90" height="6" rx="3" fill="var(--border2)"/>
+        </svg>
+      </div>
+
+      <!-- nota.list -->
+      <div class="app-card app-card--list">
+        <div class="app-card-header">
+          <div class="app-icon" style="background:var(--c-list-dim);border:1.5px solid color-mix(in srgb,var(--c-list) 25%,transparent)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 10l4 4 8-8" stroke="var(--c-list)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="app-tag" style="background:var(--c-list-dim);color:var(--c-list-t)" data-i18n="tag_tasks">Tasks</span>
+        </div>
+        <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-list)">.list</span></div>
+        <p class="app-desc" data-i18n="list_desc">Your smart to-do space. Prioritize tasks, organize by project, track progress — and actually get things done. Focused simplicity.</p>
+        <div class="app-features">
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f1">Priority levels — high, medium, low</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f2">Projects, tags & progress tracking</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f3">Due dates with smart reminders</span></div>
+        </div>
+        <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-list)"><span data-i18n="open_list">Open nota.list</span> <span>→</span></a>
+        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
+          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+          <rect x="20" y="24" width="100" height="8" rx="4" fill="var(--border2)"/>
+          <rect x="20" y="40" width="14" height="14" rx="7" fill="var(--c-list)" opacity=".6"/>
+          <rect x="40" y="44" width="88" height="6" rx="3" fill="var(--c-list)" opacity=".35"/>
+          <rect x="20" y="62" width="14" height="14" rx="7" fill="var(--border)"/>
+          <rect x="40" y="66" width="72" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="84" width="14" height="14" rx="7" fill="var(--border)"/>
+          <rect x="40" y="88" width="96" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="106" width="14" height="14" rx="7" fill="var(--c-list)" opacity=".6"/>
+          <rect x="40" y="110" width="60" height="6" rx="3" fill="var(--c-list)" opacity=".35"/>
+          <rect x="16" y="132" width="128" height="3" rx="2" fill="var(--border)"/>
+          <rect x="16" y="132" width="84" height="3" rx="2" fill="var(--c-list)" opacity=".5"/>
+        </svg>
+      </div>
+
+      <!-- nota.budget -->
+      <div class="app-card app-card--budget">
+        <div class="app-card-header">
+          <div class="app-icon" style="background:var(--c-budget-dim);border:1.5px solid color-mix(in srgb,var(--c-budget) 25%,transparent)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="3" stroke="var(--c-budget)" stroke-width="2.2"/><path d="M3 10h18" stroke="var(--c-budget)" stroke-width="2"/><circle cx="7" cy="15" r="1.5" fill="var(--c-budget)"/></svg>
+          </div>
+          <span class="app-tag" style="background:var(--c-budget-dim);color:var(--c-budget-t)" data-i18n="tag_finance">Finance</span>
+        </div>
+        <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-budget)">.budget</span></div>
+        <p class="app-desc" data-i18n="budget_desc">Track your spending intelligently. Set monthly budgets, monitor categories, and see where every dirham, dollar, or dinar goes.</p>
+        <div class="app-features">
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f1">Category budgets with visual progress</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f2">Monthly overview & spending history</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f3">Smart alerts before you overspend</span></div>
+        </div>
+        <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener" class="app-link" style="color:var(--c-budget)"><span data-i18n="open_budget">Open nota.budget</span> <span>→</span></a>
+        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
+          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+          <rect x="20" y="24" width="60" height="14" rx="7" fill="var(--c-budget)" opacity=".5"/>
+          <rect x="20" y="46" width="120" height="3" rx="2" fill="var(--border)"/>
+          <rect x="20" y="46" width="74" height="3" rx="2" fill="var(--c-budget)" opacity=".6"/>
+          <rect x="20" y="58" width="120" height="3" rx="2" fill="var(--border)"/>
+          <rect x="20" y="58" width="42" height="3" rx="2" fill="var(--c-debts)" opacity=".6"/>
+          <rect x="20" y="70" width="120" height="3" rx="2" fill="var(--border)"/>
+          <rect x="20" y="70" width="96" height="3" rx="2" fill="var(--c-list)" opacity=".5"/>
+          <rect x="20" y="94" width="40" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="20" y="108" width="120" height="28" rx="8" fill="var(--border)" opacity=".5"/>
+        </svg>
+      </div>
+
+      <!-- nota.debts -->
+      <div class="app-card app-card--debts">
+        <div class="app-card-header">
+          <div class="app-icon" style="background:var(--c-debts-dim);border:1.5px solid color-mix(in srgb,var(--c-debts) 25%,transparent)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><line x1="12" y1="1" x2="12" y2="23" stroke="var(--c-debts)" stroke-width="2.2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="var(--c-debts)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="app-tag" style="background:var(--c-debts-dim);color:var(--c-debts-t)" data-i18n="tag_debts">Debts</span>
+        </div>
+        <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-debts)">.debts</span></div>
+        <p class="app-desc" data-i18n="debts_desc">Track what you owe and what's owed to you. Never forget a loan, always know where you stand. Clean, stress-free debt tracking.</p>
+        <div class="app-features">
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f1">Lent & owed — net balance at a glance</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f2">Overdue alerts & due date tracking</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f3">Partial payments & full history</span></div>
+        </div>
+        <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-debts)"><span data-i18n="open_debts">Open nota.debts</span> <span>→</span></a>
+        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
+          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+          <rect x="16" y="24" width="128" height="36" rx="10" fill="var(--border)" opacity=".5"/>
+          <rect x="28" y="32" width="24" height="20" rx="6" fill="var(--c-debts)" opacity=".4"/>
+          <rect x="60" y="35" width="48" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="60" y="45" width="28" height="4" rx="2" fill="var(--border)"/>
+          <rect x="108" y="34" width="24" height="8" rx="4" fill="var(--c-debts)" opacity=".5"/>
+          <rect x="16" y="68" width="128" height="36" rx="10" fill="var(--border)" opacity=".5"/>
+          <rect x="28" y="76" width="24" height="20" rx="6" fill="var(--c-lista,var(--c-list))" opacity=".4"/>
+          <rect x="60" y="79" width="48" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="60" y="89" width="28" height="4" rx="2" fill="var(--border)"/>
+          <rect x="108" y="78" width="24" height="8" rx="4" fill="var(--c-nota)" opacity=".5"/>
+          <rect x="16" y="128" width="128" height="28" rx="10" fill="var(--surface)"/>
+          <rect x="28" y="136" width="40" height="6" rx="3" fill="var(--border2)"/>
+          <rect x="100" y="135" width="32" height="8" rx="4" fill="var(--c-debts)" opacity=".7"/>
+        </svg>
+      </div>
+
+      <!-- nota.learn -->
+      <div class="app-card app-card--learn" style="grid-column:1/-1">
+        <div class="app-card-header">
+          <div class="app-icon" style="background:var(--c-learn-dim);border:1.5px solid color-mix(in srgb,var(--c-learn) 25%,transparent)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--c-learn)" stroke-width="2.2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="var(--c-learn)" stroke-width="2" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="var(--c-learn)" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="app-tag" style="background:var(--c-learn-dim);color:var(--c-learn-t)" data-i18n="tag_learn">Learning</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center">
+          <div>
+            <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-learn)">.learn</span></div>
+            <p class="app-desc" data-i18n="learn_desc">Your personal learning journal. Log courses, track hours, build streaks — and watch yourself grow every single day.</p>
+            <div class="app-features">
+              <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f1">Courses & skills with visual progress bars</span></div>
+              <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f2">Daily log & streak tracking 🔥</span></div>
+              <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f3">Time tracking — hours per week & month</span></div>
+            </div>
+            <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-learn);margin-top:20px;display:inline-flex"><span data-i18n="open_learn">Open nota.learn</span> <span>→</span></a>
+          </div>
+          <!-- learn mock -->
+          <div style="position:relative;opacity:.9">
+            <svg width="100%" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="320" height="200" rx="16" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
+              <!-- header -->
+              <rect x="16" y="16" width="120" height="10" rx="5" fill="var(--c-learn)" opacity=".7"/>
+              <rect x="240" y="14" width="64" height="14" rx="7" fill="var(--c-learn-dim)" stroke="var(--c-learn)" stroke-width="1" opacity=".8"/>
+              <text x="272" y="24" font-size="8" fill="var(--c-learn)" text-anchor="middle" font-family="sans-serif">🔥 12 streak</text>
+              <!-- course 1 -->
+              <rect x="16" y="40" width="288" height="42" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+              <rect x="28" y="52" width="80" height="7" rx="3.5" fill="var(--text2)" opacity=".6"/>
+              <rect x="28" y="64" width="220" height="4" rx="2" fill="var(--border2)"/>
+              <rect x="28" y="64" width="158" height="4" rx="2" fill="var(--c-learn)" opacity=".8"/>
+              <text x="260" y="69" font-size="7" fill="var(--c-learn)" font-family="sans-serif">72%</text>
+              <!-- course 2 -->
+              <rect x="16" y="90" width="288" height="42" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+              <rect x="28" y="102" width="70" height="7" rx="3.5" fill="var(--text2)" opacity=".6"/>
+              <rect x="28" y="114" width="220" height="4" rx="2" fill="var(--border2)"/>
+              <rect x="28" y="114" width="99" height="4" rx="2" fill="var(--c-list)" opacity=".8"/>
+              <text x="260" y="119" font-size="7" fill="var(--c-list)" font-family="sans-serif">45%</text>
+              <!-- course 3 -->
+              <rect x="16" y="140" width="288" height="42" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+              <rect x="28" y="152" width="110" height="7" rx="3.5" fill="var(--text2)" opacity=".6"/>
+              <rect x="28" y="164" width="220" height="4" rx="2" fill="var(--border2)"/>
+              <rect x="28" y="164" width="198" height="4" rx="2" fill="var(--c-nota)" opacity=".8"/>
+              <text x="260" y="169" font-size="7" fill="var(--c-nota)" font-family="sans-serif">90%</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOTA -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="section-tag reveal" data-i18n="why_tag">Why nota</div>
+    <div class="section-title reveal reveal-delay-1" data-i18n="why_title">Built different.</div>
+    <div class="why-grid">
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--c-nota)" stroke-width="2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="var(--c-nota)" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <h3 data-i18n="why1_h">One design language</h3>
+        <p data-i18n="why1_p">Every app shares the same visual DNA — Syne, DM Sans, dark-first design, smooth animations. Moving between them feels natural, not jarring.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="var(--c-list)" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3 data-i18n="why2_h">Privacy by default</h3>
+        <p data-i18n="why2_p">Your data lives in your account. No ads, no data selling, no analytics tracking you around the web. What you write stays yours.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--c-budget)" stroke-width="2"/><path d="M12 6v6l4 2" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3 data-i18n="why3_h">Fast by design</h3>
+        <p data-i18n="why3_p">No bloat, no loading screens, no unnecessary features. Every interaction is instant. Optimized to stay out of your way.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0" stroke="var(--c-debts)" stroke-width="2"/><path d="M3.6 9h16.8M3.6 15h16.8" stroke="var(--c-debts)" stroke-width="2"/><path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" stroke="var(--c-debts)" stroke-width="2"/></svg></div>
+        <h3 data-i18n="why4_h">Multilingual</h3>
+        <p data-i18n="why4_p">All apps support English, Arabic, French, and Russian — with full RTL support for Arabic. Built for the world from day one.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 data-i18n="why5_h">Light & dark mode</h3>
+        <p data-i18n="why5_p">Every app ships with a beautiful light and dark theme, carefully crafted for each color palette. Your eyes, your choice.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 data-i18n="why6_h">Cloud-synced</h3>
+        <p data-i18n="why6_p">Powered by Supabase, everything syncs in real time across all your devices. Start on your phone, continue on your laptop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE / LIVE PREVIEWS -->
+<section class="showcase" id="showcase">
+  <div class="container">
+    <div class="section-tag reveal" data-i18n="showcase_tag">In Action</div>
+    <div class="section-title reveal reveal-delay-1" data-i18n="showcase_title">See each app live.</div>
+    <div class="showcase-tabs">
+      <button class="stab active" data-app="nota" data-lang-tab="nota" style="--ac:var(--c-nota)">nota</button>
+      <button class="stab" data-app="list" data-lang-tab="list" style="--ac:var(--c-list)">nota.list</button>
+      <button class="stab" data-app="budget" data-lang-tab="budget" style="--ac:var(--c-budget)">nota.budget</button>
+      <button class="stab" data-app="debts" data-lang-tab="debts" style="--ac:var(--c-debts)">nota.debts</button>
+      <button class="stab" data-app="learn" data-lang-tab="learn" style="--ac:var(--c-learn)">nota.learn</button>
+    </div>
+    <div class="showcase-panels">
+
+      <!-- nota panel -->
+      <div class="showcase-panel active" id="panel-nota">
+        <div class="sp-left">
+          <div class="sp-badge" style="background:var(--c-nota-dim);color:var(--c-nota-t)" data-i18n="sc_nota_badge">✦ Smart Notes</div>
+          <h3 class="sp-title" data-i18n-html="sc_nota_title">Capture ideas <span style="color:var(--c-nota)">beautifully.</span></h3>
+          <p class="sp-desc" data-i18n="sc_nota_desc">Color-coded notes organized by category. Rich text, instant search, and a canvas that feels as natural as a notebook — but smarter.</p>
+          <ul class="sp-list">
+            <li style="--dot:var(--c-nota)" data-i18n="sc_nota_l1">Unlimited notes, unlimited categories</li>
+            <li style="--dot:var(--c-nota)" data-i18n="sc_nota_l2">Color picker for every note</li>
+            <li style="--dot:var(--c-nota)" data-i18n="sc_nota_l3">Full-text search in milliseconds</li>
+            <li style="--dot:var(--c-nota)" data-i18n="sc_nota_l4">Sync across phone, tablet, and desktop</li>
+          </ul>
+        </div>
+        <div class="sp-right">
+          <div class="mock-phone" style="--ph-accent:var(--c-nota)">
+            <div class="ph-bar">
+              <span class="ph-dot" style="background:#f75f5f"></span>
+              <span class="ph-dot" style="background:#f7c25f"></span>
+              <span class="ph-dot" style="background:var(--c-nota)"></span>
+            </div>
+            <div class="ph-header">
+              <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">My Notes</span>
+              <span class="ph-count" style="background:var(--c-nota-dim);color:var(--c-nota-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">12 notes</span>
+            </div>
+            <div class="ph-note" style="--nc:var(--c-nota)">
+              <div class="pn-color-bar"></div>
+              <div class="pn-body-wrap">
+                <div class="pn-title-text">Morning thoughts</div>
+                <div class="pn-preview">Today I want to focus on three things that matter most…</div>
+                <div class="pn-meta"><span class="pn-cat">Personal</span><span class="pn-date">Just now</span></div>
+              </div>
+            </div>
+            <div class="ph-note" style="--nc:#f7d08e">
+              <div class="pn-color-bar"></div>
+              <div class="pn-body-wrap">
+                <div class="pn-title-text">Project ideas</div>
+                <div class="pn-preview">Build something minimal with great UX…</div>
+                <div class="pn-meta"><span class="pn-cat">Work</span><span class="pn-date">2h ago</span></div>
+              </div>
+            </div>
+            <div class="ph-note" style="--nc:#8eb8f7">
+              <div class="pn-color-bar"></div>
+              <div class="pn-body-wrap">
+                <div class="pn-title-text">Reading list</div>
+                <div class="pn-preview">Books to read this month: Dune, Zero to One…</div>
+                <div class="pn-meta"><span class="pn-cat">Study</span><span class="pn-date">Yesterday</span></div>
+              </div>
+            </div>
+            <div class="ph-fab" style="background:var(--c-nota)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- list panel -->
+      <div class="showcase-panel" id="panel-list">
+        <div class="sp-left">
+          <div class="sp-badge" style="background:var(--c-list-dim);color:var(--c-list-t)" data-i18n="sc_list_badge">✦ Smart Tasks</div>
+          <h3 class="sp-title" data-i18n-html="sc_list_title">Do more. <span style="color:var(--c-list)">Forget nothing.</span></h3>
+          <p class="sp-desc" data-i18n="sc_list_desc">Priority-based to-do lists with project grouping, due dates, and smart progress tracking. Built for people who actually want to finish things.</p>
+          <ul class="sp-list">
+            <li style="--dot:var(--c-list)" data-i18n="sc_list_l1">High / Medium / Low priorities</li>
+            <li style="--dot:var(--c-list)" data-i18n="sc_list_l2">Project & tag organization</li>
+            <li style="--dot:var(--c-list)" data-i18n="sc_list_l3">Daily progress bar</li>
+            <li style="--dot:var(--c-list)" data-i18n="sc_list_l4">Due date reminders</li>
+          </ul>
+        </div>
+        <div class="sp-right">
+          <div class="mock-phone" style="--ph-accent:var(--c-list)">
+            <div class="ph-bar">
+              <span class="ph-dot" style="background:#f75f5f"></span>
+              <span class="ph-dot" style="background:#f7c25f"></span>
+              <span class="ph-dot" style="background:var(--c-list)"></span>
+            </div>
+            <div class="ph-header">
+              <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">Today</span>
+              <span class="ph-count" style="background:var(--c-list-dim);color:var(--c-list-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">3 / 5 done</span>
+            </div>
+            <div class="ph-progress-wrap">
+              <div class="ph-progress-bar" style="--pct:60%;--pc:var(--c-list)"></div>
+            </div>
+            <div class="ph-task done-task">
+              <div class="task-check" style="background:var(--c-list);border-color:var(--c-list)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0c1020" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="task-info"><span class="task-text done-text">Review design mockups</span><span class="task-tag" style="background:var(--c-list-dim);color:var(--c-list-t)">Work · High</span></div>
+            </div>
+            <div class="ph-task">
+              <div class="task-check" style="border-color:var(--c-debts)"></div>
+              <div class="task-info"><span class="task-text">Write weekly report</span><span class="task-tag" style="background:var(--c-debts-dim);color:var(--c-debts-t)">Work · High</span></div>
+            </div>
+            <div class="ph-task">
+              <div class="task-check" style="border-color:var(--c-list)"></div>
+              <div class="task-info"><span class="task-text">Call dentist</span><span class="task-tag" style="background:var(--c-nota-dim);color:var(--c-nota-t)">Personal · Low</span></div>
+            </div>
+            <div class="ph-task done-task">
+              <div class="task-check" style="background:var(--c-list);border-color:var(--c-list)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0c1020" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="task-info"><span class="task-text done-text">Buy groceries</span><span class="task-tag" style="background:var(--c-budget-dim);color:var(--c-budget-t)">Personal · Med</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- budget panel -->
+      <div class="showcase-panel" id="panel-budget">
+        <div class="sp-left">
+          <div class="sp-badge" style="background:var(--c-budget-dim);color:var(--c-budget-t)" data-i18n="sc_budget_badge">✦ Smart Finance</div>
+          <h3 class="sp-title" data-i18n-html="sc_budget_title">Know where your <span style="color:var(--c-budget)">money goes.</span></h3>
+          <p class="sp-desc" data-i18n="sc_budget_desc">Visual budget tracking by category. Set monthly limits, log expenses on the fly, and get alerts before you overspend. Money clarity, finally.</p>
+          <ul class="sp-list">
+            <li style="--dot:var(--c-budget)" data-i18n="sc_budget_l1">Monthly category budgets</li>
+            <li style="--dot:var(--c-budget)" data-i18n="sc_budget_l2">Visual spending progress bars</li>
+            <li style="--dot:var(--c-budget)" data-i18n="sc_budget_l3">Income vs expense overview</li>
+            <li style="--dot:var(--c-budget)" data-i18n="sc_budget_l4">Overspend early warning</li>
+          </ul>
+        </div>
+        <div class="sp-right">
+          <div class="mock-phone" style="--ph-accent:var(--c-budget)">
+            <div class="ph-bar">
+              <span class="ph-dot" style="background:#f75f5f"></span>
+              <span class="ph-dot" style="background:#f7c25f"></span>
+              <span class="ph-dot" style="background:var(--c-budget)"></span>
+            </div>
+            <div class="ph-header">
+              <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">May 2025</span>
+              <span class="ph-count" style="background:var(--c-budget-dim);color:var(--c-budget-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">Budget</span>
+            </div>
+            <div style="text-align:center;padding:10px 0 14px;border-bottom:1px solid var(--border)">
+              <div style="font-size:.62rem;color:var(--text3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Remaining</div>
+              <div style="font-family:var(--font-d);font-weight:800;font-size:1.8rem;color:var(--c-budget);letter-spacing:-.04em">$842.50</div>
+              <div style="font-size:.68rem;color:var(--text2);margin-top:2px">of $2,000 budget</div>
+            </div>
+            <div class="ph-budget-row">
+              <div class="pbr-label"><span class="pbr-dot" style="background:#7ef7b4"></span>Food</div>
+              <div class="pbr-right"><div class="pbr-bar-wrap"><div class="pbr-bar" style="width:72%;background:#7ef7b4"></div></div><span class="pbr-val">$360 / $500</span></div>
+            </div>
+            <div class="ph-budget-row">
+              <div class="pbr-label"><span class="pbr-dot" style="background:var(--c-list)"></span>Transport</div>
+              <div class="pbr-right"><div class="pbr-bar-wrap"><div class="pbr-bar" style="width:35%;background:var(--c-list)"></div></div><span class="pbr-val">$105 / $300</span></div>
+            </div>
+            <div class="ph-budget-row">
+              <div class="pbr-label"><span class="pbr-dot" style="background:var(--c-debts)"></span>Shopping</div>
+              <div class="pbr-right"><div class="pbr-bar-wrap"><div class="pbr-bar" style="width:91%;background:var(--c-debts)"></div></div><span class="pbr-val">$364 / $400</span></div>
+            </div>
+            <div class="ph-budget-row">
+              <div class="pbr-label"><span class="pbr-dot" style="background:var(--c-budget)"></span>Entertainment</div>
+              <div class="pbr-right"><div class="pbr-bar-wrap"><div class="pbr-bar" style="width:48%;background:var(--c-budget)"></div></div><span class="pbr-val">$96 / $200</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- debts panel -->
+      <div class="showcase-panel" id="panel-debts">
+        <div class="sp-left">
+          <div class="sp-badge" style="background:var(--c-debts-dim);color:var(--c-debts-t)" data-i18n="sc_debts_badge">✦ Debt Tracker</div>
+          <h3 class="sp-title" data-i18n-html="sc_debts_title">Know exactly <span style="color:var(--c-debts)">who owes what.</span></h3>
+          <p class="sp-desc" data-i18n="sc_debts_desc">Track loans in both directions — what you owe and what's owed to you. Partial payments, due dates, and a crystal-clear net balance.</p>
+          <ul class="sp-list">
+            <li style="--dot:var(--c-debts)" data-i18n="sc_debts_l1">Lent & owed in one view</li>
+            <li style="--dot:var(--c-debts)" data-i18n="sc_debts_l2">Overdue alerts with red flags</li>
+            <li style="--dot:var(--c-debts)" data-i18n="sc_debts_l3">Partial payment logging</li>
+            <li style="--dot:var(--c-debts)" data-i18n="sc_debts_l4">Net balance at a glance</li>
+          </ul>
+        </div>
+        <div class="sp-right">
+          <div class="mock-phone" style="--ph-accent:var(--c-debts)">
+            <div class="ph-bar">
+              <span class="ph-dot" style="background:#f75f5f"></span>
+              <span class="ph-dot" style="background:#f7c25f"></span>
+              <span class="ph-dot" style="background:var(--c-debts)"></span>
+            </div>
+            <div class="ph-header">
+              <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">My Debts</span>
+              <span class="ph-count" style="background:var(--c-debts-dim);color:var(--c-debts-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">3 active</span>
+            </div>
+            <div class="ph-debt-card" style="--dc:#f78e8e">
+              <div class="pdc-avatar" style="background:#f78e8e">AH</div>
+              <div class="pdc-info"><div class="pdc-name">Ahmed Hassan</div><div class="pdc-note">Car repair loan</div></div>
+              <div class="pdc-right"><div class="pdc-amount" style="color:#f78e8e">−$320</div><div class="pdc-tag" style="background:rgba(247,142,142,.15);color:#f78e8e">Overdue</div></div>
+            </div>
+            <div class="ph-debt-card" style="--dc:var(--c-debts)">
+              <div class="pdc-avatar" style="background:var(--c-debts)">SM</div>
+              <div class="pdc-info"><div class="pdc-name">Sara Mansouri</div><div class="pdc-note">Groceries split</div></div>
+              <div class="pdc-right"><div class="pdc-amount" style="color:var(--c-debts)">+$85</div><div class="pdc-tag" style="background:var(--c-debts-dim);color:var(--c-debts-t)">3 days</div></div>
+            </div>
+            <div class="ph-debt-card" style="--dc:#f7c78e">
+              <div class="pdc-avatar" style="background:#f7c78e">KO</div>
+              <div class="pdc-info"><div class="pdc-name">Karim Ouali</div><div class="pdc-note">Restaurant bill</div></div>
+              <div class="pdc-right"><div class="pdc-amount" style="color:#f7c78e">+$60</div><div class="pdc-tag" style="background:rgba(247,199,142,.15);color:#d4a04a">On track</div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding:10px 12px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)">
+              <span style="font-size:.72rem;color:var(--text2);font-weight:500">Net — you're owed</span>
+              <span style="font-family:var(--font-d);font-weight:800;font-size:.9rem;color:var(--c-debts)">+$145.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- learn panel -->
+      <div class="showcase-panel" id="panel-learn">
+        <div class="sp-left">
+          <div class="sp-badge" style="background:var(--c-learn-dim);color:var(--c-learn-t)" data-i18n="sc_learn_badge">✦ Learning Journal</div>
+          <h3 class="sp-title" data-i18n-html="sc_learn_title">Learn every day. <span style="color:var(--c-learn)">Track every step.</span></h3>
+          <p class="sp-desc" data-i18n="sc_learn_desc">Your personal space to track courses, log sessions, and build a daily learning habit. Progress bars, streaks, and hours — all in one view.</p>
+          <ul class="sp-list">
+            <li style="--dot:var(--c-learn)" data-i18n="sc_learn_l1">Add courses with category & target</li>
+            <li style="--dot:var(--c-learn)" data-i18n="sc_learn_l2">Log sessions and build streaks 🔥</li>
+            <li style="--dot:var(--c-learn)" data-i18n="sc_learn_l3">Weekly & monthly hour totals</li>
+            <li style="--dot:var(--c-learn)" data-i18n="sc_learn_l4">Tech, Language, Design & more</li>
+          </ul>
+        </div>
+        <div class="sp-right">
+          <div class="mock-phone" style="--ph-accent:var(--c-learn)">
+            <div class="ph-bar">
+              <span class="ph-dot" style="background:#f75f5f"></span>
+              <span class="ph-dot" style="background:#f7c25f"></span>
+              <span class="ph-dot" style="background:var(--c-learn)"></span>
+            </div>
+            <div class="ph-header">
+              <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">My Learning</span>
+              <span class="ph-count" style="background:var(--c-learn-dim);color:var(--c-learn-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">🔥 12 streak</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:12px">
+              <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center">
+                <div style="font-family:var(--font-d);font-weight:800;font-size:1.1rem;color:var(--c-learn)">47</div>
+                <div style="font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">Hours</div>
+              </div>
+              <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center">
+                <div style="font-family:var(--font-d);font-weight:800;font-size:1.1rem;color:var(--c-nota)">6</div>
+                <div style="font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">Courses</div>
+              </div>
+              <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center">
+                <div style="font-family:var(--font-d);font-weight:800;font-size:1.1rem;color:var(--c-list)">3</div>
+                <div style="font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">Done</div>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:10px;margin-bottom:6px">
+              <div style="font-family:var(--font-d);font-weight:700;font-size:.78rem;margin-bottom:6px">React Advanced Patterns</div>
+              <div style="height:4px;background:var(--border);border-radius:100px;overflow:hidden"><div style="width:72%;height:100%;background:var(--c-learn);border-radius:100px"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:.6rem;color:var(--text3)">Tech · 8.5h</span><span style="font-size:.6rem;color:var(--c-learn)">72%</span></div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:10px;margin-bottom:6px">
+              <div style="font-family:var(--font-d);font-weight:700;font-size:.78rem;margin-bottom:6px">Spanish B1</div>
+              <div style="height:4px;background:var(--border);border-radius:100px;overflow:hidden"><div style="width:45%;height:100%;background:var(--c-list);border-radius:100px"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:.6rem;color:var(--text3)">Language · 14h</span><span style="font-size:.6rem;color:var(--c-list)">45%</span></div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:10px">
+              <div style="font-family:var(--font-d);font-weight:700;font-size:.78rem;margin-bottom:6px">UI Design Fundamentals</div>
+              <div style="height:4px;background:var(--border);border-radius:100px;overflow:hidden"><div style="width:90%;height:100%;background:var(--c-nota);border-radius:100px"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:.6rem;color:var(--text3)">Design · 6h</span><span style="font-size:.6rem;color:var(--c-nota)">90%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY / TESTIMONIALS -->
+<section class="testimonials" id="community">
+  <div class="container">
+    <div class="section-tag reveal" data-i18n="testi_tag">Community</div>
+    <div class="section-title reveal reveal-delay-1" data-i18n="testi_title">Loved by real users.</div>
+
+    <!-- Reviews grid — populated from Supabase + new submissions -->
+    <div class="testi-grid" id="testiGrid" style="min-height:0">
+      <!-- Empty state shown when no reviews yet -->
+      <div id="testiEmpty" style="grid-column:1/-1;padding:48px;text-align:center;color:var(--text3);font-size:.9rem;display:none">
+        No reviews yet — be the first to share your experience ✦
+      </div>
+    </div>
+
+    <!-- Leave a review form -->
+    <div class="feedback-box reveal reveal-delay-2">
+      <div class="feedback-title">Share your experience ✦</div>
+      <div class="feedback-sub">Used one of the nota apps? Tell the community what you think — your feedback helps others discover the right app.</div>
+
+      <!-- Star rating -->
+      <div class="feedback-stars-row" id="starRow" aria-label="Rating">
+        <span class="fstar" data-v="1">★</span>
+        <span class="fstar" data-v="2">★</span>
+        <span class="fstar" data-v="3">★</span>
+        <span class="fstar" data-v="4">★</span>
+        <span class="fstar" data-v="5">★</span>
+      </div>
+      <input type="hidden" id="ratingVal" value="0">
+
+      <div class="feedback-inputs">
+        <div class="feedback-field">
+          <label>Your name</label>
+          <input id="fbName" type="text" placeholder="e.g. Sara M." maxlength="40">
+        </div>
+        <div class="feedback-field">
+          <label>Which app?</label>
+          <select id="fbApp">
+            <option value="">— pick one —</option>
+            <option value="nota">nota</option>
+            <option value="nota.list">nota.list</option>
+            <option value="nota.budget">nota.budget</option>
+            <option value="nota.debts">nota.debts</option>
+            <option value="nota.learn">nota.learn</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="feedback-field" style="margin-bottom:6px">
+        <label>Your review</label>
+        <textarea class="feedback-textarea" id="fbText" placeholder="What do you love about it? What could be better?" maxlength="300"></textarea>
+        <span style="font-size:.68rem;color:var(--text3);text-align:right;display:block;margin-top:4px" id="fbCount">0 / 300</span>
+      </div>
+
+      <div class="feedback-actions">
+        <span class="feedback-note">Shown publicly on this page · no account needed</span>
+        <button class="feedback-btn" id="fbSubmit" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Post review
+        </button>
+      </div>
+
+      <div class="feedback-success" id="fbSuccess">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Thanks! Your review is now live above.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="compare">
+  <div class="container">
+    <div class="section-tag reveal" data-i18n="compare_tag">At a Glance</div>
+    <div class="section-title reveal reveal-delay-1" data-i18n="compare_title">Which app is for you?</div>
+    <div class="compare-table-wrap reveal reveal-delay-2">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th data-i18n="compare_feature">Feature</th>
+            <th><span style="color:var(--c-nota)">nota</span></th>
+            <th><span style="color:var(--c-list)">.list</span></th>
+            <th><span style="color:var(--c-budget)">.budget</span></th>
+            <th><span style="color:var(--c-debts)">.debts</span></th>
+            <th><span style="color:var(--c-learn)">.learn</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="cf_free">Free forever</td><td class="chk" style="color:var(--c-nota)">✓</td><td class="chk" style="color:var(--c-list)">✓</td><td class="chk" style="color:var(--c-budget)">✓</td><td class="chk" style="color:var(--c-debts)">✓</td><td class="chk" style="color:var(--c-learn)">✓</td></tr>
+          <tr><td data-i18n="cf_sync">Cloud sync</td><td class="chk" style="color:var(--c-nota)">✓</td><td class="chk" style="color:var(--c-list)">✓</td><td class="chk" style="color:var(--c-budget)">✓</td><td class="chk" style="color:var(--c-debts)">✓</td><td class="chk" style="color:var(--c-learn)">✓</td></tr>
+          <tr><td data-i18n="cf_theme">Dark & light mode</td><td class="chk" style="color:var(--c-nota)">✓</td><td class="chk" style="color:var(--c-list)">✓</td><td class="chk" style="color:var(--c-budget)">✓</td><td class="chk" style="color:var(--c-debts)">✓</td><td class="chk" style="color:var(--c-learn)">✓</td></tr>
+          <tr><td data-i18n="cf_lang">Multilingual (4 langs)</td><td class="chk" style="color:var(--c-nota)">✓</td><td class="chk" style="color:var(--c-list)">✓</td><td class="chk" style="color:var(--c-budget)">✓</td><td class="chk" style="color:var(--c-debts)">✓</td><td class="chk" style="color:var(--c-learn)">✓</td></tr>
+          <tr><td data-i18n="cf_color">Color customization</td><td class="chk" style="color:var(--c-nota)">✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td data-i18n="cf_prio">Priority levels</td><td>—</td><td class="chk" style="color:var(--c-list)">✓</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td data-i18n="cf_due">Due date tracking</td><td>—</td><td class="chk" style="color:var(--c-list)">✓</td><td>—</td><td class="chk" style="color:var(--c-debts)">✓</td><td>—</td></tr>
+          <tr><td data-i18n="cf_budgets">Category budgets</td><td>—</td><td>—</td><td class="chk" style="color:var(--c-budget)">✓</td><td>—</td><td>—</td></tr>
+          <tr><td data-i18n="cf_alerts">Spending alerts</td><td>—</td><td>—</td><td class="chk" style="color:var(--c-budget)">✓</td><td>—</td><td>—</td></tr>
+          <tr><td data-i18n="cf_net">Debt net balance</td><td>—</td><td>—</td><td>—</td><td class="chk" style="color:var(--c-debts)">✓</td><td>—</td></tr>
+          <tr><td data-i18n="cf_partial">Partial payments</td><td>—</td><td>—</td><td>—</td><td class="chk" style="color:var(--c-debts)">✓</td><td>—</td></tr>
+          <tr><td data-i18n="cf_streak">Streak tracking</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="chk" style="color:var(--c-learn)">✓</td></tr>
+          <tr><td data-i18n="cf_hours">Hour tracking</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="chk" style="color:var(--c-learn)">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-blob"></div>
+  <div class="cta-inner">
+    <h2 data-i18n="cta_title">Start using nota today.</h2>
+    <p data-i18n="cta_sub">Four apps. Zero cost. Everything you need to stay on top of your life.</p>
+    <a href="#apps" class="btn-primary" style="display:inline-flex">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <span data-i18n="cta_btn">Explore the Family</span>
+    </a>
+    <div class="cta-apps">
+      <a href="https://notasave.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-nota)"></div>nota</a>
+      <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-list)"></div>nota.list</a>
+      <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-budget)"></div>nota.budget</a>
+      <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-debts)"></div>nota.debts</a>
+      <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none;border-color:var(--c-learn);color:var(--c-learn-t)"><div class="cta-chip-dot" style="background:var(--c-learn)"></div>nota.learn</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="9" fill="var(--c-nota)"/><path d="M7 10h18M7 16h14M7 22h16" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span data-i18n="footer_logo">nota family</span>
+    </a>
+    <div class="footer-links">
+      <a href="https://notasave.netlify.app/" target="_blank" rel="noopener">nota</a>
+      <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener">nota.list</a>
+      <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener">nota.budget</a>
+      <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener">nota.debts</a>
+      <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" style="color:var(--c-learn)">nota.learn</a>
+    </div>
+    <div class="footer-copy" data-i18n="footer_copy">© 2025 nota. All apps, one vision.</div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  i18n TRANSLATIONS
+// ═══════════════════════════════════════════════
+const translations = {
+  en: {
+    nav_cta:"Explore Apps",
+    nav_dota:"dota learn",
+    hero_eyebrow:"A unified app family",
+    hero_title:`One name.<br/><span class="wn">Note</span> it. <span class="wl">List</span> it.<br/><span class="wb">Budget</span> it. <span class="wd">Track</span> it. <span class="wle">Learn</span> it.`,
+    hero_sub:"nota is a family of beautifully minimal apps built for your daily life. Same soul, same design language — each one a master of its craft.",
+    hero_cta:"Discover the Family",
+    hero_why:"Why nota? →",
+    banner1:"Powerful apps,<br/>one coherent family",
+    banner2:"Free forever,<br/>no hidden fees",
+    banner3:"Languages — EN, AR,<br/>FR, and RU",
+    banner4:"Notes, tasks, budgets<br/>and debts tracked",
+    apps_tag:"The Family",
+    apps_title:"Four apps. One vision.",
+    tag_notes:"Notes", tag_tasks:"Tasks", tag_finance:"Finance", tag_debts:"Debts", tag_learn:"Learning",
+    nota_desc:"Your minimal, colorful notes space. Capture ideas instantly, organize by category, and customize with colors. Synced across every device.",
+    nota_f1:"Rich text with color themes & categories",
+    nota_f2:"Real-time sync via Supabase",
+    nota_f3:"Light & dark mode, 4 languages",
+    open_nota:"Open nota",
+    list_desc:"Your smart to-do space. Prioritize tasks, organize by project, track progress — and actually get things done. Focused simplicity.",
+    list_f1:"Priority levels — high, medium, low",
+    list_f2:"Projects, tags & progress tracking",
+    list_f3:"Due dates with smart reminders",
+    open_list:"Open nota.list",
+    budget_desc:"Track your spending intelligently. Set monthly budgets, monitor categories, and see where every dirham, dollar, or dinar goes.",
+    budget_f1:"Category budgets with visual progress",
+    budget_f2:"Monthly overview & spending history",
+    budget_f3:"Smart alerts before you overspend",
+    open_budget:"Open nota.budget",
+    debts_desc:"Track what you owe and what's owed to you. Never forget a loan, always know where you stand. Clean, stress-free debt tracking.",
+    debts_f1:"Lent & owed — net balance at a glance",
+    debts_f2:"Overdue alerts & due date tracking",
+    debts_f3:"Partial payments & full history",
+    open_debts:"Open nota.debts",
+    learn_desc:"Your personal learning journal. Log courses, track hours, build streaks — and watch yourself grow every single day.",
+    learn_f1:"Courses & skills with visual progress bars",
+    learn_f2:"Daily log & streak tracking 🔥",
+    learn_f3:"Time tracking — hours per week & month",
+    open_learn:"Open nota.learn",
+    why_tag:"Why nota", why_title:"Built different.",
+    why1_h:"One design language", why1_p:"Every app shares the same visual DNA — Syne, DM Sans, dark-first design, smooth animations. Moving between them feels natural, not jarring.",
+    why2_h:"Privacy by default", why2_p:"Your data lives in your account. No ads, no data selling, no analytics tracking you around the web. What you write stays yours.",
+    why3_h:"Fast by design", why3_p:"No bloat, no loading screens, no unnecessary features. Every interaction is instant. Optimized to stay out of your way.",
+    why4_h:"Multilingual", why4_p:"All apps support English, Arabic, French, and Russian — with full RTL support for Arabic. Built for the world from day one.",
+    why5_h:"Light & dark mode", why5_p:"Every app ships with a beautiful light and dark theme, carefully crafted for each color palette. Your eyes, your choice.",
+    why6_h:"Cloud-synced", why6_p:"Powered by Supabase, everything syncs in real time across all your devices. Start on your phone, continue on your laptop.",
+    showcase_tag:"In Action", showcase_title:"See each app live.",
+    sc_nota_badge:"✦ Smart Notes",
+    sc_nota_title:`Capture ideas <span style="color:var(--c-nota)">beautifully.</span>`,
+    sc_nota_desc:"Color-coded notes organized by category. Rich text, instant search, and a canvas that feels as natural as a notebook — but smarter.",
+    sc_nota_l1:"Unlimited notes, unlimited categories", sc_nota_l2:"Color picker for every note", sc_nota_l3:"Full-text search in milliseconds", sc_nota_l4:"Sync across phone, tablet, and desktop",
+    sc_list_badge:"✦ Smart Tasks",
+    sc_list_title:`Do more. <span style="color:var(--c-list)">Forget nothing.</span>`,
+    sc_list_desc:"Priority-based to-do lists with project grouping, due dates, and smart progress tracking. Built for people who actually want to finish things.",
+    sc_list_l1:"High / Medium / Low priorities", sc_list_l2:"Project & tag organization", sc_list_l3:"Daily progress bar", sc_list_l4:"Due date reminders",
+    sc_budget_badge:"✦ Smart Finance",
+    sc_budget_title:`Know where your <span style="color:var(--c-budget)">money goes.</span>`,
+    sc_budget_desc:"Visual budget tracking by category. Set monthly limits, log expenses on the fly, and get alerts before you overspend. Money clarity, finally.",
+    sc_budget_l1:"Monthly category budgets", sc_budget_l2:"Visual spending progress bars", sc_budget_l3:"Income vs expense overview", sc_budget_l4:"Overspend early warning",
+    sc_debts_badge:"✦ Debt Tracker",
+    sc_debts_title:`Know exactly <span style="color:var(--c-debts)">who owes what.</span>`,
+    sc_debts_desc:"Track loans in both directions — what you owe and what's owed to you. Partial payments, due dates, and a crystal-clear net balance.",
+    sc_debts_l1:"Lent & owed in one view", sc_debts_l2:"Overdue alerts with red flags", sc_debts_l3:"Partial payment logging", sc_debts_l4:"Net balance at a glance",
+    sc_learn_badge:"✦ Learning Journal",
+    sc_learn_title:`Learn every day. <span style="color:var(--c-learn)">Track every step.</span>`,
+    sc_learn_desc:"Your personal space to track courses, log sessions, and build a daily learning habit. Progress bars, streaks, and hours — all in one view.",
+    sc_learn_l1:"Add courses with category & target", sc_learn_l2:"Log sessions and build streaks 🔥", sc_learn_l3:"Weekly & monthly hour totals", sc_learn_l4:"Tech, Language, Design & more",
+    testi_tag:"Community", testi_title:"Loved by real users.",
+    testi1:"\"I've tried dozens of note apps. nota is the first one that doesn't get in the way. The color system is genius — I actually remember where everything is.\"",
+    testi1_role:"Designer · nota user",
+    testi2:"\"nota.list changed how I work. Having priorities front and center means I stop procrastinating on the big things. And the daily progress bar is weirdly motivating.\"",
+    testi2_role:"Engineer · nota.list user",
+    testi3:"\"I finally understand where my money goes every month. nota.budget is simple enough that I actually use it — unlike every finance app I tried before.\"",
+    testi3_role:"Freelancer · nota.budget user",
+    testi4:"\"Lending money to friends used to be awkward because I'd forget the details. nota.debts keeps everything logged so I'm never in an uncomfortable conversation again.\"",
+    testi4_role:"Student · nota.debts user",
+    compare_tag:"At a Glance", compare_title:"Which app is for you?", compare_feature:"Feature",
+    cf_free:"Free forever", cf_sync:"Cloud sync", cf_theme:"Dark & light mode", cf_lang:"Multilingual (4 langs)",
+    cf_color:"Color customization", cf_prio:"Priority levels", cf_due:"Due date tracking",
+    cf_budgets:"Category budgets", cf_alerts:"Spending alerts", cf_net:"Debt net balance", cf_partial:"Partial payments",
+    cf_streak:"Streak tracking", cf_hours:"Hour tracking",
+    eco_tag:"The Ecosystem", eco_title:"Four apps. One account.",
+    eco_desc:"Sign in once and access the entire nota family. A single account connects your notes, tasks, budget, and debts — all living in one place.",
+    eco_hub_sub:"One account",
+    cta_title:"Start using nota today.", cta_sub:"Four apps. Zero cost. Everything you need to stay on top of your life.", cta_btn:"Explore the Family",
+    footer_logo:"nota family", footer_copy:"© 2025 nota. All apps, one vision."
+  },
+
+  ar: {
+    nav_cta:"استكشف التطبيقات",
+    nav_dota:"دوتا تعلّم",
+    hero_eyebrow:"عائلة تطبيقات متكاملة",
+    hero_title:`اسم واحد.<br/><span class="wn">دوّن</span> أفكارك. <span class="wl">نظّم</span> مهامك.<br/><span class="wb">تحكّم</span> في ميزانيتك. <span class="wd">تتبّع</span> ديونك. <span class="wle">تعلّم</span> كل يوم.`,
+    hero_sub:"nota عائلة من التطبيقات البسيطة والأنيقة، صُمِّمت لحياتك اليومية. نفس الروح، نفس لغة التصميم — كل تطبيق متخصص في مجاله.",
+    hero_cta:"اكتشف العائلة",
+    hero_why:"لماذا nota؟ ←",
+    banner1:"تطبيقات قوية،<br/>عائلة واحدة متماسكة",
+    banner2:"مجاني للأبد،<br/>بدون رسوم خفية",
+    banner3:"لغات — عربية، إنجليزية،<br/>فرنسية وروسية",
+    banner4:"ملاحظات، مهام، ميزانيات<br/>وديون تحت السيطرة",
+    apps_tag:"العائلة",
+    apps_title:"أربعة تطبيقات. رؤية واحدة.",
+    tag_notes:"ملاحظات", tag_tasks:"مهام", tag_finance:"مالية", tag_debts:"ديون", tag_learn:"تعلّم",
+    nota_desc:"مساحتك البسيطة والملوّنة للملاحظات. التقط أفكارك فورًا، نظّمها بالفئات، وخصّصها بالألوان. متزامنة على جميع أجهزتك.",
+    nota_f1:"نص غني مع ألوان وفئات مخصصة",
+    nota_f2:"مزامنة فورية عبر Supabase",
+    nota_f3:"وضع فاتح وداكن، 4 لغات",
+    open_nota:"افتح nota",
+    list_desc:"مساحتك الذكية للمهام. رتّب الأولويات، نظّم المشاريع، تتبّع التقدم — وأنجز ما تريد فعلاً. بساطة مركّزة.",
+    list_f1:"مستويات الأولوية — عالية، متوسطة، منخفضة",
+    list_f2:"مشاريع، وسوم ومتابعة التقدم",
+    list_f3:"تواريخ الاستحقاق مع تذكيرات ذكية",
+    open_list:"افتح nota.list",
+    budget_desc:"تتبّع إنفاقك بذكاء. حدد ميزانيات شهرية، راقب الفئات، واعرف أين يذهب كل درهم أو دينار أو دولار.",
+    budget_f1:"ميزانيات تصنيفية مع شريط تقدم مرئي",
+    budget_f2:"نظرة شهرية شاملة وسجل الإنفاق",
+    budget_f3:"تنبيهات ذكية قبل تجاوز الميزانية",
+    open_budget:"افتح nota.budget",
+    debts_desc:"تتبّع ما تدين به وما يُدان لك. لا تنسَ قرضًا أبدًا، واعرف دائمًا أين تقف. تتبع ديون نظيف وخالٍ من التوتر.",
+    debts_f1:"المُقرَض والمستحق — الرصيد الصافي بنظرة واحدة",
+    debts_f2:"تنبيهات التأخر ومتابعة تواريخ الاستحقاق",
+    debts_f3:"المدفوعات الجزئية والتاريخ الكامل",
+    open_debts:"افتح nota.debts",
+    learn_desc:"يوميات تعلّمك الشخصية. سجّل الكورسات، تتبّع الساعات، ابنِ سلسلة إنجازات — وشاهد نفسك تنمو كل يوم.",
+    learn_f1:"كورسات ومهارات مع أشرطة تقدم مرئية",
+    learn_f2:"السجل اليومي ومتابعة سلسلة الإنجاز 🔥",
+    learn_f3:"تتبع الوقت — الساعات أسبوعياً وشهرياً",
+    open_learn:"افتح nota.learn",
+    why_tag:"لماذا nota", why_title:"مختلف بطبيعته.",
+    why1_h:"لغة تصميم واحدة", why1_p:"كل تطبيق يشترك في نفس الهوية البصرية — Syne و DM Sans والتصميم الداكن أولاً والحركات السلسة. الانتقال بينها يبدو طبيعيًا وليس مقطوعًا.",
+    why2_h:"الخصوصية افتراضيًا", why2_p:"بياناتك تعيش في حسابك. لا إعلانات، لا بيع بيانات، لا تتبع تحليلي. ما تكتبه يبقى لك.",
+    why3_h:"سريع بالتصميم", why3_p:"لا إضافات غير ضرورية، لا شاشات تحميل، لا ميزات زائدة. كل تفاعل فوري. مُحسَّن ليبقى بعيدًا عن طريقك.",
+    why4_h:"متعدد اللغات", why4_p:"جميع التطبيقات تدعم العربية والإنجليزية والفرنسية والروسية — مع دعم كامل للكتابة من اليمين لليسار. مبني للعالم منذ اليوم الأول.",
+    why5_h:"وضع فاتح وداكن", why5_p:"كل تطبيق يأتي بثيم فاتح وداكن جميل، مصمم بعناية لكل لوحة ألوان. عيناك، اختيارك.",
+    why6_h:"متزامن سحابيًا", why6_p:"مدعوم بـ Supabase، كل شيء يتزامن في الوقت الفعلي عبر جميع أجهزتك. ابدأ من هاتفك، وأكمل من حاسوبك.",
+    showcase_tag:"في العمل", showcase_title:"شاهد كل تطبيق مباشرة.",
+    sc_nota_badge:"✦ ملاحظات ذكية",
+    sc_nota_title:`التقط أفكارك <span style="color:var(--c-nota)">بجمال.</span>`,
+    sc_nota_desc:"ملاحظات مرتبة بالألوان حسب الفئة. نص غني، بحث فوري، ولوحة تبدو طبيعية كدفتر ملاحظات — لكنها أذكى.",
+    sc_nota_l1:"ملاحظات وفئات غير محدودة", sc_nota_l2:"منتقي ألوان لكل ملاحظة", sc_nota_l3:"بحث نصي كامل في ميلي ثانية", sc_nota_l4:"مزامنة عبر الهاتف والجهاز اللوحي وسطح المكتب",
+    sc_list_badge:"✦ مهام ذكية",
+    sc_list_title:`أنجز أكثر. <span style="color:var(--c-list)">لا تنسَ شيئًا.</span>`,
+    sc_list_desc:"قوائم مهام مبنية على الأولويات مع تجميع المشاريع وتواريخ الاستحقاق ومتابعة التقدم الذكية. مبنية لمن يريد إنجاز الأمور فعلاً.",
+    sc_list_l1:"أولويات: عالية / متوسطة / منخفضة", sc_list_l2:"تنظيم المشاريع والوسوم", sc_list_l3:"شريط التقدم اليومي", sc_list_l4:"تذكيرات تواريخ الاستحقاق",
+    sc_budget_badge:"✦ مالية ذكية",
+    sc_budget_title:`اعرف أين يذهب <span style="color:var(--c-budget)">مالك.</span>`,
+    sc_budget_desc:"تتبع الميزانية بصريًا حسب الفئة. حدد حدودًا شهرية، سجّل النفقات أثناء التنقل، واحصل على تنبيهات قبل الإفراط في الإنفاق.",
+    sc_budget_l1:"ميزانيات الفئات الشهرية", sc_budget_l2:"أشرطة تقدم الإنفاق المرئية", sc_budget_l3:"نظرة عامة على الدخل مقابل المصروف", sc_budget_l4:"تحذير مبكر من تجاوز الميزانية",
+    sc_debts_badge:"✦ متتبع الديون",
+    sc_debts_title:`اعرف بالضبط <span style="color:var(--c-debts)">من يدين لمن.</span>`,
+    sc_debts_desc:"تتبع القروض في الاتجاهين — ما تدين به وما يُدان لك. مدفوعات جزئية، تواريخ استحقاق، ورصيد صافٍ واضح كالزجاج.",
+    sc_debts_l1:"المُقرَض والمستحق في عرض واحد", sc_debts_l2:"تنبيهات التأخر بعلامات حمراء", sc_debts_l3:"تسجيل المدفوعات الجزئية", sc_debts_l4:"الرصيد الصافي بنظرة واحدة",
+    sc_learn_badge:"✦ يوميات التعلم",
+    sc_learn_title:`تعلّم كل يوم. <span style="color:var(--c-learn)">تتبّع كل خطوة.</span>`,
+    sc_learn_desc:"مساحتك الشخصية لتتبع الكورسات وتسجيل الجلسات وبناء عادة تعلّم يومية. أشرطة التقدم والسلاسل والساعات — كل شيء في عرض واحد.",
+    sc_learn_l1:"أضف كورسات مع الفئة والهدف", sc_learn_l2:"سجّل الجلسات وابنِ سلسلة إنجاز 🔥", sc_learn_l3:"إجماليات الساعات الأسبوعية والشهرية", sc_learn_l4:"تقنية، لغات، تصميم والمزيد",
+    testi_tag:"المجتمع", testi_title:"محبوب من مستخدمين حقيقيين.",
+    testi1:"\"جرّبت عشرات تطبيقات الملاحظات. nota هو أول تطبيق لا يعيق طريقي. نظام الألوان عبقري — أتذكر فعلاً أين كل شيء.\"",
+    testi1_role:"مصمم · مستخدم nota",
+    testi2:"\"nota.list غيّر طريقة عملي. وجود الأولويات في المقدمة يعني التوقف عن التسويف في الأمور الكبيرة. وشريط التقدم اليومي محفّز بشكل غريب.\"",
+    testi2_role:"مهندس · مستخدم nota.list",
+    testi3:"\"أخيرًا أفهم أين يذهب مالي كل شهر. nota.budget بسيط بما يكفي لأستخدمه فعلاً — خلافًا لكل تطبيق مالي جرّبته من قبل.\"",
+    testi3_role:"مستقل · مستخدم nota.budget",
+    testi4:"\"إقراض الأصدقاء المال كان محرجًا لأنني أنسى التفاصيل. nota.debts يسجّل كل شيء فلا أجد نفسي في محادثات غير مريحة.\"",
+    testi4_role:"طالب · مستخدم nota.debts",
+    compare_tag:"نظرة سريعة", compare_title:"أي تطبيق يناسبك؟", compare_feature:"الميزة",
+    cf_free:"مجاني للأبد", cf_sync:"مزامنة سحابية", cf_theme:"وضع فاتح وداكن", cf_lang:"متعدد اللغات (4 لغات)",
+    cf_color:"تخصيص الألوان", cf_prio:"مستويات الأولوية", cf_due:"متابعة تواريخ الاستحقاق",
+    cf_budgets:"ميزانيات الفئات", cf_alerts:"تنبيهات الإنفاق", cf_net:"الرصيد الصافي للديون", cf_partial:"مدفوعات جزئية",
+    cf_streak:"متابعة سلسلة الإنجاز", cf_hours:"تتبع الساعات",
+    eco_tag:"النظام البيئي", eco_title:"أربعة تطبيقات. حساب واحد.",
+    eco_desc:"سجّل الدخول مرة واحدة وادخل إلى عائلة nota كاملةً. حساب واحد يربط ملاحظاتك ومهامك وميزانيتك وديونك — كل شيء في مكان واحد.",
+    eco_hub_sub:"حساب واحد",
+    cta_title:"ابدأ استخدام nota اليوم.", cta_sub:"أربعة تطبيقات. بدون تكلفة. كل ما تحتاجه للسيطرة على حياتك.", cta_btn:"استكشف العائلة",
+    footer_logo:"عائلة nota", footer_copy:"© 2025 nota. كل التطبيقات، رؤية واحدة."
+  },
+
+  fr: {
+    nav_cta:"Découvrir les apps",
+    nav_dota:"dota learn",
+    hero_eyebrow:"Une famille d'apps unifiée",
+    hero_title:`Un seul nom.<br/><span class="wn">Notez</span>. <span class="wl">Listez</span>.<br/><span class="wb">Budgétisez</span>. <span class="wd">Suivez</span>. <span class="wle">Apprenez</span>.`,
+    hero_sub:"nota est une famille d'applications minimalistes et élégantes conçues pour votre quotidien. Même âme, même langage de design — chacune maîtresse dans son domaine.",
+    hero_cta:"Découvrir la famille",
+    hero_why:"Pourquoi nota ? →",
+    banner1:"Des apps puissantes,<br/>une famille cohérente",
+    banner2:"Gratuit pour toujours,<br/>sans frais cachés",
+    banner3:"Langues — FR, EN,<br/>AR et RU",
+    banner4:"Notes, tâches, budgets<br/>et dettes suivis",
+    apps_tag:"La Famille",
+    apps_title:"Quatre apps. Une vision.",
+    tag_notes:"Notes", tag_tasks:"Tâches", tag_finance:"Finance", tag_debts:"Dettes", tag_learn:"Apprentissage",
+    nota_desc:"Votre espace de notes minimaliste et coloré. Capturez vos idées instantanément, organisez par catégorie et personnalisez avec des couleurs. Synchronisé sur tous vos appareils.",
+    nota_f1:"Texte riche avec thèmes de couleurs et catégories",
+    nota_f2:"Synchronisation en temps réel via Supabase",
+    nota_f3:"Mode clair et sombre, 4 langues",
+    open_nota:"Ouvrir nota",
+    list_desc:"Votre espace todo intelligent. Priorisez les tâches, organisez par projet, suivez la progression — et accomplissez vraiment les choses. Simplicité ciblée.",
+    list_f1:"Niveaux de priorité — haute, moyenne, basse",
+    list_f2:"Projets, étiquettes et suivi de progression",
+    list_f3:"Dates d'échéance avec rappels intelligents",
+    open_list:"Ouvrir nota.list",
+    budget_desc:"Suivez vos dépenses intelligemment. Définissez des budgets mensuels, surveillez les catégories et voyez où va chaque euro ou dirham.",
+    budget_f1:"Budgets par catégorie avec progression visuelle",
+    budget_f2:"Vue mensuelle et historique des dépenses",
+    budget_f3:"Alertes intelligentes avant de dépasser le budget",
+    open_budget:"Ouvrir nota.budget",
+    debts_desc:"Suivez ce que vous devez et ce qu'on vous doit. N'oubliez jamais un prêt, sachez toujours où vous en êtes. Suivi de dettes propre et sans stress.",
+    debts_f1:"Prêté & dû — solde net en un coup d'œil",
+    debts_f2:"Alertes de retard et suivi des échéances",
+    debts_f3:"Paiements partiels et historique complet",
+    open_debts:"Ouvrir nota.debts",
+    learn_desc:"Votre journal d'apprentissage personnel. Enregistrez des cours, suivez les heures, construisez des séries — et regardez-vous progresser chaque jour.",
+    learn_f1:"Cours et compétences avec barres de progression",
+    learn_f2:"Journal quotidien et suivi de série 🔥",
+    learn_f3:"Suivi du temps — heures par semaine et par mois",
+    open_learn:"Ouvrir nota.learn",
+    why_tag:"Pourquoi nota", why_title:"Conçu autrement.",
+    why1_h:"Un langage de design unique", why1_p:"Chaque app partage le même ADN visuel — Syne, DM Sans, design sombre en priorité, animations fluides. Passer de l'une à l'autre semble naturel, pas dépaysant.",
+    why2_h:"Confidentialité par défaut", why2_p:"Vos données vivent dans votre compte. Pas de publicités, pas de vente de données, pas de suivi analytique. Ce que vous écrivez reste à vous.",
+    why3_h:"Rapide par conception", why3_p:"Pas de superflu, pas d'écrans de chargement, pas de fonctionnalités inutiles. Chaque interaction est instantanée. Optimisé pour ne pas vous gêner.",
+    why4_h:"Multilingue", why4_p:"Toutes les apps supportent l'anglais, l'arabe, le français et le russe — avec un support RTL complet pour l'arabe. Conçu pour le monde dès le premier jour.",
+    why5_h:"Mode clair & sombre", why5_p:"Chaque app est livrée avec un thème clair et sombre magnifique, soigneusement conçu pour chaque palette de couleurs. Vos yeux, votre choix.",
+    why6_h:"Synchronisé dans le cloud", why6_p:"Propulsé par Supabase, tout se synchronise en temps réel sur tous vos appareils. Commencez sur votre téléphone, continuez sur votre ordinateur.",
+    showcase_tag:"En action", showcase_title:"Voyez chaque app en direct.",
+    sc_nota_badge:"✦ Notes intelligentes",
+    sc_nota_title:`Capturez vos idées <span style="color:var(--c-nota)">avec élégance.</span>`,
+    sc_nota_desc:"Notes classées par couleur et catégorie. Texte riche, recherche instantanée et un canevas aussi naturel qu'un carnet — mais plus intelligent.",
+    sc_nota_l1:"Notes et catégories illimitées", sc_nota_l2:"Sélecteur de couleur pour chaque note", sc_nota_l3:"Recherche plein texte en millisecondes", sc_nota_l4:"Synchronisation sur téléphone, tablette et ordinateur",
+    sc_list_badge:"✦ Tâches intelligentes",
+    sc_list_title:`Faites plus. <span style="color:var(--c-list)">N'oubliez rien.</span>`,
+    sc_list_desc:"Listes de tâches basées sur les priorités avec regroupement de projets, dates d'échéance et suivi intelligent de la progression.",
+    sc_list_l1:"Priorités : haute / moyenne / basse", sc_list_l2:"Organisation par projets et étiquettes", sc_list_l3:"Barre de progression quotidienne", sc_list_l4:"Rappels de dates d'échéance",
+    sc_budget_badge:"✦ Finance intelligente",
+    sc_budget_title:`Savoir où va <span style="color:var(--c-budget)">votre argent.</span>`,
+    sc_budget_desc:"Suivi visuel du budget par catégorie. Fixez des limites mensuelles, enregistrez les dépenses en déplacement et recevez des alertes avant de dépasser.",
+    sc_budget_l1:"Budgets mensuels par catégorie", sc_budget_l2:"Barres de progression des dépenses", sc_budget_l3:"Aperçu revenus vs dépenses", sc_budget_l4:"Avertissement précoce de dépassement",
+    sc_debts_badge:"✦ Suivi des dettes",
+    sc_debts_title:`Sachez exactement <span style="color:var(--c-debts)">qui doit quoi.</span>`,
+    sc_debts_desc:"Suivez les prêts dans les deux sens — ce que vous devez et ce qu'on vous doit. Paiements partiels, échéances et solde net d'une clarté cristalline.",
+    sc_debts_l1:"Prêté & dû en une vue", sc_debts_l2:"Alertes de retard avec drapeaux rouges", sc_debts_l3:"Enregistrement des paiements partiels", sc_debts_l4:"Solde net en un coup d'œil",
+    sc_learn_badge:"✦ Journal d'apprentissage",
+    sc_learn_title:`Apprenez chaque jour. <span style="color:var(--c-learn)">Suivez chaque étape.</span>`,
+    sc_learn_desc:"Votre espace personnel pour suivre les cours, enregistrer des sessions et construire une habitude d'apprentissage quotidienne. Barres de progression, séries et heures — tout en une vue.",
+    sc_learn_l1:"Ajoutez des cours avec catégorie et objectif", sc_learn_l2:"Enregistrez des sessions et construisez des séries 🔥", sc_learn_l3:"Totaux d'heures hebdomadaires et mensuels", sc_learn_l4:"Tech, Langues, Design et plus",
+    testi_tag:"Communauté", testi_title:"Apprécié par de vrais utilisateurs.",
+    testi1:"\"J'ai essayé des dizaines d'apps de notes. nota est la première qui ne me gêne pas. Le système de couleurs est génial — je me souviens vraiment de l'emplacement de tout.\"",
+    testi1_role:"Designer · utilisateur nota",
+    testi2:"\"nota.list a changé ma façon de travailler. Avoir les priorités au premier plan m'empêche de procrastiner sur les grandes choses. Et la barre de progression est étrangement motivante.\"",
+    testi2_role:"Ingénieur · utilisateur nota.list",
+    testi3:"\"Je comprends enfin où va mon argent chaque mois. nota.budget est assez simple pour que je l'utilise vraiment — contrairement à toutes les apps financières que j'ai essayées avant.\"",
+    testi3_role:"Freelance · utilisateur nota.budget",
+    testi4:"\"Prêter de l'argent aux amis était gênant car j'oubliais les détails. nota.debts garde tout consigné pour que je ne me retrouve plus jamais dans une conversation inconfortable.\"",
+    testi4_role:"Étudiant · utilisateur nota.debts",
+    compare_tag:"En un coup d'œil", compare_title:"Quelle app est faite pour vous ?", compare_feature:"Fonctionnalité",
+    cf_free:"Gratuit pour toujours", cf_sync:"Synchronisation cloud", cf_theme:"Mode clair & sombre", cf_lang:"Multilingue (4 langues)",
+    cf_color:"Personnalisation des couleurs", cf_prio:"Niveaux de priorité", cf_due:"Suivi des échéances",
+    cf_budgets:"Budgets par catégorie", cf_alerts:"Alertes de dépenses", cf_net:"Solde net des dettes", cf_partial:"Paiements partiels",
+    cf_streak:"Suivi de série", cf_hours:"Suivi des heures",
+    eco_tag:"L'Écosystème", eco_title:"Quatre apps. Un seul compte.",
+    eco_desc:"Connectez-vous une fois et accédez à toute la famille nota. Un seul compte relie vos notes, tâches, budget et dettes — tout au même endroit.",
+    eco_hub_sub:"Un seul compte",
+    cta_title:"Commencez à utiliser nota aujourd'hui.", cta_sub:"Quatre apps. Zéro coût. Tout ce dont vous avez besoin pour maîtriser votre vie.", cta_btn:"Explorer la famille",
+    footer_logo:"famille nota", footer_copy:"© 2025 nota. Toutes les apps, une vision."
+  },
+
+  ru: {
+    nav_cta:"Смотреть приложения",
+    nav_dota:"dota learn",
+    hero_eyebrow:"Единое семейство приложений",
+    hero_title:`Одно название.<br/><span class="wn">Записывай</span>. <span class="wl">Планируй</span>.<br/><span class="wb">Бюджетируй</span>. <span class="wd">Отслеживай</span>. <span class="wle">Учись</span>.`,
+    hero_sub:"nota — семейство минималистичных приложений для вашей повседневной жизни. Одна душа, один язык дизайна — каждое мастер своего дела.",
+    hero_cta:"Открыть семейство",
+    hero_why:"Почему nota? →",
+    banner1:"Мощные приложения,<br/>единое семейство",
+    banner2:"Бесплатно навсегда,<br/>без скрытых платежей",
+    banner3:"Языки — RU, EN,<br/>AR и FR",
+    banner4:"Заметки, задачи, бюджеты<br/>и долги под контролем",
+    apps_tag:"Семейство",
+    apps_title:"Четыре приложения. Одна идея.",
+    tag_notes:"Заметки", tag_tasks:"Задачи", tag_finance:"Финансы", tag_debts:"Долги", tag_learn:"Обучение",
+    nota_desc:"Ваше минималистичное и красочное пространство для заметок. Фиксируйте идеи мгновенно, организуйте по категориям, настраивайте цвета. Синхронизация на всех устройствах.",
+    nota_f1:"Форматированный текст с цветовыми темами и категориями",
+    nota_f2:"Синхронизация в реальном времени через Supabase",
+    nota_f3:"Светлый и тёмный режим, 4 языка",
+    open_nota:"Открыть nota",
+    list_desc:"Ваше умное пространство для задач. Расставляйте приоритеты, организуйте проекты, отслеживайте прогресс — и реально доводите дела до конца.",
+    list_f1:"Уровни приоритета — высокий, средний, низкий",
+    list_f2:"Проекты, теги и отслеживание прогресса",
+    list_f3:"Сроки выполнения с умными напоминаниями",
+    open_list:"Открыть nota.list",
+    budget_desc:"Умное отслеживание расходов. Устанавливайте месячные бюджеты, следите за категориями и видьте, куда уходит каждый рубль или доллар.",
+    budget_f1:"Бюджеты по категориям с визуальным прогрессом",
+    budget_f2:"Месячный обзор и история расходов",
+    budget_f3:"Умные оповещения до превышения бюджета",
+    open_budget:"Открыть nota.budget",
+    debts_desc:"Отслеживайте что вы должны и что должны вам. Никогда не забудьте о займе, всегда знайте своё положение. Чистый учёт долгов без стресса.",
+    debts_f1:"Выдано и получено — чистый баланс с первого взгляда",
+    debts_f2:"Оповещения о просрочке и отслеживание сроков",
+    debts_f3:"Частичные платежи и полная история",
+    open_debts:"Открыть nota.debts",
+    learn_desc:"Ваш личный дневник обучения. Записывайте курсы, отслеживайте часы, стройте серии — и наблюдайте свой рост каждый день.",
+    learn_f1:"Курсы и навыки с визуальными шкалами прогресса",
+    learn_f2:"Ежедневный журнал и отслеживание серий 🔥",
+    learn_f3:"Учёт времени — часы в неделю и в месяц",
+    open_learn:"Открыть nota.learn",
+    why_tag:"Почему nota", why_title:"Создан иначе.",
+    why1_h:"Единый язык дизайна", why1_p:"Каждое приложение разделяет одну визуальную ДНК — Syne, DM Sans, тёмный дизайн в приоритете, плавные анимации. Переключение между ними ощущается естественным.",
+    why2_h:"Конфиденциальность по умолчанию", why2_p:"Ваши данные живут в вашем аккаунте. Никакой рекламы, никакой продажи данных, никакой аналитики слежки. То, что вы пишете — остаётся вашим.",
+    why3_h:"Быстрый по дизайну", why3_p:"Никакого балласта, никаких экранов загрузки, никаких лишних функций. Каждое взаимодействие мгновенно. Оптимизировано, чтобы не мешать вам.",
+    why4_h:"Многоязычный", why4_p:"Все приложения поддерживают английский, арабский, французский и русский — с полной поддержкой RTL для арабского. Создано для мира с первого дня.",
+    why5_h:"Светлый и тёмный режим", why5_p:"Каждое приложение поставляется с красивой светлой и тёмной темой, тщательно созданной для каждой цветовой палитры. Ваши глаза, ваш выбор.",
+    why6_h:"Синхронизация в облаке", why6_p:"На базе Supabase всё синхронизируется в реальном времени на всех ваших устройствах. Начните на телефоне, продолжите на ноутбуке.",
+    showcase_tag:"В действии", showcase_title:"Смотрите каждое приложение вживую.",
+    sc_nota_badge:"✦ Умные заметки",
+    sc_nota_title:`Фиксируйте идеи <span style="color:var(--c-nota)">красиво.</span>`,
+    sc_nota_desc:"Заметки, упорядоченные по цвету и категории. Форматированный текст, мгновенный поиск и холст, ощущаемый как блокнот — но умнее.",
+    sc_nota_l1:"Неограниченные заметки и категории", sc_nota_l2:"Выбор цвета для каждой заметки", sc_nota_l3:"Полнотекстовый поиск за миллисекунды", sc_nota_l4:"Синхронизация на телефоне, планшете и ПК",
+    sc_list_badge:"✦ Умные задачи",
+    sc_list_title:`Делайте больше. <span style="color:var(--c-list)">Не забывайте ничего.</span>`,
+    sc_list_desc:"Списки задач на основе приоритетов с группировкой проектов, сроками и умным отслеживанием прогресса. Для тех, кто хочет реально завершать дела.",
+    sc_list_l1:"Приоритеты: высокий / средний / низкий", sc_list_l2:"Организация проектов и тегов", sc_list_l3:"Ежедневная шкала прогресса", sc_list_l4:"Напоминания о сроках",
+    sc_budget_badge:"✦ Умные финансы",
+    sc_budget_title:`Знайте, куда уходят <span style="color:var(--c-budget)">ваши деньги.</span>`,
+    sc_budget_desc:"Визуальное отслеживание бюджета по категориям. Устанавливайте месячные лимиты, записывайте расходы на ходу и получайте оповещения до превышения.",
+    sc_budget_l1:"Месячные бюджеты по категориям", sc_budget_l2:"Визуальные шкалы расходов", sc_budget_l3:"Обзор доходов и расходов", sc_budget_l4:"Раннее предупреждение о перерасходе",
+    sc_debts_badge:"✦ Учёт долгов",
+    sc_debts_title:`Знайте точно <span style="color:var(--c-debts)">кто кому должен.</span>`,
+    sc_debts_desc:"Отслеживайте займы в обоих направлениях — что вы должны и что должны вам. Частичные платежи, сроки и кристально чёткий чистый баланс.",
+    sc_debts_l1:"Выдано и получено в одном виде", sc_debts_l2:"Оповещения о просрочке с красными метками", sc_debts_l3:"Фиксация частичных платежей", sc_debts_l4:"Чистый баланс с первого взгляда",
+    sc_learn_badge:"✦ Дневник обучения",
+    sc_learn_title:`Учись каждый день. <span style="color:var(--c-learn)">Отслеживай каждый шаг.</span>`,
+    sc_learn_desc:"Ваше личное пространство для отслеживания курсов, записи сессий и формирования ежедневной привычки учиться. Шкалы прогресса, серии и часы — всё в одном виде.",
+    sc_learn_l1:"Добавляйте курсы с категорией и целью", sc_learn_l2:"Записывайте сессии и стройте серии 🔥", sc_learn_l3:"Еженедельные и ежемесячные итоги часов", sc_learn_l4:"Технологии, языки, дизайн и многое другое",
+    testi_tag:"Сообщество", testi_title:"Любимое реальными пользователями.",
+    testi1:"«Я пробовал десятки приложений для заметок. nota — первое, которое не мешает. Система цветов гениальна — я реально помню, где что находится.»",
+    testi1_role:"Дизайнер · пользователь nota",
+    testi2:"«nota.list изменил мой рабочий процесс. Приоритеты на первом плане означают меньше прокрастинации. А ежедневная шкала прогресса странно мотивирует.»",
+    testi2_role:"Инженер · пользователь nota.list",
+    testi3:"«Наконец-то понимаю, куда уходят деньги каждый месяц. nota.budget достаточно прост, чтобы я реально им пользовался — в отличие от всех финансовых приложений до него.»",
+    testi3_role:"Фрилансер · пользователь nota.budget",
+    testi4:"«Давать деньги в долг друзьям было неловко, потому что я забывал детали. nota.debts фиксирует всё, и я больше не попадаю в неудобные разговоры.»",
+    testi4_role:"Студент · пользователь nota.debts",
+    compare_tag:"Взгляд в деталях", compare_title:"Какое приложение для вас?", compare_feature:"Функция",
+    cf_free:"Бесплатно навсегда", cf_sync:"Облачная синхронизация", cf_theme:"Тёмный и светлый режим", cf_lang:"Многоязычный (4 языка)",
+    cf_color:"Настройка цветов", cf_prio:"Уровни приоритета", cf_due:"Отслеживание сроков",
+    cf_budgets:"Бюджеты по категориям", cf_alerts:"Оповещения о расходах", cf_net:"Чистый баланс долгов", cf_partial:"Частичные платежи",
+    cf_streak:"Отслеживание серий", cf_hours:"Учёт часов",
+    eco_tag:"Экосистема", eco_title:"Четыре приложения. Один аккаунт.",
+    eco_desc:"Войдите один раз и получите доступ ко всему семейству nota. Один аккаунт связывает ваши заметки, задачи, бюджет и долги — всё в одном месте.",
+    eco_hub_sub:"Один аккаунт",
+    cta_title:"Начните использовать nota сегодня.", cta_sub:"Четыре приложения. Ноль затрат. Всё, что нужно, чтобы держать жизнь под контролем.", cta_btn:"Открыть семейство",
+    footer_logo:"семейство nota", footer_copy:"© 2025 nota. Все приложения, одна идея."
+  }
+};
+
+// ═══════════════════════════════════════════════
+//  i18n ENGINE
+// ═══════════════════════════════════════════════
+let currentLang = 'en';
+
+const pageTitles = {
+  en: "nota — A family of apps for your daily life",
+  ar: "nota — عائلة تطبيقات لحياتك اليومية",
+  fr: "nota — Une famille d'apps pour votre quotidien",
+  ru: "nota — Семейство приложений для вашей жизни"
+};
+
+const tabLabels = {
+  en: { nota:"nota", list:"nota.list", budget:"nota.budget", debts:"nota.debts" },
+  ar: { nota:"nota", list:"nota.list", budget:"nota.budget", debts:"nota.debts" },
+  fr: { nota:"nota", list:"nota.list", budget:"nota.budget", debts:"nota.debts" },
+  ru: { nota:"nota", list:"nota.list", budget:"nota.budget", debts:"nota.debts" }
+};
+
+function applyLang(lang) {
+  const t = translations[lang];
+  if (!t) return;
+  currentLang = lang;
+
+  // Set html lang, dir and page title
+  const isRTL = lang === 'ar';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+  document.title = pageTitles[lang] || pageTitles.en;
+
+  // Translate text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) {
+      // Use innerHTML for keys that may contain <br/>
+      if (['banner1','banner2','banner3','banner4'].includes(key)) {
+        el.innerHTML = t[key];
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+
+  // Translate innerHTML (allows spans with color classes)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.dataset.i18nHtml;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // Update lang buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // Animate transition — brief flash
+  document.body.style.opacity = '0.85';
+  document.body.style.transition = 'opacity 0.15s ease';
+  setTimeout(() => {
+    document.body.style.opacity = '1';
+    document.body.style.transition = 'opacity 0.25s ease';
+  }, 150);
+
+  // Save preference
+  try { localStorage.setItem('nota-lang', lang); } catch(e) {}
+}
+
+// Language switcher clicks
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+// ═══════════════════════════════════════════════
+//  NAV SCROLL
+// ═══════════════════════════════════════════════
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ═══════════════════════════════════════════════
+//  THEME TOGGLE
+// ═══════════════════════════════════════════════
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+});
+
+// ═══════════════════════════════════════════════
+//  SHOWCASE TABS
+// ═══════════════════════════════════════════════
+const tabs = document.querySelectorAll('.stab');
+const panels = document.querySelectorAll('.showcase-panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const app = tab.dataset.app;
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById('panel-' + app);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+// ═══════════════════════════════════════════════
+//  SCROLL ANIMATIONS
+// ═══════════════════════════════════════════════
+const animEls = document.querySelectorAll('.app-card, .banner-item');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(animEls).indexOf(e.target);
+      e.target.style.opacity = '0';
+      e.target.style.transform = 'translateY(24px)';
+      setTimeout(() => {
+        e.target.style.transition = 'opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1)';
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }, 70 * (idx % 4));
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+animEls.forEach(el => obs.observe(el));
+
+// ═══════════════════════════════════════════════
+//  BUDGET BARS ANIMATION
+// ═══════════════════════════════════════════════
+const budgetPanel = document.getElementById('panel-budget');
+const barsObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.pbr-bar').forEach(bar => {
+        const target = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = target; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.5 });
+if (budgetPanel) barsObserver.observe(budgetPanel);
+
+// ═══════════════════════════════════════════════
+//  SMOOTH SCROLL REVEAL
+// ═══════════════════════════════════════════════
+(function initReveal() {
+  const revealEls = document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale');
+  if (!revealEls.length) return;
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+})();
+
+// ═══════════════════════════════════════════════
+//  INIT — restore saved lang or default to 'en'
+// ═══════════════════════════════════════════════
+(function init() {
+  let saved = 'en';
+  try { saved = localStorage.getItem('nota-lang') || 'en'; } catch(e) {}
+  applyLang(saved);
+})();
+
+// ═══════════════════════════════════════════════
+//  COMMUNITY FEEDBACK SYSTEM — Supabase backend
+// ═══════════════════════════════════════════════
+(function initFeedback() {
+
+  // ── 🔧 SUPABASE CONFIG — replace with your project values ──
+  const SUPABASE_URL    = 'https://zftpoqaeetshaaxdplmj.supabase.co';
+  const SUPABASE_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmdHBvcWFlZXRzaGFheGRwbG1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NTM3MjIsImV4cCI6MjA5NDUyOTcyMn0.FXplrtY4BTLdYJlrPMU6e5mpIy3JCYZgFrjz0SdiyBY';
+  const TABLE           = 'reviews';
+  // ────────────────────────────────────────────────────────────
+
+  const API = `${SUPABASE_URL}/rest/v1/${TABLE}`;
+  const HEADERS = {
+    'apikey':        SUPABASE_ANON,
+    'Authorization': `Bearer ${SUPABASE_ANON}`,
+    'Content-Type':  'application/json',
+    'Prefer':        'return=representation'
+  };
+
+  const APP_COLORS = {
+    'nota':        { star: 'var(--c-nota)',   bg: 'var(--c-nota-dim)',   fg: 'var(--c-nota-t)'   },
+    'nota.list':   { star: 'var(--c-list)',   bg: 'var(--c-list-dim)',   fg: 'var(--c-list-t)'   },
+    'nota.budget': { star: 'var(--c-budget)', bg: 'var(--c-budget-dim)', fg: 'var(--c-budget-t)' },
+    'nota.debts':  { star: 'var(--c-debts)',  bg: 'var(--c-debts-dim)',  fg: 'var(--c-debts-t)'  },
+    'nota.learn':  { star: 'var(--c-learn)',  bg: 'var(--c-learn-dim)',  fg: 'var(--c-learn-t)'  },
+  };
+
+  function initials(name) {
+    return name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0,2) || '??';
+  }
+
+  function buildCard(review, prepend) {
+    const col = APP_COLORS[review.app] || APP_COLORS['nota'];
+    const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+    const card = document.createElement('div');
+    card.className = 'testi-card' + (prepend ? ' testi-new' : '');
+    card.innerHTML = `
+      <div class="testi-stars" style="color:${col.star}">${stars}</div>
+      <p class="testi-text">"${review.text}"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:${col.bg};color:${col.fg}">${initials(review.name)}</div>
+        <div>
+          <div class="testi-name">${review.name}</div>
+          <div class="testi-role">${review.app} user</div>
+        </div>
+      </div>`;
+    return card;
+  }
+
+  // ── Load reviews from Supabase ──
+  async function loadReviews() {
+    const grid  = document.getElementById('testiGrid');
+    const empty = document.getElementById('testiEmpty');
+    try {
+      const res  = await fetch(`${API}?select=*&order=created_at.desc&limit=20`, { headers: HEADERS });
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      if (!data.length) { empty.style.display = 'block'; return; }
+      empty.style.display = 'none';
+      data.forEach(r => grid.appendChild(buildCard(r, false)));
+    } catch(e) {
+      console.warn('nota reviews: could not load from Supabase', e);
+      empty.style.display = 'block';
+    }
+  }
+
+  // ── Post review to Supabase ──
+  async function postReview(review) {
+    const res = await fetch(API, {
+      method:  'POST',
+      headers: HEADERS,
+      body:    JSON.stringify({
+        name:   review.name,
+        app:    review.app,
+        text:   review.text,
+        rating: review.rating
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const [saved] = await res.json();
+    return saved;
+  }
+
+  // ── Star rating ──
+  let selectedRating = 0;
+  const stars    = document.querySelectorAll('.fstar');
+  const ratingEl = document.getElementById('ratingVal');
+
+  stars.forEach(star => {
+    star.addEventListener('mouseover', () => {
+      const v = +star.dataset.v;
+      stars.forEach(s => s.classList.toggle('lit', +s.dataset.v <= v));
+    });
+    star.addEventListener('mouseleave', () => {
+      stars.forEach(s => s.classList.toggle('lit', +s.dataset.v <= selectedRating));
+    });
+    star.addEventListener('click', () => {
+      selectedRating = +star.dataset.v;
+      ratingEl.value = selectedRating;
+      stars.forEach(s => s.classList.toggle('lit', +s.dataset.v <= selectedRating));
+      validate();
+    });
+  });
+
+  // ── Inputs & validation ──
+  const fbName    = document.getElementById('fbName');
+  const fbApp     = document.getElementById('fbApp');
+  const fbText    = document.getElementById('fbText');
+  const fbCount   = document.getElementById('fbCount');
+  const fbSubmit  = document.getElementById('fbSubmit');
+  const fbSuccess = document.getElementById('fbSuccess');
+
+  function validate() {
+    fbSubmit.disabled = !(
+      selectedRating > 0 &&
+      fbName.value.trim().length > 1 &&
+      fbApp.value !== '' &&
+      fbText.value.trim().length > 8
+    );
+  }
+
+  fbText.addEventListener('input', () => { fbCount.textContent = `${fbText.value.length} / 300`; validate(); });
+  fbName.addEventListener('input', validate);
+  fbApp.addEventListener('change', validate);
+
+  // ── Submit ──
+  fbSubmit.addEventListener('click', async () => {
+    fbSubmit.disabled = true;
+    fbSubmit.textContent = 'Posting…';
+
+    const review = {
+      name:   fbName.value.trim(),
+      app:    fbApp.value,
+      text:   fbText.value.trim(),
+      rating: selectedRating
+    };
+
+    try {
+      const saved = await postReview(review);
+      // Prepend card
+      const grid  = document.getElementById('testiGrid');
+      const empty = document.getElementById('testiEmpty');
+      const card  = buildCard(saved || review, true);
+      empty.style.display = 'none';
+      grid.insertBefore(card, grid.firstChild);
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Show success banner
+      fbSuccess.classList.add('show');
+      setTimeout(() => fbSuccess.classList.remove('show'), 5000);
+
+      // Reset form
+      fbName.value = ''; fbApp.value = ''; fbText.value = '';
+      fbCount.textContent = '0 / 300';
+      selectedRating = 0; ratingEl.value = 0;
+      stars.forEach(s => s.classList.remove('lit'));
+
+    } catch(e) {
+      console.error('nota reviews: submit failed', e);
+      alert('Could not save your review. Please try again later.');
+      fbSubmit.disabled = false;
+    }
+
+    fbSubmit.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Post review`;
+    validate();
+  });
+
+  // Kick off
+  loadReviews();
+
+})();
+</script>
+</body>
+</html>
