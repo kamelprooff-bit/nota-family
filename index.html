@@ -39,19 +39,74 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 @keyframes revealUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
 @keyframes revealFade{from{opacity:0}to{opacity:1}}
 @keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-48px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(48px)}to{opacity:1;transform:translateX(0)}}
+@keyframes popIn{0%{opacity:0;transform:scale(.6) translateY(20px)}70%{transform:scale(1.06) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes starPop{0%{transform:scale(1)}40%{transform:scale(1.5) rotate(-10deg)}70%{transform:scale(.9) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes ripple{0%{transform:scale(0);opacity:.6}100%{transform:scale(4);opacity:0}}
+@keyframes cardEntrance{0%{opacity:0;transform:translateY(40px) scale(.96) rotateX(8deg)}100%{opacity:1;transform:translateY(0) scale(1) rotateX(0)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 28px 4px var(--glow-color,rgba(169,247,142,.18))}}
+@keyframes typewriter{from{width:0}to{width:100%}}
+@keyframes magnetPop{0%{transform:scale(1)}50%{transform:scale(1.04) translateY(-3px)}100%{transform:scale(1)}}
+@keyframes trailFade{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(2.5)}}
+@keyframes morphBorder{0%,100%{border-radius:16px}33%{border-radius:24px 12px 20px 16px}66%{border-radius:12px 20px 16px 24px}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes waveIn{0%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0 0% 0 0)}}
+@keyframes jelly{0%,100%{transform:scaleX(1) scaleY(1)}30%{transform:scaleX(1.1) scaleY(.92)}60%{transform:scaleX(.95) scaleY(1.05)}}
+@keyframes orbitSpin{from{transform:rotate(0deg) translateX(60px) rotate(0deg)}to{transform:rotate(360deg) translateX(60px) rotate(-360deg)}}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
 /* ── SCROLL REVEAL ── */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-fade{opacity:0;transition:opacity .7s ease}
+.reveal-fade{opacity:0;transition:opacity .8s ease}
 .reveal-fade.visible{opacity:1}
-.reveal-scale{opacity:0;transform:scale(.94);transition:opacity .6s ease,transform .6s cubic-bezier(.34,1.2,.64,1)}
-.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-scale{opacity:0;transform:scale(.9) translateY(20px);transition:opacity .65s ease,transform .65s cubic-bezier(.34,1.3,.64,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1) translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-48px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(48px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-pop{opacity:0;transform:scale(.7) translateY(24px);transition:opacity .5s ease,transform .6s cubic-bezier(.34,1.5,.64,1)}
+.reveal-pop.visible{opacity:1;transform:scale(1) translateY(0)}
 .reveal-delay-1{transition-delay:.08s}
 .reveal-delay-2{transition-delay:.16s}
 .reveal-delay-3{transition-delay:.24s}
 .reveal-delay-4{transition-delay:.32s}
 .reveal-delay-5{transition-delay:.40s}
+.reveal-delay-6{transition-delay:.48s}
+.reveal-delay-7{transition-delay:.56s}
+
+/* ── MAGNETIC HOVER ── */
+.mag-hover{transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+
+/* ── CURSOR GLOW ── */
+.cursor-glow{position:fixed;width:300px;height:300px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(169,247,142,.06) 0%,transparent 70%);transform:translate(-50%,-50%);z-index:9999;transition:opacity .4s ease;mix-blend-mode:screen}
+
+/* ── SHIMMER LOADING ── */
+.shimmer-card{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius);height:160px}
+
+/* ── FLOATING BADGE ── */
+.float-badge{animation:floatY 3s ease-in-out infinite}
+.float-badge:nth-child(2){animation-delay:.8s}
+.float-badge:nth-child(3){animation-delay:1.6s}
+
+/* ── ACTIVE LINK PULSE ── */
+@keyframes linkPulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* ── SCROLLBAR GLOW ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--c-nota),var(--c-list));border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--c-nota-t),var(--c-list-t))}
+
+/* ── CURSOR GLOW ── */
+.cursor-glow{position:fixed;width:320px;height:320px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(169,247,142,.055) 0%,transparent 70%);transform:translate(-50%,-50%);z-index:9998;transition:opacity .4s ease;mix-blend-mode:screen;will-change:left,top}
+
+/* ── CARD 3D TILT (perspective container) ── */
+.app-card,.why-card,.testi-card{transform-style:preserve-3d;will-change:transform}
 
 /* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;backdrop-filter:blur(18px);background:color-mix(in srgb,var(--bg) 85%,transparent);border-bottom:1px solid transparent;transition:border-color var(--t)}
@@ -147,54 +202,225 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 .app-pill:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.2)}
 .app-pill-dot{width:8px;height:8px;border-radius:50%}
 
-/* ── APPS SECTION ── */
-.apps{padding:120px 0}
+/* ══════════════════════════════════════════
+   APPS SECTION — full rebuild
+   ══════════════════════════════════════════ */
+.apps{padding:100px 0}
 .container{max-width:1200px;margin:0 auto;padding:0 2rem}
-.section-tag{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.section-title{font-family:var(--font-d);font-weight:800;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:60px}
+.section-tag{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.section-title{font-family:var(--font-d);font-weight:800;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:48px}
 
-.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.app-card{background:var(--surface);border:1.5px solid var(--border);border-radius:24px;padding:36px;position:relative;overflow:hidden;transition:transform var(--t-spring),box-shadow .38s cubic-bezier(.4,0,.2,1),border-color .3s ease;cursor:pointer}
-.app-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .45s ease}
-.app-card:hover{transform:translateY(-8px);border-color:var(--card-accent)}
+/* ── Grid: 2 cols desktop, 1 col ≤900px ── */
+.apps-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+/* ════════════════════════
+   BASE CARD
+   ════════════════════════ */
+.app-card{
+  position:relative;overflow:hidden;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:22px;
+  padding:24px;
+  cursor:pointer;
+
+  /* 3-col layout: icon | content | mock */
+  display:grid;
+  grid-template-columns:44px 1fr 120px;
+  grid-template-rows:auto auto auto auto;
+  column-gap:16px;
+  row-gap:0;
+  align-items:start;
+
+  transition:
+    transform .4s cubic-bezier(.34,1.1,.64,1),
+    box-shadow .35s ease,
+    border-color .3s ease;
+}
+
+/* colour-flood layer */
+.app-card::before{
+  content:'';position:absolute;inset:0;
+  border-radius:inherit;pointer-events:none;
+  opacity:0;z-index:0;
+  transition:opacity .45s ease;
+}
+.app-card > *{position:relative;z-index:1}
+
+/* hover lift */
+.app-card:hover{transform:translateY(-6px)}
+
+/* ── per-app accent vars ── */
+.app-card--nota  {--ac:var(--c-nota);  --ac-dim:var(--c-nota-dim);  --ac-t:var(--c-nota-t);  --ac-rgb:169,247,142}
+.app-card--list  {--ac:var(--c-list);  --ac-dim:var(--c-list-dim);  --ac-t:var(--c-list-t);  --ac-rgb:142,184,247}
+.app-card--budget{--ac:var(--c-budget);--ac-dim:var(--c-budget-dim);--ac-t:var(--c-budget-t);--ac-rgb:199,142,247}
+.app-card--debts {--ac:var(--c-debts); --ac-dim:var(--c-debts-dim); --ac-t:var(--c-debts-t); --ac-rgb:255,123,95}
+.app-card--learn {--ac:var(--c-learn); --ac-dim:var(--c-learn-dim); --ac-t:var(--c-learn-t); --ac-rgb:247,208,95}
+
+/* colour-flood colour */
+.app-card::before{background:color-mix(in srgb,var(--ac) 10%,transparent)}
 .app-card:hover::before{opacity:1}
 
-/* icon lifts on hover */
-.app-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;transition:transform var(--t-spring)}
-.app-card:hover .app-icon{transform:translateY(-3px) scale(1.08)}
+/* border glow */
+.app-card:hover{border-color:var(--ac);box-shadow:0 20px 56px rgba(var(--ac-rgb),.22),0 0 0 1px rgba(var(--ac-rgb),.12)}
 
-/* app-name color fades in smoothly */
-.app-name{font-family:var(--font-d);font-weight:800;font-size:1.5rem;letter-spacing:-.03em;margin-bottom:8px;position:relative;transition:color .3s ease}
+/* ── ICON  [col 1, rows 1-2] ── */
+.app-icon{
+  grid-column:1;grid-row:1/3;
+  align-self:center;
+  width:44px;height:44px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform .4s cubic-bezier(.34,1.3,.64,1);
+}
+.app-card:hover .app-icon{transform:scale(1.1) rotate(-5deg)}
 
-/* app-feat items slide in slightly */
-.app-feat{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--text2);transition:color .28s ease,transform .32s ease}
-.app-card:hover .app-feat{color:var(--text)}
+/* ── HEADER  [col 2, row 1] ── */
+.app-card-header{
+  grid-column:2;grid-row:1;
+  display:flex;align-items:center;gap:8px;
+  padding-top:1px;margin-bottom:5px;
+}
+.app-name{
+  font-family:var(--font-d);font-weight:800;
+  font-size:1.05rem;letter-spacing:-.03em;line-height:1;
+  color:var(--text);
+  transition:color .28s ease;
+}
+.app-card:hover .app-name{color:var(--ac)}
 
-/* app-link arrow bounce */
-.app-link{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;text-decoration:none;font-family:var(--font-d);transition:gap var(--t-spring),opacity .2s ease;position:relative}
-.app-link:hover{gap:16px}
+.app-tag{
+  flex-shrink:0;
+  font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1);
+}
+.app-card:hover .app-tag{transform:translateY(-2px)}
 
-.app-card--nota{--card-accent:var(--c-nota)}
-.app-card--nota::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-nota-dim),transparent)}
-.app-card--list{--card-accent:var(--c-list)}
-.app-card--list::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-list-dim),transparent)}
-.app-card--budget{--card-accent:var(--c-budget)}
-.app-card--budget::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-budget-dim),transparent)}
-.app-card--debts{--card-accent:var(--c-debts)}
-.app-card--debts::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-debts-dim),transparent)}
-.app-card--learn{--card-accent:var(--c-learn)}
-.app-card--learn::before{background:radial-gradient(ellipse 70% 60% at 90% 10%,var(--c-learn-dim),transparent)}
+/* ── DESCRIPTION  [col 2, row 2] ── */
+.app-desc{
+  grid-column:2;grid-row:2;
+  font-size:.8rem;line-height:1.6;color:var(--text2);
+  margin:0 0 14px;
+  transition:color .28s ease;
+}
+.app-card:hover .app-desc{color:var(--text)}
 
-.app-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;position:relative}
-.app-tag{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;transition:transform var(--t-spring)}
-.app-card:hover .app-tag{transform:translateY(-1px)}
-.app-desc{color:var(--text2);font-size:.9rem;line-height:1.65;max-width:360px;position:relative;margin-bottom:24px}
-.app-features{display:flex;flex-direction:column;gap:8px;position:relative;margin-bottom:28px}
-.app-feat-check{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* ── FEATURES  [col 1-2, row 3] ── */
+.app-features{
+  grid-column:1/3;grid-row:3;
+  display:flex;flex-direction:column;gap:6px;
+  margin-bottom:14px;
+}
+.app-feat{
+  display:flex;align-items:center;gap:9px;
+  font-size:.76rem;color:var(--text2);
+  transition:color .26s ease;
+}
+.app-card:hover .app-feat{color:color-mix(in srgb,var(--ac) 60%,var(--text))}
+.app-feat-check{
+  width:17px;height:17px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
 
-/* mock preview inside cards */
-.card-mock{position:absolute;right:-24px;bottom:-24px;width:200px;opacity:.18;pointer-events:none;transition:opacity .4s ease,transform var(--t-spring)}
-.app-card:hover .card-mock{opacity:.32;transform:translateY(-4px) scale(1.03)}
+/* ── LINK  [col 1-2, row 4] ── */
+.app-link{
+  grid-column:1/3;grid-row:4;
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-d);font-weight:700;font-size:.78rem;
+  text-decoration:none;width:fit-content;
+  transition:gap .3s cubic-bezier(.34,1.4,.64,1),opacity .2s ease;
+}
+.app-link:hover{gap:12px}
+
+/* ── MOCK PREVIEW  [col 3, rows 1-4] ── */
+.card-mock-wrap{
+  grid-column:3;grid-row:1/5;
+  width:120px;
+  align-self:stretch;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.card-mock{
+  width:100%;height:auto;
+  border-radius:12px;
+  opacity:.18;
+  transition:opacity .4s ease,transform .4s cubic-bezier(.34,1.1,.64,1);
+}
+.app-card:hover .card-mock{opacity:.38;transform:translateY(-4px) scale(1.03)}
+
+/* ── LEARN CARD — full width ── */
+.app-card--learn{
+  grid-column:1/-1;
+  grid-template-columns:44px 1fr 300px;
+}
+.app-card--learn .card-mock-wrap{width:100%;max-width:300px}
+
+/* ════════════════════════
+   RESPONSIVE — TABLET ≤900px
+   ════════════════════════ */
+@media(max-width:900px){
+  .apps-grid{grid-template-columns:1fr}
+  .app-card{
+    grid-template-columns:40px 1fr 110px;
+    padding:20px;gap:14px;
+    border-radius:18px;
+  }
+  .app-icon{width:40px;height:40px;border-radius:11px}
+  .card-mock-wrap{width:110px}
+  .app-card--learn{
+    grid-column:1/-1;
+    grid-template-columns:40px 1fr 220px;
+  }
+  .app-card--learn .card-mock-wrap{max-width:220px}
+}
+
+/* ════════════════════════
+   RESPONSIVE — MOBILE ≤600px
+   ════════════════════════ */
+@media(max-width:600px){
+  .apps-grid{grid-template-columns:1fr;gap:12px}
+  .app-card{
+    grid-template-columns:38px 1fr;
+    padding:18px 16px;gap:12px;
+    border-radius:16px;
+  }
+  /* Hide mock on mobile */
+  .card-mock-wrap{display:none}
+  /* icon spans only row 1-2 */
+  .app-icon{grid-column:1;grid-row:1/3;width:38px;height:38px;border-radius:10px}
+  /* header col 2 row 1 */
+  .app-card-header{grid-column:2;grid-row:1}
+  /* desc col 2 row 2 */
+  .app-desc{grid-column:2;grid-row:2;font-size:.78rem}
+  /* features col 1-3 row 3 */
+  .app-features{grid-column:1/3;grid-row:3}
+  /* link col 1-3 row 4 */
+  .app-link{grid-column:1/3;grid-row:4}
+  .app-name{font-size:.98rem}
+  .app-feat{font-size:.73rem}
+  /* learn same as others on mobile */
+  .app-card--learn{
+    grid-column:1/-1;
+    grid-template-columns:38px 1fr;
+  }
+}
+
+/* ════════════════════════
+   RESPONSIVE — SMALL ≤380px
+   ════════════════════════ */
+@media(max-width:380px){
+  .app-card{padding:14px;gap:10px;border-radius:14px}
+  .app-name{font-size:.9rem}
+  .app-desc{font-size:.72rem}
+  .app-feat{font-size:.68rem}
+  .app-tag{font-size:.55rem;padding:2px 7px}
+}
 
 /* ── FEATURES BANNER ── */
 .banner{padding:80px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -206,7 +432,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 
 /* ── WHY NOTA ── */
 .why{padding:120px 0}
-.why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;perspective:1200px}
 .why-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform var(--t-spring),border-color .28s ease,box-shadow .32s ease}
 .why-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.18)}
 .why-icon{width:44px;height:44px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:background .28s ease,transform var(--t-spring)}
@@ -309,41 +535,82 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 .pdc-tag{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:100px}
 
 /* ── TESTIMONIALS / COMMUNITY FEEDBACK ── */
-.testimonials{padding:120px 0}
-.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:48px}
-.testi-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform var(--t-spring),border-color .28s ease,box-shadow .32s ease}
-.testi-card:hover{transform:translateY(-5px);border-color:var(--border2);box-shadow:0 16px 40px rgba(0,0,0,.15)}
-.testi-card--featured{border-color:var(--border2);background:var(--surface2)}
-.testi-stars{font-size:.9rem;margin-bottom:14px;color:var(--c-nota);letter-spacing:2px}
-.testi-text{font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:20px;font-style:italic}
-.testi-author{display:flex;align-items:center;gap:10px}
-.testi-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;font-size:.75rem;flex-shrink:0}
-.testi-name{font-family:var(--font-d);font-weight:700;font-size:.84rem}
-.testi-role{font-size:.7rem;color:var(--text3);margin-top:2px}
+.testimonials{padding:120px 0;overflow:hidden;position:relative}
+.testimonials::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c-nota) 5%,transparent),transparent 70%);pointer-events:none}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:56px;perspective:1200px}
 
-/* ── FEEDBACK FORM ── */
-.feedback-box{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:36px;max-width:680px;margin:0 auto;transition:border-color .3s ease}
-.feedback-box:focus-within{border-color:var(--border2)}
-.feedback-title{font-family:var(--font-d);font-weight:800;font-size:1.1rem;letter-spacing:-.02em;margin-bottom:6px}
-.feedback-sub{font-size:.82rem;color:var(--text2);margin-bottom:24px;line-height:1.55}
-.feedback-stars-row{display:flex;gap:6px;margin-bottom:20px}
-.fstar{font-size:1.6rem;cursor:pointer;color:var(--text3);transition:color .18s ease,transform .18s ease;line-height:1;user-select:none}
-.fstar:hover,.fstar.lit{color:var(--c-nota);transform:scale(1.18)}
-.feedback-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.feedback-field{display:flex;flex-direction:column;gap:6px}
-.feedback-field label{font-size:.72rem;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase}
-.feedback-field input,.feedback-field select,.feedback-textarea{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font-b);font-size:.86rem;outline:none;width:100%;transition:border-color .24s ease}
-.feedback-field input:focus,.feedback-field select:focus,.feedback-textarea:focus{border-color:var(--c-nota)}
-.feedback-field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8070' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-.feedback-textarea{resize:vertical;min-height:100px;line-height:1.6}
-.feedback-actions{display:flex;align-items:center;justify-content:space-between;margin-top:6px;flex-wrap:wrap;gap:12px}
+/* card */
+.testi-card{
+  background:var(--surface);border:1.5px solid var(--border);border-radius:20px;
+  padding:28px;position:relative;overflow:hidden;
+  transition:transform .45s cubic-bezier(.34,1.2,.64,1),border-color .3s ease,box-shadow .38s ease;
+  cursor:default;
+}
+.testi-card::before{content:'';position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 80% 70% at 90% 10%,var(--tcard-glow,rgba(169,247,142,.07)),transparent);transition:opacity .4s ease;border-radius:inherit}
+.testi-card:hover{transform:translateY(-8px) scale(1.01);border-color:var(--tcard-border,var(--border2));box-shadow:0 24px 60px var(--tcard-shadow,rgba(0,0,0,.24))}
+.testi-card:hover::before{opacity:1}
+.testi-card::after{content:'"';position:absolute;top:-8px;right:18px;font-size:6rem;font-family:Georgia,serif;line-height:1;color:var(--tcard-quote,rgba(169,247,142,.06));pointer-events:none;transition:color .3s ease}
+.testi-card:hover::after{color:var(--tcard-quote-hover,rgba(169,247,142,.13))}
+
+/* stars */
+.testi-stars{display:flex;gap:3px;margin-bottom:14px}
+.testi-star-icon{display:inline-block;font-size:1rem;transition:transform .3s cubic-bezier(.34,1.6,.64,1);color:var(--c-nota)}
+.testi-card:hover .testi-star-icon:nth-child(1){transform:scale(1.2) rotate(-5deg)}
+.testi-card:hover .testi-star-icon:nth-child(2){transform:scale(1.25) rotate(3deg);transition-delay:.04s}
+.testi-card:hover .testi-star-icon:nth-child(3){transform:scale(1.2) rotate(-2deg);transition-delay:.08s}
+.testi-card:hover .testi-star-icon:nth-child(4){transform:scale(1.25) rotate(4deg);transition-delay:.12s}
+.testi-card:hover .testi-star-icon:nth-child(5){transform:scale(1.2) rotate(-3deg);transition-delay:.16s}
+
+.testi-text{font-size:.88rem;color:var(--text2);line-height:1.75;margin-bottom:22px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;font-size:.78rem;flex-shrink:0;transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+.testi-card:hover .testi-avatar{transform:scale(1.1) rotate(-3deg)}
+.testi-name{font-family:var(--font-d);font-weight:700;font-size:.86rem}
+.testi-role{font-size:.7rem;color:var(--text3);margin-top:2px}
+.testi-app-badge{position:absolute;top:16px;right:16px;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px;opacity:.8;transition:opacity .2s ease}
+.testi-card:hover .testi-app-badge{opacity:1}
+
+/* skeleton loaders */
+.testi-skeleton{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:28px;overflow:hidden}
+.sk-line{height:11px;border-radius:6px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;margin-bottom:10px}
+.sk-line.short{width:60%}.sk-line.xshort{width:35%}
+.sk-avatar{width:40px;height:40px;border-radius:12px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;flex-shrink:0}
+
+/* ── FEEDBACK FORM — EPIC ── */
+.feedback-wrap{position:relative;max-width:720px;margin:0 auto}
+.feedback-wrap::before{content:'';position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(135deg,var(--c-nota),var(--c-list),var(--c-budget),var(--c-nota));background-size:300% 300%;animation:gradientShift 6s ease infinite;opacity:0;transition:opacity .5s ease;z-index:0}
+.feedback-wrap:focus-within::before{opacity:.3}
+.feedback-box{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:40px;transition:border-color .3s ease,box-shadow .4s ease;position:relative;z-index:1}
+.feedback-box:focus-within{border-color:transparent;box-shadow:0 0 0 1.5px var(--c-nota),0 24px 64px rgba(0,0,0,.28)}
+.feedback-header{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.feedback-icon{width:44px;height:44px;border-radius:13px;background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 30%,transparent);display:flex;align-items:center;justify-content:center;animation:floatY 4s ease-in-out infinite;flex-shrink:0}
+.feedback-title{font-family:var(--font-d);font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+.feedback-sub{font-size:.84rem;color:var(--text2);margin-bottom:28px;line-height:1.6;padding-left:58px}
+.feedback-stars-label{font-size:.72rem;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.feedback-stars-row{display:flex;gap:8px;margin-bottom:24px}
+.fstar{font-size:2rem;cursor:pointer;color:var(--text3);transition:color .2s ease,transform .3s cubic-bezier(.34,1.6,.64,1),filter .2s ease;line-height:1;user-select:none;display:inline-block;filter:drop-shadow(0 0 0px transparent)}
+.fstar:hover,.fstar.lit{color:var(--c-nota);filter:drop-shadow(0 0 8px rgba(169,247,142,.5))}
+.fstar:hover{transform:scale(1.3) rotate(-6deg)}
+.feedback-inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.feedback-field{display:flex;flex-direction:column;gap:7px}
+.feedback-field label{font-size:.72rem;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase}
+.feedback-field input,.feedback-field select,.feedback-textarea{background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;padding:11px 15px;color:var(--text);font-family:var(--font-b);font-size:.88rem;outline:none;width:100%;transition:border-color .24s ease,box-shadow .24s ease,background .24s ease}
+.feedback-field input:focus,.feedback-field select:focus,.feedback-textarea:focus{border-color:var(--c-nota);box-shadow:0 0 0 3px rgba(169,247,142,.1);background:var(--surface)}
+.feedback-field input:hover:not(:focus),.feedback-field select:hover:not(:focus),.feedback-textarea:hover:not(:focus){border-color:var(--border2)}
+.feedback-field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8070' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
+.feedback-textarea{resize:vertical;min-height:110px;line-height:1.65}
+.char-bar-wrap{height:2px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
+.char-bar{height:100%;border-radius:2px;width:0%;transition:width .2s ease,background .3s ease;background:var(--c-nota)}
+.feedback-actions{display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:12px}
 .feedback-note{font-size:.72rem;color:var(--text3)}
-.feedback-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:12px;background:var(--c-nota);color:#1a1a1a;font-family:var(--font-b);font-weight:700;font-size:.88rem;border:none;cursor:pointer;transition:transform var(--t-spring),background .24s ease,box-shadow .28s ease,opacity .2s ease}
-.feedback-btn:hover:not(:disabled){background:var(--c-nota-t);transform:translateY(-2px);box-shadow:0 8px 24px rgba(169,247,142,.3)}
-.feedback-btn:disabled{opacity:.5;cursor:not-allowed}
-.feedback-success{display:none;align-items:center;gap:10px;padding:14px 20px;border-radius:12px;background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 30%,transparent);font-size:.86rem;font-weight:600;color:var(--c-nota-t);margin-top:16px}
-.feedback-success.show{display:flex;animation:fadeUp .4s ease both}
-.testi-new{animation:scaleIn .4s cubic-bezier(.34,1.1,.64,1) both;border-color:color-mix(in srgb,var(--c-nota) 30%,transparent)}
+.feedback-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 30px;border-radius:13px;background:var(--c-nota);color:#1a1a1a;font-family:var(--font-b);font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:transform .4s cubic-bezier(.34,1.4,.64,1),background .24s ease,box-shadow .3s ease,opacity .2s ease;position:relative;overflow:hidden}
+.feedback-btn:hover:not(:disabled){background:var(--c-nota-t);transform:translateY(-3px) scale(1.02);box-shadow:0 12px 36px rgba(169,247,142,.35)}
+.feedback-btn:active:not(:disabled){transform:scale(.97);transition-duration:.1s}
+.feedback-btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.4)}
+.btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);width:60px;height:60px;margin-top:-30px;margin-left:-30px;animation:ripple .55s linear;pointer-events:none}
+.feedback-success{display:none;align-items:center;gap:12px;padding:16px 22px;border-radius:14px;background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 30%,transparent);font-size:.88rem;font-weight:600;color:var(--c-nota-t);margin-top:18px}
+.feedback-success.show{display:flex;animation:popIn .5s cubic-bezier(.34,1.3,.64,1) both}
+.testi-new{animation:cardEntrance .55s cubic-bezier(.22,1,.36,1) both;border-color:color-mix(in srgb,var(--c-nota) 35%,transparent);box-shadow:0 0 32px rgba(169,247,142,.12)}
 
 /* ── COMPARE ── */
 .compare{padding:120px 0;background:var(--bg2);border-top:1px solid var(--border)}
@@ -358,41 +625,9 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 .compare-table tr:hover td{background:var(--surface2)}
 .compare-table .chk{font-size:1rem;font-weight:700}
 
-/* ── COLORED HOVER SHADOWS ── */
-.app-card--nota:hover{
-  box-shadow:0 12px 48px color-mix(in srgb,var(--c-nota) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
-  border-color:var(--c-nota);
-}
-.app-card--nota:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-nota) 18%,transparent),transparent)}
-.app-card--list:hover{
-  box-shadow:0 12px 48px color-mix(in srgb,var(--c-list) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
-  border-color:var(--c-list);
-}
-.app-card--list:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-list) 18%,transparent),transparent)}
-.app-card--budget:hover{
-  box-shadow:0 12px 48px color-mix(in srgb,var(--c-budget) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
-  border-color:var(--c-budget);
-}
-.app-card--budget:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-budget) 18%,transparent),transparent)}
-.app-card--debts:hover{
-  box-shadow:0 12px 48px color-mix(in srgb,var(--c-debts) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
-  border-color:var(--c-debts);
-}
-.app-card--debts:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-debts) 18%,transparent),transparent)}
-.app-card--learn:hover{
-  box-shadow:0 12px 48px color-mix(in srgb,var(--c-learn) 26%,transparent),0 2px 8px rgba(0,0,0,.2);
-  border-color:var(--c-learn);
-}
-.app-card--learn:hover::before{opacity:1;background:radial-gradient(ellipse 85% 75% at 88% 8%,color-mix(in srgb,var(--c-learn) 18%,transparent),transparent)}
-
-/* also color the app-name on hover per card */
-.app-card--nota:hover .app-name{color:var(--c-nota)}
-.app-card--list:hover .app-name{color:var(--c-list)}
-.app-card--budget:hover .app-name{color:var(--c-budget)}
-.app-card--debts:hover .app-name{color:var(--c-debts)}
-.app-card--learn:hover .app-name{color:var(--c-learn)}
-
-/* ── RESPONSIVE — TABLET 900px ── */
+/* ══════════════════════════════════════════
+   RESPONSIVE — TABLET ≤900px
+   ══════════════════════════════════════════ */
 @media(max-width:900px){
   /* NAV */
   .nav-inner{height:56px}
@@ -404,10 +639,6 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
   .hero{padding:80px 1.5rem 60px}
   .hero-title{font-size:clamp(2.4rem,8vw,4rem)}
   .hero-sub{font-size:.95rem}
-
-  /* APPS */
-  .apps-grid{grid-template-columns:1fr}
-  .app-card{padding:28px}
 
   /* BANNER */
   .banner-inner{grid-template-columns:1fr 1fr}
@@ -430,7 +661,9 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
   .compare-table th,.compare-table td{padding:10px 10px}
 }
 
-/* ── RESPONSIVE — MOBILE 600px ── */
+/* ══════════════════════════════════════════
+   RESPONSIVE — MOBILE ≤600px
+   ══════════════════════════════════════════ */
 @media(max-width:600px){
   /* NAV */
   .nav{padding:0 1rem}
@@ -460,11 +693,8 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 
   /* APPS */
   .apps{padding:60px 0}
-  .app-card{padding:22px;border-radius:18px}
-  .app-name{font-size:1.25rem}
-  .app-desc{font-size:.84rem}
-  .container{padding:0 1rem}
   .section-title{font-size:1.6rem;margin-bottom:32px}
+  .container{padding:0 1rem}
 
   /* WHY */
   .why{padding:60px 0}
@@ -492,12 +722,14 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
   .footer-links{flex-wrap:wrap;justify-content:center;gap:12px}
   .footer-logo{justify-content:center}
 
-  /* RTL mobile fixes */
+  /* RTL mobile */
   [dir="rtl"] .hero-actions{flex-direction:column}
   [dir="rtl"] .banner-inner{direction:rtl}
 }
 
-/* ── RESPONSIVE — SMALL MOBILE 380px ── */
+/* ══════════════════════════════════════════
+   RESPONSIVE — SMALL ≤380px
+   ══════════════════════════════════════════ */
 @media(max-width:380px){
   .hero-title{font-size:1.85rem}
   .app-pill{padding:4px 8px;font-size:.65rem}
@@ -567,7 +799,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
       <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-list);color:var(--c-list-t);text-decoration:none">
         <div class="app-pill-dot" style="background:var(--c-list)"></div>nota.list
       </a>
-      <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-budget);color:var(--c-budget-t);text-decoration:none">
+      <a href="https://notabid.vercel.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-budget);color:var(--c-budget-t);text-decoration:none">
         <div class="app-pill-dot" style="background:var(--c-budget)"></div>nota.budget
       </a>
       <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener" class="app-pill" style="border-color:var(--c-debts);color:var(--c-debts-t);text-decoration:none">
@@ -582,19 +814,19 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 
 <div class="banner">
   <div class="banner-inner">
-    <div class="banner-item">
+    <div class="banner-item reveal reveal-delay-1">
       <div class="banner-num" style="color:var(--c-nota)">5</div>
       <div class="banner-label" data-i18n="banner1">Powerful apps,<br/>one coherent family</div>
     </div>
-    <div class="banner-item">
+    <div class="banner-item reveal reveal-delay-2">
       <div class="banner-num" style="color:var(--c-list)">$0</div>
       <div class="banner-label" data-i18n="banner2">Free forever,<br/>no hidden fees</div>
     </div>
-    <div class="banner-item">
+    <div class="banner-item reveal reveal-delay-3">
       <div class="banner-num" style="color:var(--c-budget)">4</div>
       <div class="banner-label" data-i18n="banner3">Languages — EN, AR,<br/>FR, and RU</div>
     </div>
-    <div class="banner-item">
+    <div class="banner-item reveal reveal-delay-4">
       <div class="banner-num" style="color:var(--c-debts)">∞</div>
       <div class="banner-label" data-i18n="banner4">Notes, tasks, budgets<br/>and debts tracked</div>
     </div>
@@ -605,181 +837,298 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 <section class="apps" id="apps">
   <div class="container">
     <div class="section-tag reveal" data-i18n="apps_tag">The Family</div>
-    <div class="section-title reveal reveal-delay-1" data-i18n="apps_title">Four apps. One vision.</div>
+    <div class="section-title reveal reveal-delay-1" data-i18n="apps_title">Five apps. One vision.</div>
 
     <div class="apps-grid">
 
       <!-- nota -->
-      <div class="app-card app-card--nota">
+      <div class="app-card app-card--nota reveal reveal-delay-1">
+        <div class="app-icon" style="background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 25%,transparent)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h12M4 18h14" stroke="var(--c-nota)" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </div>
         <div class="app-card-header">
-          <div class="app-icon" style="background:var(--c-nota-dim);border:1.5px solid color-mix(in srgb,var(--c-nota) 25%,transparent)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h12M4 18h14" stroke="var(--c-nota)" stroke-width="2.2" stroke-linecap="round"/></svg>
-          </div>
+          <div class="app-name" style="color:var(--text)">nota <span style="color:var(--c-nota)">·</span> notes</div>
           <span class="app-tag" style="background:var(--c-nota-dim);color:var(--c-nota-t)" data-i18n="tag_notes">Notes</span>
         </div>
-        <div class="app-name" style="color:var(--text)">nota <span style="color:var(--c-nota)">·</span> notes</div>
         <p class="app-desc" data-i18n="nota_desc">Your minimal, colorful notes space. Capture ideas instantly, organize by category, and customize with colors. Synced across every device.</p>
         <div class="app-features">
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f1">Rich text with color themes & categories</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f2">Real-time sync via Supabase</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f3">Light & dark mode, 4 languages</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f1">Rich text with color themes & categories</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f2">Real-time sync via Supabase</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-nota-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-nota)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="nota_f3">Light & dark mode, 4 languages</span></div>
         </div>
         <a href="https://notasave.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-nota)"><span data-i18n="open_nota">Open nota</span> <span>→</span></a>
-        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
-          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
-          <rect x="20" y="26" width="80" height="10" rx="5" fill="var(--c-nota)" opacity=".7"/>
-          <rect x="20" y="44" width="120" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="56" width="100" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="68" width="110" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="90" width="60" height="10" rx="5" fill="var(--c-list)" opacity=".5"/>
-          <rect x="20" y="108" width="120" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="120" width="90" height="6" rx="3" fill="var(--border2)"/>
-        </svg>
+        <div class="card-mock-wrap">
+          <svg class="card-mock" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="130" height="200" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
+            <!-- search bar -->
+            <rect x="10" y="12" width="110" height="14" rx="7" fill="var(--border)" opacity=".6"/>
+            <circle cx="22" cy="19" r="4" fill="none" stroke="var(--text3)" stroke-width="1.2"/>
+            <!-- note card 1 — green -->
+            <rect x="8" y="34" width="114" height="46" rx="9" fill="var(--c-nota)" opacity=".12"/>
+            <rect x="8" y="34" width="3" height="46" rx="1.5" fill="var(--c-nota)" opacity=".8"/>
+            <rect x="18" y="42" width="60" height="7" rx="3.5" fill="var(--c-nota)" opacity=".7"/>
+            <rect x="18" y="54" width="90" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="18" y="62" width="70" height="5" rx="2.5" fill="var(--border2)" opacity=".7"/>
+            <rect x="18" y="72" width="32" height="5" rx="2.5" fill="var(--c-nota-dim)" stroke="var(--c-nota)" stroke-width=".6"/>
+            <!-- note card 2 — blue -->
+            <rect x="8" y="88" width="114" height="46" rx="9" fill="var(--c-list)" opacity=".1"/>
+            <rect x="8" y="88" width="3" height="46" rx="1.5" fill="var(--c-list)" opacity=".7"/>
+            <rect x="18" y="96" width="50" height="7" rx="3.5" fill="var(--c-list)" opacity=".6"/>
+            <rect x="18" y="108" width="88" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="18" y="116" width="60" height="5" rx="2.5" fill="var(--border2)" opacity=".6"/>
+            <rect x="18" y="126" width="36" height="5" rx="2.5" fill="var(--c-list-dim)" stroke="var(--c-list)" stroke-width=".6"/>
+            <!-- note card 3 — purple -->
+            <rect x="8" y="142" width="114" height="42" rx="9" fill="var(--c-budget)" opacity=".08"/>
+            <rect x="8" y="142" width="3" height="42" rx="1.5" fill="var(--c-budget)" opacity=".6"/>
+            <rect x="18" y="150" width="72" height="7" rx="3.5" fill="var(--c-budget)" opacity=".55"/>
+            <rect x="18" y="162" width="85" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="18" y="170" width="52" height="5" rx="2.5" fill="var(--border2)" opacity=".55"/>
+            <!-- FAB -->
+            <circle cx="106" cy="184" r="10" fill="var(--c-nota)" opacity=".9"/>
+            <path d="M106 179v10M101 184h10" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
 
       <!-- nota.list -->
-      <div class="app-card app-card--list">
+      <div class="app-card app-card--list reveal reveal-delay-2">
+        <div class="app-icon" style="background:var(--c-list-dim);border:1.5px solid color-mix(in srgb,var(--c-list) 25%,transparent)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 10l4 4 8-8" stroke="var(--c-list)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <div class="app-card-header">
-          <div class="app-icon" style="background:var(--c-list-dim);border:1.5px solid color-mix(in srgb,var(--c-list) 25%,transparent)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 10l4 4 8-8" stroke="var(--c-list)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-list)">.list</span></div>
           <span class="app-tag" style="background:var(--c-list-dim);color:var(--c-list-t)" data-i18n="tag_tasks">Tasks</span>
         </div>
-        <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-list)">.list</span></div>
         <p class="app-desc" data-i18n="list_desc">Your smart to-do space. Prioritize tasks, organize by project, track progress — and actually get things done. Focused simplicity.</p>
         <div class="app-features">
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f1">Priority levels — high, medium, low</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f2">Projects, tags & progress tracking</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f3">Due dates with smart reminders</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f1">Priority levels — high, medium, low</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f2">Projects, tags & progress tracking</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-list-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-list)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="list_f3">Due dates with smart reminders</span></div>
         </div>
         <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-list)"><span data-i18n="open_list">Open nota.list</span> <span>→</span></a>
-        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
-          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
-          <rect x="20" y="24" width="100" height="8" rx="4" fill="var(--border2)"/>
-          <rect x="20" y="40" width="14" height="14" rx="7" fill="var(--c-list)" opacity=".6"/>
-          <rect x="40" y="44" width="88" height="6" rx="3" fill="var(--c-list)" opacity=".35"/>
-          <rect x="20" y="62" width="14" height="14" rx="7" fill="var(--border)"/>
-          <rect x="40" y="66" width="72" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="84" width="14" height="14" rx="7" fill="var(--border)"/>
-          <rect x="40" y="88" width="96" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="106" width="14" height="14" rx="7" fill="var(--c-list)" opacity=".6"/>
-          <rect x="40" y="110" width="60" height="6" rx="3" fill="var(--c-list)" opacity=".35"/>
-          <rect x="16" y="132" width="128" height="3" rx="2" fill="var(--border)"/>
-          <rect x="16" y="132" width="84" height="3" rx="2" fill="var(--c-list)" opacity=".5"/>
-        </svg>
+        <div class="card-mock-wrap">
+          <svg class="card-mock" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="130" height="200" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
+            <!-- header + progress -->
+            <rect x="10" y="12" width="70" height="9" rx="4.5" fill="var(--text2)" opacity=".5"/>
+            <rect x="84" y="12" width="36" height="9" rx="4.5" fill="var(--c-list-dim)" stroke="var(--c-list)" stroke-width=".8"/>
+            <rect x="10" y="26" width="110" height="4" rx="2" fill="var(--border)"/>
+            <rect x="10" y="26" width="66" height="4" rx="2" fill="var(--c-list)" opacity=".7"/>
+            <!-- task 1 - done -->
+            <rect x="10" y="38" width="110" height="26" rx="7" fill="var(--border)" opacity=".3"/>
+            <rect x="18" y="47" width="14" height="8" rx="4" fill="var(--c-list)" opacity=".9"/>
+            <line x1="21" y1="51" x2="23" y2="53" stroke="#0c1020" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="23" y1="53" x2="28" y2="48" stroke="#0c1020" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="38" y="47" width="54" height="5" rx="2.5" fill="var(--border2)" opacity=".5"/>
+            <line x1="38" y1="49.5" x2="92" y2="49.5" stroke="var(--border2)" stroke-width="1.2"/>
+            <rect x="96" y="46" width="18" height="7" rx="3.5" fill="var(--c-debts-dim)" stroke="var(--c-debts)" stroke-width=".7" opacity=".9"/>
+            <!-- task 2 - high priority -->
+            <rect x="10" y="70" width="110" height="26" rx="7" fill="var(--border)" opacity=".4"/>
+            <rect x="18" y="79" width="14" height="8" rx="4" fill="none" stroke="var(--c-debts)" stroke-width="1.5"/>
+            <rect x="38" y="79" width="60" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="96" y="78" width="18" height="7" rx="3.5" fill="var(--c-debts-dim)" stroke="var(--c-debts)" stroke-width=".7"/>
+            <!-- task 3 - medium -->
+            <rect x="10" y="102" width="110" height="26" rx="7" fill="var(--border)" opacity=".4"/>
+            <rect x="18" y="111" width="14" height="8" rx="4" fill="none" stroke="var(--c-list)" stroke-width="1.5"/>
+            <rect x="38" y="111" width="48" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="96" y="110" width="18" height="7" rx="3.5" fill="var(--c-list-dim)" stroke="var(--c-list)" stroke-width=".7"/>
+            <!-- task 4 - done -->
+            <rect x="10" y="134" width="110" height="26" rx="7" fill="var(--border)" opacity=".25"/>
+            <rect x="18" y="143" width="14" height="8" rx="4" fill="var(--c-list)" opacity=".7"/>
+            <rect x="38" y="143" width="65" height="5" rx="2.5" fill="var(--border2)" opacity=".4"/>
+            <line x1="38" y1="145.5" x2="103" y2="145.5" stroke="var(--border2)" stroke-width="1"/>
+            <!-- stats row -->
+            <rect x="10" y="168" width="34" height="24" rx="8" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="48" y="168" width="34" height="24" rx="8" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="86" y="168" width="34" height="24" rx="8" fill="var(--c-list-dim)" stroke="var(--c-list)" stroke-width=".8"/>
+            <rect x="14" y="175" width="14" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="14" y="182" width="10" height="3" rx="1.5" fill="var(--border)"/>
+            <rect x="52" y="175" width="14" height="5" rx="2.5" fill="var(--border2)"/>
+            <rect x="52" y="182" width="10" height="3" rx="1.5" fill="var(--border)"/>
+            <rect x="90" y="175" width="14" height="5" rx="2.5" fill="var(--c-list)" opacity=".6"/>
+            <rect x="90" y="182" width="10" height="3" rx="1.5" fill="var(--c-list)" opacity=".3"/>
+          </svg>
+        </div>
       </div>
 
       <!-- nota.budget -->
-      <div class="app-card app-card--budget">
+      <div class="app-card app-card--budget reveal reveal-delay-3">
+        <div class="app-icon" style="background:var(--c-budget-dim);border:1.5px solid color-mix(in srgb,var(--c-budget) 25%,transparent)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="3" stroke="var(--c-budget)" stroke-width="2.2"/><path d="M3 10h18" stroke="var(--c-budget)" stroke-width="2"/><circle cx="7" cy="15" r="1.5" fill="var(--c-budget)"/></svg>
+        </div>
         <div class="app-card-header">
-          <div class="app-icon" style="background:var(--c-budget-dim);border:1.5px solid color-mix(in srgb,var(--c-budget) 25%,transparent)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="3" stroke="var(--c-budget)" stroke-width="2.2"/><path d="M3 10h18" stroke="var(--c-budget)" stroke-width="2"/><circle cx="7" cy="15" r="1.5" fill="var(--c-budget)"/></svg>
-          </div>
+          <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-budget)">.budget</span></div>
           <span class="app-tag" style="background:var(--c-budget-dim);color:var(--c-budget-t)" data-i18n="tag_finance">Finance</span>
         </div>
-        <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-budget)">.budget</span></div>
         <p class="app-desc" data-i18n="budget_desc">Track your spending intelligently. Set monthly budgets, monitor categories, and see where every dirham, dollar, or dinar goes.</p>
         <div class="app-features">
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f1">Category budgets with visual progress</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f2">Monthly overview & spending history</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f3">Smart alerts before you overspend</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f1">Category budgets with visual progress</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f2">Monthly overview & spending history</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-budget-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-budget)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="budget_f3">Smart alerts before you overspend</span></div>
         </div>
-        <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener" class="app-link" style="color:var(--c-budget)"><span data-i18n="open_budget">Open nota.budget</span> <span>→</span></a>
-        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
-          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
-          <rect x="20" y="24" width="60" height="14" rx="7" fill="var(--c-budget)" opacity=".5"/>
-          <rect x="20" y="46" width="120" height="3" rx="2" fill="var(--border)"/>
-          <rect x="20" y="46" width="74" height="3" rx="2" fill="var(--c-budget)" opacity=".6"/>
-          <rect x="20" y="58" width="120" height="3" rx="2" fill="var(--border)"/>
-          <rect x="20" y="58" width="42" height="3" rx="2" fill="var(--c-debts)" opacity=".6"/>
-          <rect x="20" y="70" width="120" height="3" rx="2" fill="var(--border)"/>
-          <rect x="20" y="70" width="96" height="3" rx="2" fill="var(--c-list)" opacity=".5"/>
-          <rect x="20" y="94" width="40" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="20" y="108" width="120" height="28" rx="8" fill="var(--border)" opacity=".5"/>
-        </svg>
+        <a href="https://notabid.vercel.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-budget)"><span data-i18n="open_budget">Open nota.budget</span> <span>→</span></a>
+        <div class="card-mock-wrap">
+          <svg class="card-mock" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="130" height="200" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
+            <!-- balance hero -->
+            <rect x="10" y="10" width="110" height="52" rx="10" fill="var(--c-budget)" opacity=".12"/>
+            <rect x="20" y="18" width="40" height="5" rx="2.5" fill="var(--text2)" opacity=".4"/>
+            <rect x="20" y="27" width="70" height="13" rx="6.5" fill="var(--c-budget)" opacity=".6"/>
+            <rect x="20" y="44" width="50" height="5" rx="2.5" fill="var(--text2)" opacity=".3"/>
+            <!-- category bars -->
+            <rect x="10" y="72" width="110" height="24" rx="7" fill="var(--border)" opacity=".35"/>
+            <rect x="18" y="80" width="7" height="7" rx="3.5" fill="var(--c-nota)" opacity=".8"/>
+            <rect x="30" y="82" width="30" height="4" rx="2" fill="var(--border2)"/>
+            <rect x="64" y="82" width="42" height="4" rx="2" fill="var(--border)"/>
+            <rect x="64" y="82" width="30" height="4" rx="2" fill="var(--c-nota)" opacity=".6"/>
+            <rect x="110" y="80" width="4" height="7" rx="2"/>
+            <rect x="10" y="102" width="110" height="24" rx="7" fill="var(--border)" opacity=".35"/>
+            <rect x="18" y="110" width="7" height="7" rx="3.5" fill="var(--c-list)" opacity=".8"/>
+            <rect x="30" y="112" width="38" height="4" rx="2" fill="var(--border2)"/>
+            <rect x="64" y="112" width="42" height="4" rx="2" fill="var(--border)"/>
+            <rect x="64" y="112" width="15" height="4" rx="2" fill="var(--c-list)" opacity=".6"/>
+            <rect x="10" y="132" width="110" height="24" rx="7" fill="var(--border)" opacity=".35"/>
+            <rect x="18" y="140" width="7" height="7" rx="3.5" fill="var(--c-debts)" opacity=".8"/>
+            <rect x="30" y="142" width="46" height="4" rx="2" fill="var(--border2)"/>
+            <rect x="64" y="142" width="42" height="4" rx="2" fill="var(--border)"/>
+            <rect x="64" y="142" width="38" height="4" rx="2" fill="var(--c-debts)" opacity=".75"/>
+            <!-- warning badge on overspend -->
+            <rect x="108" y="138" width="8" height="8" rx="4" fill="var(--c-debts)" opacity=".9"/>
+            <!-- summary -->
+            <rect x="10" y="166" width="52" height="24" rx="8" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="68" y="166" width="52" height="24" rx="8" fill="var(--c-budget-dim)" stroke="var(--c-budget)" stroke-width=".8"/>
+            <rect x="16" y="173" width="22" height="5" rx="2.5" fill="var(--text2)" opacity=".4"/>
+            <rect x="16" y="180" width="14" height="3" rx="1.5" fill="var(--border)"/>
+            <rect x="74" y="173" width="22" height="5" rx="2.5" fill="var(--c-budget)" opacity=".6"/>
+            <rect x="74" y="180" width="14" height="3" rx="1.5" fill="var(--c-budget)" opacity=".3"/>
+          </svg>
+        </div>
       </div>
 
       <!-- nota.debts -->
-      <div class="app-card app-card--debts">
+      <div class="app-card app-card--debts reveal reveal-delay-4">
+        <div class="app-icon" style="background:var(--c-debts-dim);border:1.5px solid color-mix(in srgb,var(--c-debts) 25%,transparent)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><line x1="12" y1="1" x2="12" y2="23" stroke="var(--c-debts)" stroke-width="2.2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="var(--c-debts)" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </div>
         <div class="app-card-header">
-          <div class="app-icon" style="background:var(--c-debts-dim);border:1.5px solid color-mix(in srgb,var(--c-debts) 25%,transparent)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><line x1="12" y1="1" x2="12" y2="23" stroke="var(--c-debts)" stroke-width="2.2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="var(--c-debts)" stroke-width="2.2" stroke-linecap="round"/></svg>
-          </div>
+          <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-debts)">.debts</span></div>
           <span class="app-tag" style="background:var(--c-debts-dim);color:var(--c-debts-t)" data-i18n="tag_debts">Debts</span>
         </div>
-        <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-debts)">.debts</span></div>
         <p class="app-desc" data-i18n="debts_desc">Track what you owe and what's owed to you. Never forget a loan, always know where you stand. Clean, stress-free debt tracking.</p>
         <div class="app-features">
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f1">Lent & owed — net balance at a glance</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f2">Overdue alerts & due date tracking</span></div>
-          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f3">Partial payments & full history</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f1">Lent & owed — net balance at a glance</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f2">Overdue alerts & due date tracking</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-debts-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-debts)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="debts_f3">Partial payments & full history</span></div>
         </div>
         <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-debts)"><span data-i18n="open_debts">Open nota.debts</span> <span>→</span></a>
-        <svg class="card-mock" width="160" height="180" viewBox="0 0 160 180" fill="none">
-          <rect x="8" y="8" width="144" height="164" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
-          <rect x="16" y="24" width="128" height="36" rx="10" fill="var(--border)" opacity=".5"/>
-          <rect x="28" y="32" width="24" height="20" rx="6" fill="var(--c-debts)" opacity=".4"/>
-          <rect x="60" y="35" width="48" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="60" y="45" width="28" height="4" rx="2" fill="var(--border)"/>
-          <rect x="108" y="34" width="24" height="8" rx="4" fill="var(--c-debts)" opacity=".5"/>
-          <rect x="16" y="68" width="128" height="36" rx="10" fill="var(--border)" opacity=".5"/>
-          <rect x="28" y="76" width="24" height="20" rx="6" fill="var(--c-lista,var(--c-list))" opacity=".4"/>
-          <rect x="60" y="79" width="48" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="60" y="89" width="28" height="4" rx="2" fill="var(--border)"/>
-          <rect x="108" y="78" width="24" height="8" rx="4" fill="var(--c-nota)" opacity=".5"/>
-          <rect x="16" y="128" width="128" height="28" rx="10" fill="var(--surface)"/>
-          <rect x="28" y="136" width="40" height="6" rx="3" fill="var(--border2)"/>
-          <rect x="100" y="135" width="32" height="8" rx="4" fill="var(--c-debts)" opacity=".7"/>
-        </svg>
+        <div class="card-mock-wrap">
+          <svg class="card-mock" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="130" height="200" rx="14" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
+            <!-- net balance bar -->
+            <rect x="10" y="10" width="110" height="34" rx="9" fill="var(--c-debts)" opacity=".12"/>
+            <rect x="18" y="18" width="35" height="5" rx="2.5" fill="var(--text2)" opacity=".4"/>
+            <rect x="18" y="26" width="55" height="9" rx="4.5" fill="var(--c-debts)" opacity=".55"/>
+            <rect x="95" y="20" width="18" height="10" rx="5" fill="var(--c-debts-dim)" stroke="var(--c-debts)" stroke-width=".8"/>
+            <!-- person 1 - overdue -->
+            <rect x="10" y="52" width="110" height="34" rx="9" fill="var(--border)" opacity=".4"/>
+            <rect x="18" y="60" width="22" height="18" rx="6" fill="#f78e8e" opacity=".7"/>
+            <rect x="18" y="66" width="22" height="6" rx="3" fill="#f78e8e" opacity=".5"/>
+            <rect x="46" y="62" width="44" height="6" rx="3" fill="var(--border2)"/>
+            <rect x="46" y="71" width="30" height="5" rx="2.5" fill="var(--border)"/>
+            <rect x="96" y="60" width="18" height="7" rx="3.5" fill="rgba(247,142,142,.2)" stroke="#f78e8e" stroke-width=".8"/>
+            <rect x="96" y="70" width="18" height="6" rx="3" fill="#f78e8e" opacity=".3"/>
+            <!-- person 2 - on track -->
+            <rect x="10" y="92" width="110" height="34" rx="9" fill="var(--border)" opacity=".4"/>
+            <rect x="18" y="100" width="22" height="18" rx="6" fill="var(--c-debts)" opacity=".6"/>
+            <rect x="46" y="102" width="38" height="6" rx="3" fill="var(--border2)"/>
+            <rect x="46" y="111" width="28" height="5" rx="2.5" fill="var(--border)"/>
+            <rect x="96" y="100" width="18" height="7" rx="3.5" fill="var(--c-debts-dim)" stroke="var(--c-debts)" stroke-width=".8"/>
+            <rect x="96" y="110" width="18" height="6" rx="3" fill="var(--c-debts)" opacity=".3"/>
+            <!-- person 3 -->
+            <rect x="10" y="132" width="110" height="34" rx="9" fill="var(--border)" opacity=".4"/>
+            <rect x="18" y="140" width="22" height="18" rx="6" fill="var(--c-learn)" opacity=".5"/>
+            <rect x="46" y="142" width="50" height="6" rx="3" fill="var(--border2)"/>
+            <rect x="46" y="151" width="32" height="5" rx="2.5" fill="var(--border)"/>
+            <rect x="96" y="140" width="18" height="7" rx="3.5" fill="var(--c-learn-dim)" stroke="var(--c-learn)" stroke-width=".8"/>
+            <!-- net total -->
+            <rect x="10" y="174" width="110" height="18" rx="7" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="18" y="180" width="44" height="5" rx="2.5" fill="var(--text2)" opacity=".3"/>
+            <rect x="88" y="178" width="26" height="8" rx="4" fill="var(--c-debts)" opacity=".5"/>
+          </svg>
+        </div>
       </div>
 
       <!-- nota.learn -->
-      <div class="app-card app-card--learn" style="grid-column:1/-1">
+      <div class="app-card app-card--learn reveal reveal-delay-5" style="grid-column:1/-1">
+        <div class="app-icon" style="background:var(--c-learn-dim);border:1.5px solid color-mix(in srgb,var(--c-learn) 25%,transparent)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--c-learn)" stroke-width="2.2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="var(--c-learn)" stroke-width="2" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="var(--c-learn)" stroke-width="2" stroke-linejoin="round"/></svg>
+        </div>
         <div class="app-card-header">
-          <div class="app-icon" style="background:var(--c-learn-dim);border:1.5px solid color-mix(in srgb,var(--c-learn) 25%,transparent)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--c-learn)" stroke-width="2.2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="var(--c-learn)" stroke-width="2" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="var(--c-learn)" stroke-width="2" stroke-linejoin="round"/></svg>
-          </div>
+          <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-learn)">.learn</span></div>
           <span class="app-tag" style="background:var(--c-learn-dim);color:var(--c-learn-t)" data-i18n="tag_learn">Learning</span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center">
-          <div>
-            <div class="app-name" style="color:var(--text)">nota<span style="color:var(--c-learn)">.learn</span></div>
-            <p class="app-desc" data-i18n="learn_desc">Your personal learning journal. Log courses, track hours, build streaks — and watch yourself grow every single day.</p>
-            <div class="app-features">
-              <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f1">Courses & skills with visual progress bars</span></div>
-              <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f2">Daily log & streak tracking 🔥</span></div>
-              <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f3">Time tracking — hours per week & month</span></div>
-            </div>
-            <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-learn);margin-top:20px;display:inline-flex"><span data-i18n="open_learn">Open nota.learn</span> <span>→</span></a>
-          </div>
-          <!-- learn mock -->
-          <div style="position:relative;opacity:.9">
-            <svg width="100%" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="320" height="200" rx="16" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
-              <!-- header -->
-              <rect x="16" y="16" width="120" height="10" rx="5" fill="var(--c-learn)" opacity=".7"/>
-              <rect x="240" y="14" width="64" height="14" rx="7" fill="var(--c-learn-dim)" stroke="var(--c-learn)" stroke-width="1" opacity=".8"/>
-              <text x="272" y="24" font-size="8" fill="var(--c-learn)" text-anchor="middle" font-family="sans-serif">🔥 12 streak</text>
-              <!-- course 1 -->
-              <rect x="16" y="40" width="288" height="42" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
-              <rect x="28" y="52" width="80" height="7" rx="3.5" fill="var(--text2)" opacity=".6"/>
-              <rect x="28" y="64" width="220" height="4" rx="2" fill="var(--border2)"/>
-              <rect x="28" y="64" width="158" height="4" rx="2" fill="var(--c-learn)" opacity=".8"/>
-              <text x="260" y="69" font-size="7" fill="var(--c-learn)" font-family="sans-serif">72%</text>
-              <!-- course 2 -->
-              <rect x="16" y="90" width="288" height="42" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
-              <rect x="28" y="102" width="70" height="7" rx="3.5" fill="var(--text2)" opacity=".6"/>
-              <rect x="28" y="114" width="220" height="4" rx="2" fill="var(--border2)"/>
-              <rect x="28" y="114" width="99" height="4" rx="2" fill="var(--c-list)" opacity=".8"/>
-              <text x="260" y="119" font-size="7" fill="var(--c-list)" font-family="sans-serif">45%</text>
-              <!-- course 3 -->
-              <rect x="16" y="140" width="288" height="42" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
-              <rect x="28" y="152" width="110" height="7" rx="3.5" fill="var(--text2)" opacity=".6"/>
-              <rect x="28" y="164" width="220" height="4" rx="2" fill="var(--border2)"/>
-              <rect x="28" y="164" width="198" height="4" rx="2" fill="var(--c-nota)" opacity=".8"/>
-              <text x="260" y="169" font-size="7" fill="var(--c-nota)" font-family="sans-serif">90%</text>
-            </svg>
-          </div>
+        <p class="app-desc" data-i18n="learn_desc">Your personal learning journal. Log courses, track hours, build streaks — and watch yourself grow every single day.</p>
+        <div class="app-features">
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f1">Courses & skills with visual progress bars</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f2">Daily log & streak tracking 🔥</span></div>
+          <div class="app-feat"><div class="app-feat-check" style="background:var(--c-learn-dim)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="var(--c-learn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span data-i18n="learn_f3">Time tracking — hours per week & month</span></div>
+        </div>
+        <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" class="app-link" style="color:var(--c-learn)"><span data-i18n="open_learn">Open nota.learn</span> <span>→</span></a>
+        <div class="card-mock-wrap" style="width:auto">
+          <svg class="card-mock" style="width:100%;max-width:340px" viewBox="0 0 340 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="120" rx="12" fill="var(--surface2)" stroke="var(--border)" stroke-width="1.5"/>
+            <!-- stats row -->
+            <rect x="10" y="10" width="70" height="44" rx="9" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="18" y="18" width="30" height="12" rx="6" fill="var(--c-learn)" opacity=".6"/>
+            <rect x="18" y="34" width="22" height="5" rx="2.5" fill="var(--text2)" opacity=".3"/>
+            <rect x="86" y="10" width="70" height="44" rx="9" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="94" y="18" width="24" height="12" rx="6" fill="var(--c-nota)" opacity=".6"/>
+            <rect x="94" y="34" width="22" height="5" rx="2.5" fill="var(--text2)" opacity=".3"/>
+            <rect x="162" y="10" width="70" height="44" rx="9" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="170" y="18" width="18" height="12" rx="6" fill="var(--c-list)" opacity=".6"/>
+            <rect x="170" y="34" width="22" height="5" rx="2.5" fill="var(--text2)" opacity=".3"/>
+            <!-- streak -->
+            <rect x="238" y="10" width="92" height="44" rx="9" fill="var(--c-learn)" opacity=".1" stroke="var(--c-learn)" stroke-width=".8"/>
+            <rect x="246" y="20" width="44" height="10" rx="5" fill="var(--c-learn)" opacity=".6"/>
+            <rect x="246" y="34" width="60" height="5" rx="2.5" fill="var(--c-learn)" opacity=".3"/>
+            <!-- course bars -->
+            <rect x="10" y="62" width="148" height="22" rx="7" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="18" y="69" width="62" height="5" rx="2.5" fill="var(--text2)" opacity=".5"/>
+            <rect x="84" y="68" width="50" height="5" rx="2.5" fill="var(--border)"/>
+            <rect x="84" y="68" width="36" height="5" rx="2.5" fill="var(--c-learn)" opacity=".7"/>
+            <rect x="138" y="67" width="14" height="5" rx="2.5" fill="var(--c-learn)" opacity=".5"/>
+            <rect x="10" y="90" width="148" height="22" rx="7" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="18" y="97" width="52" height="5" rx="2.5" fill="var(--text2)" opacity=".5"/>
+            <rect x="84" y="96" width="50" height="5" rx="2.5" fill="var(--border)"/>
+            <rect x="84" y="96" width="22" height="5" rx="2.5" fill="var(--c-list)" opacity=".7"/>
+            <rect x="138" y="95" width="14" height="5" rx="2.5" fill="var(--c-list)" opacity=".5"/>
+            <rect x="164" y="62" width="166" height="50" rx="9" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+            <!-- mini heatmap -->
+            <rect x="172" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".2"/>
+            <rect x="183" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".6"/>
+            <rect x="194" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".4"/>
+            <rect x="205" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".9"/>
+            <rect x="216" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".3"/>
+            <rect x="227" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".7"/>
+            <rect x="238" y="70" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".5"/>
+            <rect x="172" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".7"/>
+            <rect x="183" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".3"/>
+            <rect x="194" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".9"/>
+            <rect x="205" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".2"/>
+            <rect x="216" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".8"/>
+            <rect x="227" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".5"/>
+            <rect x="238" y="82" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".95"/>
+            <rect x="172" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".4"/>
+            <rect x="183" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".9"/>
+            <rect x="194" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".6"/>
+            <rect x="205" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".3"/>
+            <rect x="216" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".7"/>
+            <rect x="227" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".4"/>
+            <rect x="238" y="94" width="9" height="9" rx="2" fill="var(--c-learn)" opacity=".85"/>
+            <rect x="253" y="70" width="70" height="9" rx="4.5" fill="var(--border2)" opacity=".6"/>
+            <rect x="253" y="82" width="55" height="9" rx="4.5" fill="var(--border)" opacity=".6"/>
+            <rect x="253" y="94" width="65" height="9" rx="4.5" fill="var(--border2)" opacity=".5"/>
+          </svg>
         </div>
       </div>
 
@@ -865,6 +1214,18 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
               <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">My Notes</span>
               <span class="ph-count" style="background:var(--c-nota-dim);color:var(--c-nota-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">12 notes</span>
             </div>
+            <!-- search bar -->
+            <div style="display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;margin-bottom:10px">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <span style="font-size:.65rem;color:var(--text3)">Search notes…</span>
+            </div>
+            <!-- category chips -->
+            <div style="display:flex;gap:5px;margin-bottom:10px;overflow:hidden">
+              <span style="padding:2px 9px;border-radius:100px;background:var(--c-nota);color:#1a1a1a;font-size:.6rem;font-weight:700">All</span>
+              <span style="padding:2px 9px;border-radius:100px;background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:.6rem">Personal</span>
+              <span style="padding:2px 9px;border-radius:100px;background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:.6rem">Work</span>
+              <span style="padding:2px 9px;border-radius:100px;background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:.6rem">Study</span>
+            </div>
             <div class="ph-note" style="--nc:var(--c-nota)">
               <div class="pn-color-bar"></div>
               <div class="pn-body-wrap">
@@ -885,7 +1246,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
               <div class="pn-color-bar"></div>
               <div class="pn-body-wrap">
                 <div class="pn-title-text">Reading list</div>
-                <div class="pn-preview">Books to read this month: Dune, Zero to One…</div>
+                <div class="pn-preview">Books to read: Dune, Zero to One, Atomic Habits…</div>
                 <div class="pn-meta"><span class="pn-cat">Study</span><span class="pn-date">Yesterday</span></div>
               </div>
             </div>
@@ -967,10 +1328,19 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
               <span class="ph-title" style="font-family:var(--font-d);font-weight:800;font-size:.9rem">May 2025</span>
               <span class="ph-count" style="background:var(--c-budget-dim);color:var(--c-budget-t);padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700">Budget</span>
             </div>
-            <div style="text-align:center;padding:10px 0 14px;border-bottom:1px solid var(--border)">
-              <div style="font-size:.62rem;color:var(--text3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Remaining</div>
-              <div style="font-family:var(--font-d);font-weight:800;font-size:1.8rem;color:var(--c-budget);letter-spacing:-.04em">$842.50</div>
-              <div style="font-size:.68rem;color:var(--text2);margin-top:2px">of $2,000 budget</div>
+            <!-- hero balance + mini donut -->
+            <div style="display:flex;align-items:center;gap:12px;padding:8px 0 14px;border-bottom:1px solid var(--border)">
+              <svg width="56" height="56" viewBox="0 0 56 56" style="flex-shrink:0">
+                <circle cx="28" cy="28" r="20" fill="none" stroke="var(--border)" stroke-width="6"/>
+                <circle cx="28" cy="28" r="20" fill="none" stroke="var(--c-budget)" stroke-width="6" stroke-dasharray="75.4 125.6" stroke-linecap="round" transform="rotate(-90 28 28)" opacity=".8"/>
+                <circle cx="28" cy="28" r="20" fill="none" stroke="var(--c-debts)" stroke-width="6" stroke-dasharray="36 165" stroke-linecap="round" transform="rotate(118 28 28)" opacity=".7"/>
+                <circle cx="28" cy="28" r="20" fill="none" stroke="var(--c-nota)" stroke-width="6" stroke-dasharray="28 173" stroke-linecap="round" transform="rotate(196 28 28)" opacity=".7"/>
+              </svg>
+              <div>
+                <div style="font-size:.6rem;color:var(--text3);font-weight:600;letter-spacing:.07em;text-transform:uppercase">Remaining</div>
+                <div style="font-family:var(--font-d);font-weight:800;font-size:1.5rem;color:var(--c-budget);letter-spacing:-.04em;line-height:1.2">$842.50</div>
+                <div style="font-size:.62rem;color:var(--text2)">of $2,000 budget</div>
+              </div>
             </div>
             <div class="ph-budget-row">
               <div class="pbr-label"><span class="pbr-dot" style="background:#7ef7b4"></span>Food</div>
@@ -982,10 +1352,15 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
             </div>
             <div class="ph-budget-row">
               <div class="pbr-label"><span class="pbr-dot" style="background:var(--c-debts)"></span>Shopping</div>
-              <div class="pbr-right"><div class="pbr-bar-wrap"><div class="pbr-bar" style="width:91%;background:var(--c-debts)"></div></div><span class="pbr-val">$364 / $400</span></div>
+              <div class="pbr-right">
+                <div class="pbr-bar-wrap" style="position:relative">
+                  <div class="pbr-bar" style="width:91%;background:var(--c-debts)"></div>
+                </div>
+                <span class="pbr-val" style="color:var(--c-debts)">⚠ $364 / $400</span>
+              </div>
             </div>
             <div class="ph-budget-row">
-              <div class="pbr-label"><span class="pbr-dot" style="background:var(--c-budget)"></span>Entertainment</div>
+              <div class="pbr-label"><span class="pbr-dot" style="background:var(--c-budget)"></span>Fun</div>
               <div class="pbr-right"><div class="pbr-bar-wrap"><div class="pbr-bar" style="width:48%;background:var(--c-budget)"></div></div><span class="pbr-val">$96 / $200</span></div>
             </div>
           </div>
@@ -1108,62 +1483,93 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 
     <!-- Reviews grid — populated from Supabase + new submissions -->
     <div class="testi-grid" id="testiGrid" style="min-height:0">
-      <!-- Empty state shown when no reviews yet -->
-      <div id="testiEmpty" style="grid-column:1/-1;padding:48px;text-align:center;color:var(--text3);font-size:.9rem;display:none">
-        No reviews yet — be the first to share your experience ✦
+      <!-- Skeleton loaders shown while fetching -->
+      <div class="testi-skeleton" id="sk1">
+        <div class="sk-line" style="width:40%;margin-bottom:14px"></div>
+        <div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div>
+        <div style="display:flex;gap:10px;margin-top:20px"><div class="sk-avatar"></div><div style="flex:1"><div class="sk-line xshort" style="margin-bottom:6px"></div><div class="sk-line" style="width:50%"></div></div></div>
+      </div>
+      <div class="testi-skeleton" id="sk2">
+        <div class="sk-line" style="width:40%;margin-bottom:14px"></div>
+        <div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line"></div>
+        <div style="display:flex;gap:10px;margin-top:20px"><div class="sk-avatar"></div><div style="flex:1"><div class="sk-line xshort" style="margin-bottom:6px"></div><div class="sk-line" style="width:50%"></div></div></div>
+      </div>
+      <div class="testi-skeleton" id="sk3">
+        <div class="sk-line" style="width:40%;margin-bottom:14px"></div>
+        <div class="sk-line short"></div><div class="sk-line"></div><div class="sk-line"></div>
+        <div style="display:flex;gap:10px;margin-top:20px"><div class="sk-avatar"></div><div style="flex:1"><div class="sk-line xshort" style="margin-bottom:6px"></div><div class="sk-line" style="width:50%"></div></div></div>
+      </div>
+      <!-- Empty state shown when no reviews -->
+      <div id="testiEmpty" style="grid-column:1/-1;padding:64px 24px;text-align:center;display:none">
+        <div style="width:64px;height:64px;border-radius:18px;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:floatY 3s ease-in-out infinite">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div style="color:var(--text3);font-size:.88rem;line-height:1.6">No reviews yet — be the first to share your experience ✦</div>
       </div>
     </div>
 
     <!-- Leave a review form -->
-    <div class="feedback-box reveal reveal-delay-2">
-      <div class="feedback-title">Share your experience ✦</div>
-      <div class="feedback-sub">Used one of the nota apps? Tell the community what you think — your feedback helps others discover the right app.</div>
-
-      <!-- Star rating -->
-      <div class="feedback-stars-row" id="starRow" aria-label="Rating">
-        <span class="fstar" data-v="1">★</span>
-        <span class="fstar" data-v="2">★</span>
-        <span class="fstar" data-v="3">★</span>
-        <span class="fstar" data-v="4">★</span>
-        <span class="fstar" data-v="5">★</span>
-      </div>
-      <input type="hidden" id="ratingVal" value="0">
-
-      <div class="feedback-inputs">
-        <div class="feedback-field">
-          <label>Your name</label>
-          <input id="fbName" type="text" placeholder="e.g. Sara M." maxlength="40">
+    <div class="feedback-wrap reveal reveal-delay-2">
+      <div class="feedback-box">
+        <div class="feedback-header">
+          <div class="feedback-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--c-nota)" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="feedback-title">Share your experience ✦</div>
         </div>
-        <div class="feedback-field">
-          <label>Which app?</label>
-          <select id="fbApp">
-            <option value="">— pick one —</option>
-            <option value="nota">nota</option>
-            <option value="nota.list">nota.list</option>
-            <option value="nota.budget">nota.budget</option>
-            <option value="nota.debts">nota.debts</option>
-            <option value="nota.learn">nota.learn</option>
-          </select>
+        <div class="feedback-sub">Used one of the nota apps? Tell the community what you think — your feedback helps others discover the right app.</div>
+
+        <!-- Star rating -->
+        <div class="feedback-stars-label">Your rating</div>
+        <div class="feedback-stars-row" id="starRow" aria-label="Rating">
+          <span class="fstar" data-v="1">★</span>
+          <span class="fstar" data-v="2">★</span>
+          <span class="fstar" data-v="3">★</span>
+          <span class="fstar" data-v="4">★</span>
+          <span class="fstar" data-v="5">★</span>
         </div>
-      </div>
+        <input type="hidden" id="ratingVal" value="0">
 
-      <div class="feedback-field" style="margin-bottom:6px">
-        <label>Your review</label>
-        <textarea class="feedback-textarea" id="fbText" placeholder="What do you love about it? What could be better?" maxlength="300"></textarea>
-        <span style="font-size:.68rem;color:var(--text3);text-align:right;display:block;margin-top:4px" id="fbCount">0 / 300</span>
-      </div>
+        <div class="feedback-inputs">
+          <div class="feedback-field">
+            <label>Your name</label>
+            <input id="fbName" type="text" placeholder="e.g. Sara M." maxlength="40">
+          </div>
+          <div class="feedback-field">
+            <label>Which app?</label>
+            <select id="fbApp">
+              <option value="">— pick one —</option>
+              <option value="nota">nota</option>
+              <option value="nota.list">nota.list</option>
+              <option value="nota.budget">nota.budget</option>
+              <option value="nota.debts">nota.debts</option>
+              <option value="nota.learn">nota.learn</option>
+            </select>
+          </div>
+        </div>
 
-      <div class="feedback-actions">
-        <span class="feedback-note">Shown publicly on this page · no account needed</span>
-        <button class="feedback-btn" id="fbSubmit" disabled>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          Post review
-        </button>
-      </div>
+        <div class="feedback-field" style="margin-bottom:6px">
+          <label>Your review</label>
+          <textarea class="feedback-textarea" id="fbText" placeholder="What do you love about it? What could be better?" maxlength="300"></textarea>
+          <div class="char-bar-wrap"><div class="char-bar" id="charBar"></div></div>
+          <span style="font-size:.68rem;color:var(--text3);text-align:right;display:block;margin-top:4px" id="fbCount">0 / 300</span>
+        </div>
 
-      <div class="feedback-success" id="fbSuccess">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Thanks! Your review is now live above.
+        <div class="feedback-actions">
+          <span class="feedback-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Shown publicly · no account needed
+          </span>
+          <button class="feedback-btn" id="fbSubmit" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Post review
+          </button>
+        </div>
+
+        <div class="feedback-success" id="fbSuccess">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><strong>Review posted!</strong> Your feedback is now live above.</div>
+        </div>
       </div>
     </div>
 
@@ -1212,7 +1618,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
   <div class="cta-blob"></div>
   <div class="cta-inner">
     <h2 data-i18n="cta_title">Start using nota today.</h2>
-    <p data-i18n="cta_sub">Four apps. Zero cost. Everything you need to stay on top of your life.</p>
+    <p data-i18n="cta_sub">Five apps. Zero cost. Everything you need to stay on top of your life.</p>
     <a href="#apps" class="btn-primary" style="display:inline-flex">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       <span data-i18n="cta_btn">Explore the Family</span>
@@ -1220,7 +1626,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
     <div class="cta-apps">
       <a href="https://notasave.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-nota)"></div>nota</a>
       <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-list)"></div>nota.list</a>
-      <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-budget)"></div>nota.budget</a>
+      <a href="https://notabid.vercel.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-budget)"></div>nota.budget</a>
       <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none"><div class="cta-chip-dot" style="background:var(--c-debts)"></div>nota.debts</a>
       <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" class="cta-app-chip" style="text-decoration:none;border-color:var(--c-learn);color:var(--c-learn-t)"><div class="cta-chip-dot" style="background:var(--c-learn)"></div>nota.learn</a>
     </div>
@@ -1237,7 +1643,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
     <div class="footer-links">
       <a href="https://notasave.netlify.app/" target="_blank" rel="noopener">nota</a>
       <a href="https://nota-list.netlify.app/" target="_blank" rel="noopener">nota.list</a>
-      <a href="https://nota-bud.netlify.app/#" target="_blank" rel="noopener">nota.budget</a>
+      <a href="https://notabid.vercel.app/" target="_blank" rel="noopener">nota.budget</a>
       <a href="https://nota-debts.netlify.app/" target="_blank" rel="noopener">nota.debts</a>
       <a href="https://dota-learn.netlify.app/" target="_blank" rel="noopener" style="color:var(--c-learn)">nota.learn</a>
     </div>
@@ -1263,7 +1669,7 @@ const translations = {
     banner3:"Languages — EN, AR,<br/>FR, and RU",
     banner4:"Notes, tasks, budgets<br/>and debts tracked",
     apps_tag:"The Family",
-    apps_title:"Four apps. One vision.",
+    apps_title:"Five apps. One vision.",
     tag_notes:"Notes", tag_tasks:"Tasks", tag_finance:"Finance", tag_debts:"Debts", tag_learn:"Learning",
     nota_desc:"Your minimal, colorful notes space. Capture ideas instantly, organize by category, and customize with colors. Synced across every device.",
     nota_f1:"Rich text with color themes & categories",
@@ -1332,10 +1738,10 @@ const translations = {
     cf_color:"Color customization", cf_prio:"Priority levels", cf_due:"Due date tracking",
     cf_budgets:"Category budgets", cf_alerts:"Spending alerts", cf_net:"Debt net balance", cf_partial:"Partial payments",
     cf_streak:"Streak tracking", cf_hours:"Hour tracking",
-    eco_tag:"The Ecosystem", eco_title:"Four apps. One account.",
+    eco_tag:"The Ecosystem", eco_title:"Five apps. One account.",
     eco_desc:"Sign in once and access the entire nota family. A single account connects your notes, tasks, budget, and debts — all living in one place.",
     eco_hub_sub:"One account",
-    cta_title:"Start using nota today.", cta_sub:"Four apps. Zero cost. Everything you need to stay on top of your life.", cta_btn:"Explore the Family",
+    cta_title:"Start using nota today.", cta_sub:"Five apps. Zero cost. Everything you need to stay on top of your life.", cta_btn:"Explore the Family",
     footer_logo:"nota family", footer_copy:"© 2025 nota. All apps, one vision."
   },
 
@@ -1352,7 +1758,7 @@ const translations = {
     banner3:"لغات — عربية، إنجليزية،<br/>فرنسية وروسية",
     banner4:"ملاحظات، مهام، ميزانيات<br/>وديون تحت السيطرة",
     apps_tag:"العائلة",
-    apps_title:"أربعة تطبيقات. رؤية واحدة.",
+    apps_title:"خمسة تطبيقات. رؤية واحدة.",
     tag_notes:"ملاحظات", tag_tasks:"مهام", tag_finance:"مالية", tag_debts:"ديون", tag_learn:"تعلّم",
     nota_desc:"مساحتك البسيطة والملوّنة للملاحظات. التقط أفكارك فورًا، نظّمها بالفئات، وخصّصها بالألوان. متزامنة على جميع أجهزتك.",
     nota_f1:"نص غني مع ألوان وفئات مخصصة",
@@ -1421,10 +1827,10 @@ const translations = {
     cf_color:"تخصيص الألوان", cf_prio:"مستويات الأولوية", cf_due:"متابعة تواريخ الاستحقاق",
     cf_budgets:"ميزانيات الفئات", cf_alerts:"تنبيهات الإنفاق", cf_net:"الرصيد الصافي للديون", cf_partial:"مدفوعات جزئية",
     cf_streak:"متابعة سلسلة الإنجاز", cf_hours:"تتبع الساعات",
-    eco_tag:"النظام البيئي", eco_title:"أربعة تطبيقات. حساب واحد.",
+    eco_tag:"النظام البيئي", eco_title:"خمسة تطبيقات. حساب واحد.",
     eco_desc:"سجّل الدخول مرة واحدة وادخل إلى عائلة nota كاملةً. حساب واحد يربط ملاحظاتك ومهامك وميزانيتك وديونك — كل شيء في مكان واحد.",
     eco_hub_sub:"حساب واحد",
-    cta_title:"ابدأ استخدام nota اليوم.", cta_sub:"أربعة تطبيقات. بدون تكلفة. كل ما تحتاجه للسيطرة على حياتك.", cta_btn:"استكشف العائلة",
+    cta_title:"ابدأ استخدام nota اليوم.", cta_sub:"خمسة تطبيقات. بدون تكلفة. كل ما تحتاجه للسيطرة على حياتك.", cta_btn:"استكشف العائلة",
     footer_logo:"عائلة nota", footer_copy:"© 2025 nota. كل التطبيقات، رؤية واحدة."
   },
 
@@ -1441,7 +1847,7 @@ const translations = {
     banner3:"Langues — FR, EN,<br/>AR et RU",
     banner4:"Notes, tâches, budgets<br/>et dettes suivis",
     apps_tag:"La Famille",
-    apps_title:"Quatre apps. Une vision.",
+    apps_title:"Cinq apps. Une vision.",
     tag_notes:"Notes", tag_tasks:"Tâches", tag_finance:"Finance", tag_debts:"Dettes", tag_learn:"Apprentissage",
     nota_desc:"Votre espace de notes minimaliste et coloré. Capturez vos idées instantanément, organisez par catégorie et personnalisez avec des couleurs. Synchronisé sur tous vos appareils.",
     nota_f1:"Texte riche avec thèmes de couleurs et catégories",
@@ -1510,10 +1916,10 @@ const translations = {
     cf_color:"Personnalisation des couleurs", cf_prio:"Niveaux de priorité", cf_due:"Suivi des échéances",
     cf_budgets:"Budgets par catégorie", cf_alerts:"Alertes de dépenses", cf_net:"Solde net des dettes", cf_partial:"Paiements partiels",
     cf_streak:"Suivi de série", cf_hours:"Suivi des heures",
-    eco_tag:"L'Écosystème", eco_title:"Quatre apps. Un seul compte.",
+    eco_tag:"L'Écosystème", eco_title:"Cinq apps. Un seul compte.",
     eco_desc:"Connectez-vous une fois et accédez à toute la famille nota. Un seul compte relie vos notes, tâches, budget et dettes — tout au même endroit.",
     eco_hub_sub:"Un seul compte",
-    cta_title:"Commencez à utiliser nota aujourd'hui.", cta_sub:"Quatre apps. Zéro coût. Tout ce dont vous avez besoin pour maîtriser votre vie.", cta_btn:"Explorer la famille",
+    cta_title:"Commencez à utiliser nota aujourd'hui.", cta_sub:"Cinq apps. Zéro coût. Tout ce dont vous avez besoin pour maîtriser votre vie.", cta_btn:"Explorer la famille",
     footer_logo:"famille nota", footer_copy:"© 2025 nota. Toutes les apps, une vision."
   },
 
@@ -1530,7 +1936,7 @@ const translations = {
     banner3:"Языки — RU, EN,<br/>AR и FR",
     banner4:"Заметки, задачи, бюджеты<br/>и долги под контролем",
     apps_tag:"Семейство",
-    apps_title:"Четыре приложения. Одна идея.",
+    apps_title:"Пять приложений. Одна идея.",
     tag_notes:"Заметки", tag_tasks:"Задачи", tag_finance:"Финансы", tag_debts:"Долги", tag_learn:"Обучение",
     nota_desc:"Ваше минималистичное и красочное пространство для заметок. Фиксируйте идеи мгновенно, организуйте по категориям, настраивайте цвета. Синхронизация на всех устройствах.",
     nota_f1:"Форматированный текст с цветовыми темами и категориями",
@@ -1599,10 +2005,10 @@ const translations = {
     cf_color:"Настройка цветов", cf_prio:"Уровни приоритета", cf_due:"Отслеживание сроков",
     cf_budgets:"Бюджеты по категориям", cf_alerts:"Оповещения о расходах", cf_net:"Чистый баланс долгов", cf_partial:"Частичные платежи",
     cf_streak:"Отслеживание серий", cf_hours:"Учёт часов",
-    eco_tag:"Экосистема", eco_title:"Четыре приложения. Один аккаунт.",
+    eco_tag:"Экосистема", eco_title:"Пять приложений. Один аккаунт.",
     eco_desc:"Войдите один раз и получите доступ ко всему семейству nota. Один аккаунт связывает ваши заметки, задачи, бюджет и долги — всё в одном месте.",
     eco_hub_sub:"Один аккаунт",
-    cta_title:"Начните использовать nota сегодня.", cta_sub:"Четыре приложения. Ноль затрат. Всё, что нужно, чтобы держать жизнь под контролем.", cta_btn:"Открыть семейство",
+    cta_title:"Начните использовать nota сегодня.", cta_sub:"Пять приложений. Ноль затрат. Всё, что нужно, чтобы держать жизнь под контролем.", cta_btn:"Открыть семейство",
     footer_logo:"семейство nota", footer_copy:"© 2025 nota. Все приложения, одна идея."
   }
 };
@@ -1711,27 +2117,6 @@ tabs.forEach(tab => {
 });
 
 // ═══════════════════════════════════════════════
-//  SCROLL ANIMATIONS
-// ═══════════════════════════════════════════════
-const animEls = document.querySelectorAll('.app-card, .banner-item');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const idx = Array.from(animEls).indexOf(e.target);
-      e.target.style.opacity = '0';
-      e.target.style.transform = 'translateY(24px)';
-      setTimeout(() => {
-        e.target.style.transition = 'opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1)';
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }, 70 * (idx % 4));
-      obs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-animEls.forEach(el => obs.observe(el));
-
-// ═══════════════════════════════════════════════
 //  BUDGET BARS ANIMATION
 // ═══════════════════════════════════════════════
 const budgetPanel = document.getElementById('panel-budget');
@@ -1752,7 +2137,7 @@ if (budgetPanel) barsObserver.observe(budgetPanel);
 //  SMOOTH SCROLL REVEAL
 // ═══════════════════════════════════════════════
 (function initReveal() {
-  const revealEls = document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale');
+  const revealEls = document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale, .reveal-left, .reveal-right, .reveal-pop');
   if (!revealEls.length) return;
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -1761,8 +2146,67 @@ if (budgetPanel) barsObserver.observe(budgetPanel);
         revealObserver.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   revealEls.forEach(el => revealObserver.observe(el));
+})();
+
+// ═══════════════════════════════════════════════
+//  CURSOR GLOW
+// ═══════════════════════════════════════════════
+(function initCursorGlow() {
+  const glow = document.createElement('div');
+  glow.className = 'cursor-glow';
+  document.body.appendChild(glow);
+  let mx = -500, my = -500, cx = -500, cy = -500;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { glow.style.opacity = '1'; });
+  function animGlow() {
+    cx += (mx - cx) * 0.08;
+    cy += (my - cy) * 0.08;
+    glow.style.left = cx + 'px';
+    glow.style.top  = cy + 'px';
+    requestAnimationFrame(animGlow);
+  }
+  animGlow();
+})();
+
+// ═══════════════════════════════════════════════
+//  MAGNETIC BUTTONS
+// ═══════════════════════════════════════════════
+(function initMagnetic() {
+  document.querySelectorAll('.btn-primary,.btn-cta-nav,.feedback-btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width/2)  * 0.18;
+      const dy = (e.clientY - r.top  - r.height/2) * 0.18;
+      btn.style.transform = `translate(${dx}px,${dy}px) translateY(-3px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════════
+//  APP CARDS — TILT ON HOVER
+// ═══════════════════════════════════════════════
+(function initTilt() {
+  document.querySelectorAll('.app-card,.why-card,.testi-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - .5;
+      const y = (e.clientY - r.top)  / r.height - .5;
+      card.style.transform = `translateY(-8px) scale(1.01) rotateX(${-y*5}deg) rotateY(${x*5}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform .6s cubic-bezier(.22,1,.36,1)';
+    });
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform .12s ease';
+    });
+  });
 })();
 
 // ═══════════════════════════════════════════════
@@ -1807,11 +2251,14 @@ if (budgetPanel) barsObserver.observe(budgetPanel);
 
   function buildCard(review, prepend) {
     const col = APP_COLORS[review.app] || APP_COLORS['nota'];
-    const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+    const stars = Array.from({length:5},(_,i)=>`<span class="testi-star-icon" style="color:${i<review.rating?col.star:'var(--border2)'}">${i<review.rating?'★':'☆'}</span>`).join('');
     const card = document.createElement('div');
     card.className = 'testi-card' + (prepend ? ' testi-new' : '');
+    // set per-app css variables for glow/border/shadow
+    card.style.cssText = `--tcard-glow:${col.bg.replace('var(','').replace(')','').trim()};--tcard-border:${col.star};--tcard-shadow:${col.bg.replace('15','28')};--tcard-quote:${col.star.replace('var(','').replace(')','').trim()}22;--tcard-quote-hover:${col.star.replace('var(','').replace(')','').trim()}44`;
     card.innerHTML = `
-      <div class="testi-stars" style="color:${col.star}">${stars}</div>
+      <span class="testi-app-badge" style="background:${col.bg};color:${col.fg}">${review.app}</span>
+      <div class="testi-stars">${stars}</div>
       <p class="testi-text">"${review.text}"</p>
       <div class="testi-author">
         <div class="testi-avatar" style="background:${col.bg};color:${col.fg}">${initials(review.name)}</div>
@@ -1831,11 +2278,18 @@ if (budgetPanel) barsObserver.observe(budgetPanel);
       const res  = await fetch(`${API}?select=*&order=created_at.desc&limit=20`, { headers: HEADERS });
       if (!res.ok) throw new Error(res.status);
       const data = await res.json();
+      // remove skeletons
+      ['sk1','sk2','sk3'].forEach(id => { const el=document.getElementById(id); if(el) el.remove(); });
       if (!data.length) { empty.style.display = 'block'; return; }
       empty.style.display = 'none';
-      data.forEach(r => grid.appendChild(buildCard(r, false)));
+      data.forEach((r, i) => {
+        const card = buildCard(r, false);
+        card.style.animationDelay = (i * 0.08) + 's';
+        grid.appendChild(card);
+      });
     } catch(e) {
       console.warn('nota reviews: could not load from Supabase', e);
+      ['sk1','sk2','sk3'].forEach(id => { const el=document.getElementById(id); if(el) el.remove(); });
       empty.style.display = 'block';
     }
   }
@@ -1895,9 +2349,30 @@ if (budgetPanel) barsObserver.observe(budgetPanel);
     );
   }
 
-  fbText.addEventListener('input', () => { fbCount.textContent = `${fbText.value.length} / 300`; validate(); });
+  fbText.addEventListener('input', () => {
+    const len = fbText.value.length;
+    fbCount.textContent = `${len} / 300`;
+    const bar = document.getElementById('charBar');
+    if (bar) {
+      const pct = (len/300)*100;
+      bar.style.width = pct + '%';
+      bar.style.background = pct > 90 ? 'var(--c-debts)' : pct > 70 ? 'var(--c-learn)' : 'var(--c-nota)';
+    }
+    validate();
+  });
   fbName.addEventListener('input', validate);
   fbApp.addEventListener('change', validate);
+
+  // ── Ripple on button ──
+  fbSubmit.addEventListener('mousedown', (e) => {
+    const rect = fbSubmit.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'btn-ripple';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top  = (e.clientY - rect.top)  + 'px';
+    fbSubmit.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
 
   // ── Submit ──
   fbSubmit.addEventListener('click', async () => {
@@ -1928,6 +2403,7 @@ if (budgetPanel) barsObserver.observe(budgetPanel);
       // Reset form
       fbName.value = ''; fbApp.value = ''; fbText.value = '';
       fbCount.textContent = '0 / 300';
+      const bar = document.getElementById('charBar'); if(bar) { bar.style.width='0%'; bar.style.background='var(--c-nota)'; }
       selectedRating = 0; ratingEl.value = 0;
       stars.forEach(s => s.classList.remove('lit'));
 
