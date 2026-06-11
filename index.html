@@ -549,8 +549,8 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-heigh
 .testi-card::before{content:'';position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 80% 70% at 90% 10%,var(--tcard-glow,rgba(169,247,142,.07)),transparent);transition:opacity .4s ease;border-radius:inherit}
 .testi-card:hover{transform:translateY(-8px) scale(1.01);border-color:var(--tcard-border,var(--border2));box-shadow:0 24px 60px var(--tcard-shadow,rgba(0,0,0,.24))}
 .testi-card:hover::before{opacity:1}
-.testi-card::after{content:'"';position:absolute;top:-8px;right:18px;font-size:6rem;font-family:Georgia,serif;line-height:1;color:var(--tcard-quote,rgba(169,247,142,.06));pointer-events:none;transition:color .3s ease}
-.testi-card:hover::after{color:var(--tcard-quote-hover,rgba(169,247,142,.13))}
+.testi-card::after{content:none}
+
 
 /* stars */
 .testi-stars{display:flex;gap:3px;margin-bottom:14px}
